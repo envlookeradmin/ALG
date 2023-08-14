@@ -1,7 +1,47 @@
 view: rpt_ventas {
   derived_table: {
-    sql: SELECT v.*,CAST(c.DATE AS TIMESTAMP) Fecha,c.QUARTER,c.YEAR,0 UKURS,'' FCURR, DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-      LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY  WHERE CATEGORY NOT IN ('TOTAL MXN')
+    sql: SELECT V.NET_WGT_DL
+      ,V.UNIT_OF_WT
+      ,V.STAT_CURR
+      ,V.MATL_GROUP
+      ,V.BILL_QTY
+      ,V.znetval
+      ,V.ZPPTOQTY
+      ,V.ZPPTO
+      ,V.ZPRICEVAL
+      ,V.LEN
+      ,V.UNIT_DIM
+      ,V.CURRENCY
+      ,V.UNIT
+      ,V.SOLD_TO
+      ,V.CUST_GROUP
+      ,V.MATL_TYPE
+      ,V.PRODH1
+      ,V.SIZE_DIM
+      ,V.EXTMATLGRP
+      ,V.COUNTRY
+      ,V.SALES_GRP
+      ,V.SALES_OFF
+      ,V.PRODH2
+      ,V.PRODH3
+      ,V.PRODH4
+      ,V.PROD_HIER
+      ,V.ZIOSD00A
+      ,V.VERSION
+      ,V.PLANT
+      ,V.MATERIAL
+      ,V.DISTR_CHAN
+      ,V.DIVISION
+      ,V.SALESORG
+      ,V.CALDAY
+      ,V.LOC_CURRCY
+      ,V.BASE_UOM
+      ,CASE WHEN V.CATEGORY = 'TOTAL MONEDA ORIGEN' THEN V.CATEGORY || ' ' || V.STAT_CURR ELSE V.CATEGORY END CATEGORY
+      ,V.SUBCATEGORY
+      ,V.CLIENT
+      ,CAST(c.DATE AS TIMESTAMP) Fecha,c.QUARTER,c.YEAR,0 UKURS,'' FCURR, DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION
+          FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
+            LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY  WHERE CATEGORY NOT IN ('TOTAL MXN')
 
       UNION ALL
 
@@ -59,7 +99,64 @@ view: rpt_ventas {
 
       union all
 
-      SELECT v.*,CAST(c.DATE AS TIMESTAMP) Fecha,c.QUARTER,c.YEAR,0 UKURS,'' TCURR, DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
+      SELECT V.NET_WGT_DL
+      ,V.UNIT_OF_WT
+      ,V.STAT_CURR
+      ,V.MATL_GROUP
+      ,V.BILL_QTY
+      ,V.znetval *UKURS  znetval
+      ,V.ZPPTOQTY
+      ,V.ZPPTO
+      ,V.ZPRICEVAL
+      ,V.LEN
+      ,V.UNIT_DIM
+      ,V.CURRENCY
+      ,V.UNIT
+      ,V.SOLD_TO
+      ,V.CUST_GROUP
+      ,V.MATL_TYPE
+      ,V.PRODH1
+      ,V.SIZE_DIM
+      ,V.EXTMATLGRP
+      ,V.COUNTRY
+      ,V.SALES_GRP
+      ,V.SALES_OFF
+      ,V.PRODH2
+      ,V.PRODH3
+      ,V.PRODH4
+      ,V.PROD_HIER
+      ,V.ZIOSD00A
+      ,V.VERSION
+      ,V.PLANT
+      ,V.MATERIAL
+      ,V.DISTR_CHAN
+      ,V.DIVISION
+      ,V.SALESORG
+      ,V.CALDAY
+      ,V.LOC_CURRCY
+      ,V.BASE_UOM
+      ,'TOTAL USD' CATEGORY
+      ,V.SUBCATEGORY
+      ,V.CLIENT
+      ,CAST(c.DATE AS TIMESTAMP) Fecha,c.QUARTER,c.YEAR
+      ,mo.UKURS
+      ,mo.FCURR, DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
+      LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY
+      LEFT JOIN (
+
+      SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY, TRIM(FCURR) FCURR, TRIM(TCURR) TCURR, UKURS,c.date FROM `envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR`
+      left join envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY=CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+      WHERE TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ')
+      AND TRIM(TCURR) = 'USD'
+      AND TRIM(KURST) = 'M'  AND    c.DATE= CAST({% date_start date_filter %} AS DATE)
+
+      ) mo on   v.STAT_CURR=mo.FCURR
+      WHERE CATEGORY='TOTAL MONEDA ORIGEN'
+
+      UNION ALL
+
+      SELECT v.*,CAST(c.DATE AS TIMESTAMP) Fecha,c.QUARTER,c.YEAR,0 UKURS,'' TCURR, DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION
+      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
       LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY  WHERE CATEGORY in ('TOTAL MXN') and SALESORG in ( "MXF1","MXFC")
 
 
@@ -334,9 +431,11 @@ view: rpt_ventas {
     # sql: case when ${TABLE}.CATEGORY is null then 'Otros' else ${TABLE}.CATEGORY  end ;;
     sql:  ${TABLE}.CATEGORY ;;
 
-    html: {% if value == 'TOTAL MONEDA ORIGEN' or
+    html: {% if value == 'TOTAL MONEDA ORIGEN USD' or
+                value == 'TOTAL MONEDA ORIGEN DKK' or
+                value == 'TOTAL MONEDA ORIGEN EUR' or
+                value == 'TOTAL MONEDA ORIGEN GTQ' or
                 value == 'TOTAL MXN'
-
       %}
       <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
       {% else %}
@@ -355,31 +454,31 @@ view: rpt_ventas {
     type: string
     sql: case
 
-            when ${TABLE}.CATEGORY="CP 19L" then "A01"
-            when ${TABLE}.CATEGORY="CP 15L" then "A02"
-            when ${TABLE}.CATEGORY="CP 10L" then "A03"
-            when ${TABLE}.CATEGORY="CP 08L" then "A04"
-            when ${TABLE}.CATEGORY="CP 04L" then "A05"
-            when ${TABLE}.CATEGORY="Cubeta de Plastico" then "A06"
-            when ${TABLE}.CATEGORY="Porron de Plastico" then "A07"
-            when ${TABLE}.CATEGORY="Tambores de Plastico" then "A08"
-            when ${TABLE}.CATEGORY="Bote bocan" then "A09"
-            when ${TABLE}.CATEGORY="Tambores" then "A10"
-            when ${TABLE}.CATEGORY="Tambores Conicos" then "A11"
-            when ${TABLE}.CATEGORY="Cubeta de Lamina" then "A12"
-            when ${TABLE}.CATEGORY="Alcoholero" then "A13"
-            when ${TABLE}.CATEGORY="Bote de Pintura" then "A14"
-            when ${TABLE}.CATEGORY="Bote de Aerosol" then "A15"
-            when ${TABLE}.CATEGORY="Línea General" then "A16"
-            when ${TABLE}.CATEGORY="Bote Sanitario" then "A17"
-            when ${TABLE}.CATEGORY="Bote Atún" then "A18"
-            when ${TABLE}.CATEGORY="Bote Oval" then "A19"
-            when ${TABLE}.CATEGORY="Tapa Easy Open" then "A20"
-            when ${TABLE}.CATEGORY="Fondo Charola y Bafle" then "A21"
-            when ${TABLE}.CATEGORY="Tapa Twiss Off" then "A22"
-            when ${TABLE}.CATEGORY="Varios" then "A23"
-            when ${TABLE}.CATEGORY="Fish." then "A24"
-            when ${TABLE}.CATEGORY="PeelOff." then "A25"
+                  when ${TABLE}.CATEGORY="CP 19L" then "A01"
+                  when ${TABLE}.CATEGORY="CP 15L" then "A02"
+                  when ${TABLE}.CATEGORY="CP 10L" then "A03"
+                  when ${TABLE}.CATEGORY="CP 08L" then "A04"
+                  when ${TABLE}.CATEGORY="CP 04L" then "A05"
+                  when ${TABLE}.CATEGORY="Cubeta de Plastico" then "A06"
+                  when ${TABLE}.CATEGORY="Porron de Plastico" then "A07"
+                  when ${TABLE}.CATEGORY="Tambores de Plastico" then "A08"
+                  when ${TABLE}.CATEGORY="Bote bocan" then "A09"
+                  when ${TABLE}.CATEGORY="Tambores" then "A10"
+                  when ${TABLE}.CATEGORY="Tambores Conicos" then "A11"
+                  when ${TABLE}.CATEGORY="Cubeta de Lamina" then "A12"
+                  when ${TABLE}.CATEGORY="Alcoholero" then "A13"
+                  when ${TABLE}.CATEGORY="Bote de Pintura" then "A14"
+                  when ${TABLE}.CATEGORY="Bote de Aerosol" then "A15"
+                  when ${TABLE}.CATEGORY="Línea General" then "A16"
+                  when ${TABLE}.CATEGORY="Bote Sanitario" then "A17"
+                  when ${TABLE}.CATEGORY="Bote Atún" then "A18"
+                  when ${TABLE}.CATEGORY="Bote Oval" then "A19"
+                  when ${TABLE}.CATEGORY="Tapa Easy Open" then "A20"
+                  when ${TABLE}.CATEGORY="Fondo Charola y Bafle" then "A21"
+                  when ${TABLE}.CATEGORY="Tapa Twiss Off" then "A22"
+                  when ${TABLE}.CATEGORY="Varios" then "A23"
+                  when ${TABLE}.CATEGORY="Fish." then "A24"
+                  when ${TABLE}.CATEGORY="PeelOff." then "A25"
 
       when ${TABLE}.CATEGORY="Coating and Printing Services" then "A26"
       when ${TABLE}.CATEGORY="Miscelaneous" then "A27"
@@ -400,10 +499,12 @@ view: rpt_ventas {
       when ${TABLE}.CATEGORY="Bote Pint. Envases Ohio" then "A39"
       when ${TABLE}.CATEGORY="Cub.Lam. Envases Ohio" then "A40"
 
+      when ${TABLE}.CATEGORY="Food" then "B01"
+      when ${TABLE}.CATEGORY="Fish" then "B02"
+      when ${TABLE}.CATEGORY="Print and Coating Services" then "B03"
 
 
-
-      when ${TABLE}.CATEGORY="TOTAL MONEDA ORIGEN" then "Z1"
+      when ${TABLE}.CATEGORY LIKE "TOTAL MONEDA ORIGEN%" then "Z1"
       when ${TABLE}.CATEGORY="TOTAL MXN" then "Z2" else "z"  end ;;
   }
 
@@ -412,21 +513,21 @@ view: rpt_ventas {
     type: string
     sql: case
 
-            when ${TABLE}.CATEGORY="Mediapack" then "a01"
-            when ${TABLE}.CATEGORY="Catering" then "a02"
-            when ${TABLE}.CATEGORY="Fish" then "a03"
-            when ${TABLE}.CATEGORY="Ham" then "a04"
-            when ${TABLE}.CATEGORY="Luncheon" then "a05"
-            when ${TABLE}.CATEGORY="Pullman" then "a06"
-            when ${TABLE}.CATEGORY="Roundfood" then "a07"
-            when ${TABLE}.CATEGORY="Beverage" then "a08"
-            when ${TABLE}.CATEGORY="Dekopak" then "a09"
-            when ${TABLE}.CATEGORY="Feta" then "a10"
-            when ${TABLE}.CATEGORY="Milkpowder" then "a11"
-            when ${TABLE}.CATEGORY="PockIt" then "a12"
-            when ${TABLE}.CATEGORY="PeelOff" then "a13"
-            when ${TABLE}.CATEGORY="Super" then "a14"
-            when ${TABLE}.CATEGORY="Other" then "a15"
+                  when ${TABLE}.CATEGORY="Mediapack" then "a01"
+                  when ${TABLE}.CATEGORY="Catering" then "a02"
+                  when ${TABLE}.CATEGORY="Fish" then "a03"
+                  when ${TABLE}.CATEGORY="Ham" then "a04"
+                  when ${TABLE}.CATEGORY="Luncheon" then "a05"
+                  when ${TABLE}.CATEGORY="Pullman" then "a06"
+                  when ${TABLE}.CATEGORY="Roundfood" then "a07"
+                  when ${TABLE}.CATEGORY="Beverage" then "a08"
+                  when ${TABLE}.CATEGORY="Dekopak" then "a09"
+                  when ${TABLE}.CATEGORY="Feta" then "a10"
+                  when ${TABLE}.CATEGORY="Milkpowder" then "a11"
+                  when ${TABLE}.CATEGORY="PockIt" then "a12"
+                  when ${TABLE}.CATEGORY="PeelOff" then "a13"
+                  when ${TABLE}.CATEGORY="Super" then "a14"
+                  when ${TABLE}.CATEGORY="Other" then "a15"
 
 
 
@@ -597,7 +698,7 @@ view: rpt_ventas {
         label: "Alemania"
       }
       when: {
-        sql: ${TABLE}.SALESORG = "NLF1" ;;
+        sql: ${TABLE}.SALESORG in ("NLF1", "2000") ;;
         label: "Holanda"
       }
       when: {
@@ -619,6 +720,10 @@ view: rpt_ventas {
       when: {
         sql: ${TABLE}.SALESORG in ( "USF1") ;;
         label: "USA"
+      }
+      when: {
+        sql: ${TABLE}.SALESORG in ( "1000") ;;
+        label: "España"
       }
 
       else: "Otros"
@@ -693,6 +798,17 @@ view: rpt_ventas {
               WHEN (${NATIONAL_QTY_MTD}/NULLIF(${NATIONAL_QTY_MTDY},0))-1 = 0 THEN 0 ELSE (${NATIONAL_QTY_MTD}/NULLIF(${NATIONAL_QTY_MTDY},0))-1  END *100;;
     value_format: "0.00\%"
     drill_fields: [ Client,NATIONAL_QTY_MTD,NATIONAL_QTY_MTDY,VS_QTY]
+
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
   }
 
 
@@ -774,6 +890,18 @@ view: rpt_ventas {
 
     drill_fields: [ Client,NATIONAL_QTY_MTD,BUD_NATIONAL_QTY_MTD,VS_BUD_QTY]
 
+
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
+
   }
 
 
@@ -826,6 +954,17 @@ view: rpt_ventas {
               WHEN (${NATIONAL_AMOUNT_MTD}/NULLIF(${NATIONAL_AMOUNT_MTD_YEAR_ANT},0))-1 = 0 THEN 0 ELSE (${NATIONAL_AMOUNT_MTD}/NULLIF(${NATIONAL_AMOUNT_MTD_YEAR_ANT},0)) -1 END * 100;;
     value_format: "0.00\%"
     drill_fields: [ Client,NATIONAL_AMOUNT_MTD,NATIONAL_AMOUNT_MTD_YEAR_ANT,VS_VAL]
+
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
   }
 
   measure: NATIONAL_BUD_AMOUNT_MTD_MIL {
@@ -915,6 +1054,18 @@ view: rpt_ventas {
 
     drill_fields: [ Client,NATIONAL_AMOUNT_MTD,Z_BUD_NATIONAL_AMOUNT,VS_BUD_VAL]
 
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
+
+
     # IF([#NATIONAL AMOUNT MTD] >0 and([#Z_BUD  NATIONAL AMOUNT]) = 0 ,1  ,
     # IF([#NATIONAL AMOUNT MTD] = 0and ([#Z_BUD  NATIONAL AMOUNT]) >0,-1 ,
     # IF(([#NATIONAL AMOUNT MTD]  /([#Z_BUD  NATIONAL AMOUNT]))-1 = -1 ,0 ,  ([#NATIONAL AMOUNT MTD] /([#Z_BUD  NATIONAL AMOUNT]))-1)))
@@ -964,6 +1115,18 @@ view: rpt_ventas {
     value_format: "0.00\%"
 
     drill_fields: [ Client,EXPORT_QTY_MTD,EXPORT_QTY_MTD_YEAR_ANT,VS_QTY_EXP]
+
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
+
 
     #IF( [#EXPORT QTY_MTD] >0 and([#EXPORT QTY_MTD_AÑO ANT]) = 0 ,1  ,
     #IF([#EXPORT QTY_MTD] = 0and ([#EXPORT QTY_MTD_AÑO ANT]) >0,-1 ,
@@ -1045,6 +1208,18 @@ view: rpt_ventas {
 
     drill_fields: [ Client,EXPORT_QTY_MTD,BUD_EXPORT_QTY_MTD,VS_BUD_QTY_EXP]
 
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
+
+
     # IF( [#EXPORT QTY_MTD] >0 and([#BUD EXPORT QTY_MTD]) = 0 ,1  ,
     #IF([#EXPORT QTY_MTD] = 0and ([#BUD EXPORT QTY_MTD]) >0,-1 ,
     #IF(([#EXPORT QTY_MTD]  /([#BUD EXPORT QTY_MTD]))-1 = -1 ,0 ,    ([#EXPORT QTY_MTD] /([#BUD EXPORT QTY_MTD]))-1)))
@@ -1092,6 +1267,16 @@ view: rpt_ventas {
     sql: CASE WHEN ${EXPORT_AMOUNT_MTD} > 1 AND ${EXPORT_AMOUNT_MTDY} = 0 THEN 1
               WHEN ${EXPORT_AMOUNT_MTD} = 0 AND ${EXPORT_AMOUNT_MTDY} > 0 THEN -1
               WHEN (${EXPORT_AMOUNT_MTD}/NULLIF(${EXPORT_AMOUNT_MTDY},0)) -1= 0 THEN 0 ELSE (${EXPORT_AMOUNT_MTD}/NULLIF(${EXPORT_AMOUNT_MTDY},0)) -1 END *100;;
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
     value_format: "0.00\%"
     drill_fields: [ Client,EXPORT_AMOUNT_MTD,EXPORT_AMOUNT_MTDY,VS_VAL_EXP]
   }
@@ -1180,6 +1365,17 @@ view: rpt_ventas {
     #          WHEN ${EXPORT_AMOUNT_MTD} = 0 AND ${Z_BUD_EXPORT_AMOUNT} > 0 THEN -1
     #          WHEN (${EXPORT_AMOUNT_MTD} /  NULLIF (${Z_BUD_EXPORT_AMOUNT},0))-1=-1 THEN 0 ELSE (${EXPORT_AMOUNT_MTD} /  NULLIF (${Z_BUD_EXPORT_AMOUNT},0))-1
     #         END *100 ;;
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
+
     value_format: "0.00\%"
 
     drill_fields: [ Client,EXPORT_AMOUNT_MTD,Z_BUD_EXPORT_AMOUNT,VS_BUD_VAL_EXP]
@@ -1218,6 +1414,17 @@ view: rpt_ventas {
     sql: CASE WHEN ${TOTAL_QTY} > 0 AND ${TOTAL_QTY_YEAR_ANT} = 0 THEN 1
               WHEN ${TOTAL_QTY} = 0 AND ${TOTAL_QTY_YEAR_ANT} > 0 THEN -1
               WHEN (${TOTAL_QTY}/NULLIF(${TOTAL_QTY_YEAR_ANT},0))-1  = 0 THEN 0 ELSE (${TOTAL_QTY}/NULLIF(${TOTAL_QTY_YEAR_ANT},0))-1   END *100;;
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
+
     value_format: "0.00\%"
 
     drill_fields: [ Client,TOTAL_QTY,TOTAL_QTY_YEAR_ANT,_VS_YEAR_ANT_QTY_T]
@@ -1248,6 +1455,16 @@ view: rpt_ventas {
               WHEN ${TOTAL_QTY} = 0 AND ${BUD_TOTAL_QTY} > 0 THEN -1
               WHEN (${TOTAL_QTY} /  NULLIF (${BUD_TOTAL_QTY},0))-1= 0 THEN 0 ELSE (${TOTAL_QTY} /  NULLIF (${BUD_TOTAL_QTY},0))-1
              END *100 ;;
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
     value_format: "0.00\%"
 
     drill_fields: [ Client,TOTAL_QTY,BUD_TOTAL_QTY,VS_BUD_QTY_T]
@@ -1288,6 +1505,16 @@ view: rpt_ventas {
               WHEN ${TOTAL_AMOUNT} = 0 AND ${TOTAL_AMOUNT_YEAR_ANT} > 0 THEN -1
               WHEN (${TOTAL_AMOUNT} /  NULLIF (${TOTAL_AMOUNT_YEAR_ANT},0))-1 = 0 THEN 0 ELSE (${TOTAL_AMOUNT} /  NULLIF (${TOTAL_AMOUNT_YEAR_ANT},0))-1
              END *100;;
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
     value_format: "0.00\%"
 
     drill_fields: [ Client,TOTAL_AMOUNT,TOTAL_AMOUNT_YEAR_ANT,VS_YEAR_ANT_VAL_T]
@@ -1321,6 +1548,17 @@ view: rpt_ventas {
               WHEN ${TOTAL_AMOUNT} = 0 AND ${BUD_TOTAL_AMOUNT_YEAR} > 0 THEN -1
               WHEN (${TOTAL_AMOUNT} /  NULLIF (${BUD_TOTAL_AMOUNT_YEAR},0))-1=-1 THEN 0 ELSE (${TOTAL_AMOUNT} /  NULLIF (${BUD_TOTAL_AMOUNT_YEAR},0))-1
              END * 100;;
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
+
     value_format: "0.00\%"
 
     drill_fields: [ Client,TOTAL_AMOUNT,BUD_TOTAL_AMOUNT,VS_BUD_T]
@@ -1442,7 +1680,10 @@ view: rpt_ventas {
     value_format: "#,##0.00"
   }
 
-
+  dimension: concantenado {
+    type: string
+    sql:concat(${TABLE}.CATEGORY)  ,'-',  ${TABLE}.STAT_CURR) ;;
+  }
 
 
 
