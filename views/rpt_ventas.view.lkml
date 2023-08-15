@@ -49,7 +49,7 @@ view: rpt_ventas {
       ,V.UNIT_OF_WT
       ,V.STAT_CURR
       ,V.MATL_GROUP
-      ,V.BILL_QTY
+      , null BILL_QTY
       ,V.znetval *UKURS  znetval
       ,V.ZPPTOQTY
       ,V.ZPPTO
@@ -435,7 +435,8 @@ view: rpt_ventas {
                 value == 'TOTAL MONEDA ORIGEN DKK' or
                 value == 'TOTAL MONEDA ORIGEN EUR' or
                 value == 'TOTAL MONEDA ORIGEN GTQ' or
-                value == 'TOTAL MXN'
+                value == 'TOTAL MXN' or
+                value == 'TOTAL USD'
       %}
       <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
       {% else %}
