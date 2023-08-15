@@ -49,7 +49,7 @@ view: rpt_ventas {
       ,V.UNIT_OF_WT
       ,V.STAT_CURR
       ,V.MATL_GROUP
-      , null BILL_QTY
+      ,V.BILL_QTY
       ,V.znetval *UKURS  znetval
       ,V.ZPPTOQTY
       ,V.ZPPTO
