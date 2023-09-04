@@ -1,4 +1,4 @@
-view: rpt_ventasYTD {
+view: rpt_ventasytd {
   derived_table: {
     sql:
     SELECT

@@ -34,7 +34,7 @@ explore: rpt_ventas {
 
 
 }
-explore: rpt_ventasYTD {}
+explore: rpt_ventasytd {}
 explore: calendar {}
 
 
