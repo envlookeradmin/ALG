@@ -1,197 +1,177 @@
-view: rpt_ventasytd {
+view: rpt_ventasYTD {
   derived_table: {
-  sql:
+    sql:
     SELECT
-    V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, V.znetval,
+  V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, V.znetval,
     V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
     V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
     V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
     CASE WHEN V.CATEGORY = 'TOTAL MONEDA ORIGEN' THEN V.CATEGORY || ' ' || V.STAT_CURR ELSE V.CATEGORY END CATEGORY,
     V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
     c.QUARTER, c.YEAR, 0 UKURS, '' FCURR,
-    DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
+  DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
     r.PAIS || ' (' || V.STAT_CURR || ')' CATEGORY2,
     CASE WHEN (V.CATEGORY = 'TOTAL MONEDA ORIGEN') OR (V.SALESORG IN ('MXF1', 'MXFC') and V.CATEGORY NOT IN ('Cubeta de Plastico')) THEN 1 ELSE 0 END SUMMARY_FLAG
-    FROM
-    envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
-    envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
+FROM
+  envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
+  envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
     envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
-    WHERE CATEGORY NOT IN ('TOTAL MXN')
+WHERE CATEGORY NOT IN ('TOTAL MXN')
 
-    UNION ALL
+      UNION ALL
 
-    --CARGA TOTAL MXN DE MÉXICO
-    SELECT
-    V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, V.znetval,
-    V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
-    V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
-    V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
-    V.CATEGORY, V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
-    c.QUARTER, c.YEAR, 0 UKURS,'' TCURR,
-    DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
-    'TOTAL MXN' CATEGORY2,
-    1 SUMMARY_FLAG
-    FROM
-    envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
-    envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY
-    WHERE
-    CATEGORY in ('TOTAL MXN') and SALESORG in ( "MXF1","MXFC")
+      --CARGA TOTAL MXN DE MÉXICO
+      SELECT
+      V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, V.znetval,
+      V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
+      V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
+      V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
+      V.CATEGORY, V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
+      c.QUARTER, c.YEAR, 0 UKURS,'' TCURR,
+      DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
+      'TOTAL MXN' CATEGORY2,
+      1 SUMMARY_FLAG
+      FROM
+      envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY
+      WHERE
+      CATEGORY in ('TOTAL MXN') and SALESORG in ( "MXF1","MXFC")
 
-    UNION ALL
+      UNION ALL
 
-    --CARGA TOTAL MXN DE MÉXICO
-    SELECT
-    V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, V.znetval,
-    V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
-    V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
-    V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
-    'TOTAL_MXN' CATEGORY, V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
-    c.QUARTER, c.YEAR, 0 UKURS,'' TCURR,
-    DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
-    'TOTAL_MXN' CATEGORY2,
-    1 SUMMARY_FLAG
-    FROM
-    envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
-    envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY
-    WHERE
-    CATEGORY in ('TOTAL MXN') and SALESORG in ( "MXF1","MXFC")
+      --CARGA TOTAL MXN DE TODO LO QUE NO ES MXN
+      SELECT
+      V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, V.znetval *UKURS  znetval,
+      V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
+      V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
+      V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
+      'TOTAL MXN' CATEGORY,
+      V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
+      c.QUARTER, c.YEAR, mo.UKURS, mo.FCURR,
+      DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
+      'TOTAL MXN' CATEGORY2,
+      1 SUMMARY_FLAG
+      FROM
+      envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
+      (
+      SELECT
+      CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
+      TRIM(FCURR) FCURR, TRIM(TCURR) TCURR,
+      CASE WHEN UKURS < 0 then 1 / (UKURS * -1) ELSE UKURS END UKURS, c.date
+      FROM
+      envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR left join
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY=CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+      WHERE
+      TRIM(FCURR) IN ('USD', 'EUR', 'DKK', 'GTQ', 'CAD') AND
+      TRIM(TCURR) = 'MXN' AND TRIM(KURST) = 'M' AND
+      c.DATE= CAST({% date_start date_filter %} AS DATE)
+      ) mo on   v.STAT_CURR = mo.FCURR
+      WHERE
+      CATEGORY='TOTAL MONEDA ORIGEN'
 
+      UNION ALL
 
-    UNION ALL
+      --CARGA TOTAL USD
 
-    --CARGA TOTAL MXN DE TODO LO QUE NO ES MXN
-    SELECT
-    V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, V.znetval *UKURS  znetval,
-    V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
-    V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
-    V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
-    'TOTAL MXN' CATEGORY,
-    V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
-    c.QUARTER, c.YEAR, mo.UKURS, mo.FCURR,
-    DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
-    'TOTAL MXN' CATEGORY2,
-    1 SUMMARY_FLAG
-    FROM
-    envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
-    envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
-    (
-    SELECT
-    CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
-    TRIM(FCURR) FCURR, TRIM(TCURR) TCURR,
-    CASE WHEN UKURS < 0 then 1 / (UKURS * -1) ELSE UKURS END UKURS, c.date
-    FROM
-    envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR left join
-    envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY=CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
-    WHERE
-    TRIM(FCURR) IN ('USD', 'EUR', 'DKK', 'GTQ') AND
-    TRIM(TCURR) = 'MXN' AND TRIM(KURST) = 'M' AND
-    c.DATE= CAST({% date_start date_filter %} AS DATE)
-    ) mo on   v.STAT_CURR = mo.FCURR
-    WHERE
-    CATEGORY='TOTAL MONEDA ORIGEN'
+      SELECT
+      V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, CASE WHEN mo.UKURS IS NULL THEN V.znetval ELSE V.znetval *mo.UKURS END znetval,
+      V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
+      V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
+      V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
+      'TOTAL USD' CATEGORY,
 
-    UNION ALL
+      V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
+      c.QUARTER, c.YEAR, mo.UKURS, mo.FCURR,
+      DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
+      'TOTAL USD' CATEGORY2,
+      1 SUMMARY_FLAG
+      FROM
+      envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
+      (
+      SELECT
+      CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
+      TRIM(FCURR) FCURR, TRIM(TCURR) TCURR,
+      CASE WHEN UKURS < 0 then 1 / (UKURS * -1) ELSE UKURS END UKURS, c.date
+      FROM
+      envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR left join
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY=CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+      WHERE
+      TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ', 'CAD') AND
+      TRIM(TCURR) = 'USD' AND TRIM(KURST) = 'M' AND
+      c.DATE= CAST({% date_start date_filter %} AS DATE)
+      ) mo on   v.STAT_CURR=mo.FCURR
+      WHERE CATEGORY='TOTAL MONEDA ORIGEN' or (V.SALESORG IN ('MXF1', 'MXFC') AND V.CATEGORY = 'TOTAL MXN')
 
-    --CARGA TOTAL USD
+      UNION ALL
 
-    SELECT
-    V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, CASE WHEN mo.UKURS IS NULL THEN V.znetval ELSE V.znetval *mo.UKURS END znetval,
-    V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
-    V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
-    V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
-    'TOTAL USD' CATEGORY,
+      --CARGA SUBTOTAL AMERICA EN USD
+      SELECT
+      V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, CASE WHEN mo.UKURS IS NULL THEN V.znetval ELSE V.znetval *mo.UKURS END znetval,
+      V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
+      V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
+      V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
+      'SUB America' CATEGORY,
 
-    V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
-    c.QUARTER, c.YEAR, mo.UKURS, mo.FCURR,
-    DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
-    'TOTAL USD' CATEGORY2,
-    1 SUMMARY_FLAG
-    FROM
-    envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
-    envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
-    (
-    SELECT
-    CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
-    TRIM(FCURR) FCURR, TRIM(TCURR) TCURR,
-    CASE WHEN UKURS < 0 then 1 / (UKURS * -1) ELSE UKURS END UKURS, c.date
-    FROM
-    envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR left join
-    envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY=CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
-    WHERE
-    TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ') AND
-    TRIM(TCURR) = 'USD' AND TRIM(KURST) = 'M' AND
-    c.DATE= CAST({% date_start date_filter %} AS DATE)
-    ) mo on   v.STAT_CURR=mo.FCURR
-    WHERE CATEGORY='TOTAL MONEDA ORIGEN' or (V.SALESORG IN ('MXF1', 'MXFC') AND V.CATEGORY = 'TOTAL MXN')
+      V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
+      c.QUARTER, c.YEAR, mo.UKURS, mo.FCURR,
+      DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
+      'SUB America (USD)' CATEGORY2,
+      2 SUMMARY_FLAG
+      FROM
+      envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
+      envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION LEFT JOIN
+      (
+      SELECT
+      CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
+      TRIM(FCURR) FCURR, TRIM(TCURR) TCURR,
+      CASE WHEN UKURS < 0 then 1 / (UKURS * -1) ELSE UKURS END UKURS, c.date
+      FROM
+      envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR left join
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY=CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+      WHERE
+      TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ', 'CAD') AND
+      TRIM(TCURR) = 'USD' AND TRIM(KURST) = 'M' AND
+      c.DATE= CAST({% date_start date_filter %} AS DATE)
+      ) mo on   v.STAT_CURR=mo.FCURR
+      WHERE (CATEGORY='TOTAL MONEDA ORIGEN' or (V.SALESORG IN ('MXF1', 'MXFC') AND V.CATEGORY = 'TOTAL MXN')) AND r.REGION = 'America'
 
-    UNION ALL
+      UNION ALL
 
-    --CARGA SUBTOTAL AMERICA EN USD
-    SELECT
-    V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, CASE WHEN mo.UKURS IS NULL THEN V.znetval ELSE V.znetval *mo.UKURS END znetval,
-    V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
-    V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
-    V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
-    'SUB America' CATEGORY,
+      --CARGA SUBTOTAL EUROPA EN EUR
+      SELECT
+      V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, CASE WHEN mo.UKURS IS NULL THEN V.znetval ELSE V.znetval *mo.UKURS END znetval,
+      V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
+      V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
+      V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
+      'SUB Europa' CATEGORY,
 
-    V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
-    c.QUARTER, c.YEAR, mo.UKURS, mo.FCURR,
-    DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
-    'SUB America (USD)' CATEGORY2,
-    2 SUMMARY_FLAG
-    FROM
-    envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
-    envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
-    envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION LEFT JOIN
-    (
-    SELECT
-    CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
-    TRIM(FCURR) FCURR, TRIM(TCURR) TCURR,
-    CASE WHEN UKURS < 0 then 1 / (UKURS * -1) ELSE UKURS END UKURS, c.date
-    FROM
-    envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR left join
-    envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY=CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
-    WHERE
-    TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ') AND
-    TRIM(TCURR) = 'USD' AND TRIM(KURST) = 'M' AND
-    c.DATE= CAST({% date_start date_filter %} AS DATE)
-    ) mo on   v.STAT_CURR=mo.FCURR
-    WHERE (CATEGORY='TOTAL MONEDA ORIGEN' or (V.SALESORG IN ('MXF1', 'MXFC') AND V.CATEGORY = 'TOTAL MXN')) AND r.REGION = 'America'
-
-    UNION ALL
-
-    --CARGA SUBTOTAL EUROPA EN EUR
-    SELECT
-    V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, CASE WHEN mo.UKURS IS NULL THEN V.znetval ELSE V.znetval *mo.UKURS END znetval,
-    V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
-    V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
-    V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
-    'SUB Europa' CATEGORY,
-
-    V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
-    c.QUARTER, c.YEAR, mo.UKURS, mo.FCURR,
-    DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
-    'SUB Europa (EUR)' CATEGORY2,
-    2 SUMMARY_FLAG
-    FROM
-    envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
-    envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
-    envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION LEFT JOIN
-    (
-    SELECT
-    CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
-    TRIM(FCURR) FCURR, TRIM(TCURR) TCURR,
-    CASE WHEN UKURS < 0 then 1 / (UKURS * -1) ELSE UKURS END UKURS, c.date
-    FROM
-    envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR left join
-    envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY=CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
-    WHERE
-    TRIM(FCURR) IN ('MXN', 'USD', 'DKK', 'GTQ') AND
-    TRIM(TCURR) = 'EUR' AND TRIM(KURST) = 'M' AND
-    c.DATE= CAST({% date_start date_filter %} AS DATE)
-    ) mo on   v.STAT_CURR=mo.FCURR
-    WHERE CATEGORY='TOTAL MONEDA ORIGEN' AND r.REGION = 'Europa'
-    ;;
+      V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
+      c.QUARTER, c.YEAR, mo.UKURS, mo.FCURR,
+      DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
+      'SUB Europa (EUR)' CATEGORY2,
+      2 SUMMARY_FLAG
+      FROM
+      envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
+      envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION LEFT JOIN
+      (
+      SELECT
+      CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
+      TRIM(FCURR) FCURR, TRIM(TCURR) TCURR,
+      CASE WHEN UKURS < 0 then 1 / (UKURS * -1) ELSE UKURS END UKURS, c.date
+      FROM
+      envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR left join
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY=CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+      WHERE
+      TRIM(FCURR) IN ('MXN', 'USD', 'DKK', 'GTQ', 'CAD') AND
+      TRIM(TCURR) = 'EUR' AND TRIM(KURST) = 'M' AND
+      c.DATE= CAST({% date_start date_filter %} AS DATE)
+      ) mo on   v.STAT_CURR=mo.FCURR
+      WHERE CATEGORY='TOTAL MONEDA ORIGEN' AND r.REGION = 'Europa'
+      ;;
   }
 
   dimension_group: created {
@@ -262,7 +242,7 @@ view: rpt_ventasytd {
     case
       when ${TABLE}.CATEGORY2 = "Mexico (MXN)" then "A01"
       when ${TABLE}.CATEGORY2 = "USA (USD)" then "A02"
-      when ${TABLE}.CATEGORY2 = "Canada (USD)" then "A03"
+      when ${TABLE}.CATEGORY2 = "Canada (CAD)" then "A03"
       when ${TABLE}.CATEGORY2 = "Guatemala (GTQ)" then "A04"
       when ${TABLE}.CATEGORY2 = "SUB America (USD)" then "AZ1"
       when ${TABLE}.CATEGORY2 = "Dinamarca (DKK)" then "E01"
@@ -416,8 +396,8 @@ view: rpt_ventasytd {
                 value == 'TOTAL MONEDA ORIGEN DKK' or
                 value == 'TOTAL MONEDA ORIGEN EUR' or
                 value == 'TOTAL MONEDA ORIGEN GTQ' or
+                value == 'TOTAL MONEDA ORIGEN CAD' or
                 value == 'TOTAL MXN' or
-                value == 'TOTAL_MXN' or
                 value == 'TOTAL USD'
       %}
       <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
@@ -475,6 +455,9 @@ view: rpt_ventasytd {
 
       when ${TABLE}.CATEGORY="Bote Pint. Envases Ohio" then "A39"
       when ${TABLE}.CATEGORY="Cub.Lam. Envases Ohio" then "A40"
+
+      when ${TABLE}.CATEGORY="Bote Sanitario CA" then "A41"
+      when ${TABLE}.CATEGORY="Tapa Easy Open CA" then "A42"
 
       when ${TABLE}.CATEGORY="Food" then "B01"
       when ${TABLE}.CATEGORY="Fish" then "B02"
@@ -660,7 +643,7 @@ view: rpt_ventasytd {
         label: "Holanda"
       }
       when: {
-        sql: ${TABLE}.SALESORG = "3100" ;;
+        sql: ${TABLE}.SALESORG = "3600" ;;
         label: "Canadá"
       }
       when: {
@@ -731,7 +714,7 @@ view: rpt_ventasytd {
   measure: NATIONAL_QTY_MTD {
     label: "NATIONAL QTY YTD"
     type: sum
-    sql: CASE WHEN (${TABLE}.CATEGORY = 'TOTAL_MXN') OR (${TABLE}.CATEGORY = 'TOTAL MXN' AND ${TABLE}.SALESORG NOT IN ('MXF1','MXFC')) THEN NULL ELSE
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
       ${bill_qty}/1000 END;;
 
     filters: {
@@ -742,7 +725,7 @@ view: rpt_ventasytd {
     filters: [distr_chan: "10"]
     filters: [version: "000"]
 
-    drill_fields: [ Client,NATIONAL_QTY_MTD]
+    drill_fields: [Client, NATIONAL_QTY_MTD]
 
     value_format: "#,##0"
   }
@@ -750,7 +733,7 @@ view: rpt_ventasytd {
   measure: NATIONAL_QTY_MTDY {
     label: "NATIONAL QTY_YTD AÑO ANT"
     type: sum
-    sql: CASE WHEN (${TABLE}.CATEGORY = 'TOTAL_MXN') OR (${TABLE}.CATEGORY = 'TOTAL MXN' AND ${TABLE}.SALESORG NOT IN ('MXF1','MXFC')) THEN NULL ELSE
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
       ${bill_qty}/1000 END;;
 
     filters: {
@@ -790,7 +773,7 @@ view: rpt_ventasytd {
   measure: NATIONAL_BUD_QTY_MTD {
     label: "NATIONAL BUD QTY YTD"
     type: sum
-    sql: CASE WHEN (${TABLE}.CATEGORY = 'TOTAL_MXN') OR (${TABLE}.CATEGORY = 'TOTAL MXN' AND ${TABLE}.SALESORG NOT IN ('MXF1','MXFC')) THEN NULL ELSE
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
       ${bill_qty}/1000 END;;
 
     filters: {
@@ -832,7 +815,7 @@ view: rpt_ventasytd {
 
 
     type: sum
-    sql: CASE WHEN (${TABLE}.CATEGORY = 'TOTAL_MXN') OR (${TABLE}.CATEGORY = 'TOTAL MXN' AND ${TABLE}.SALESORG NOT IN ('MXF1','MXFC')) THEN NULL ELSE
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
       ${bill_qty}/1000 END ;;
 
     filters: {
@@ -1055,7 +1038,7 @@ view: rpt_ventasytd {
   measure: EXPORT_QTY_MTD {
     label: "EXPORT QTY YTD"
     type: sum
-    sql: CASE WHEN (${TABLE}.CATEGORY = 'TOTAL_MXN') OR (${TABLE}.CATEGORY = 'TOTAL MXN' AND ${TABLE}.SALESORG NOT IN ('MXF1','MXFC')) THEN NULL ELSE
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
       ${bill_qty}/1000 END;;
     filters: [distr_chan: "20"]
     filters: [version: "000"]
@@ -1071,7 +1054,7 @@ view: rpt_ventasytd {
   measure: EXPORT_QTY_MTD_YEAR_ANT {
     label: "EXPORT QTY_YTD AÑO ANT"
     type: sum
-    sql: CASE WHEN (${TABLE}.CATEGORY = 'TOTAL_MXN') OR (${TABLE}.CATEGORY = 'TOTAL MXN' AND ${TABLE}.SALESORG NOT IN ('MXF1','MXFC')) THEN NULL ELSE
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
       ${bill_qty}/1000 END;;
     filters: [distr_chan: "20"]
     filters: [version: "000"]
@@ -1117,7 +1100,7 @@ view: rpt_ventasytd {
   measure: EXPORT_BUD_QTY_MTD {
     label: "EXPORT BUD QTY YTD"
     type: sum
-    sql: CASE WHEN (${TABLE}.CATEGORY = 'TOTAL_MXN') OR (${TABLE}.CATEGORY = 'TOTAL MXN' AND ${TABLE}.SALESORG NOT IN ('MXF1','MXFC')) THEN NULL ELSE
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
       ${bill_qty}/1000 END;;
     filters: [distr_chan: "20"]
     filters: [version: "A00"]
@@ -1156,7 +1139,7 @@ view: rpt_ventasytd {
     label: "BUD EXPORT QTY YTD"
 
     type: sum
-    sql: CASE WHEN (${TABLE}.CATEGORY = 'TOTAL_MXN') OR (${TABLE}.CATEGORY = 'TOTAL MXN' AND ${TABLE}.SALESORG NOT IN ('MXF1','MXFC')) THEN NULL ELSE
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
       ${bill_qty}/1000 END;;
     filters: [distr_chan: "20"]
     filters: [version: "A00"]
