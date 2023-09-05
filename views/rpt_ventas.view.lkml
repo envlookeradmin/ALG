@@ -197,6 +197,7 @@ WHERE CATEGORY='TOTAL MONEDA ORIGEN' AND r.REGION = 'Europa'
     description: "Use this date filter in combination with the timeframes dimension for dynamic date filtering"
     type: date
     # default_value: "6 weeks"
+    # este es un filtro de fecha
 
   }
 
