@@ -455,6 +455,8 @@ WHERE CATEGORY NOT IN ('TOTAL MXN')
 
       when ${TABLE}.CATEGORY="Bote Pint. Envases Ohio" then "A39"
       when ${TABLE}.CATEGORY="Cub.Lam. Envases Ohio" then "A40"
+      when ${TABLE}.CATEGORY="F-style" then "A43"
+      when ${TABLE}.CATEGORY="Varios." then "A44"
 
       when ${TABLE}.CATEGORY="Bote Sanitario CA" then "A41"
       when ${TABLE}.CATEGORY="Tapa Easy Open CA" then "A42"
