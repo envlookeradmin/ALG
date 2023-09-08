@@ -1,74 +1,181 @@
 view: rpt_ventasytd {
   derived_table: {
-    sql: SELECT v.*,CAST(c.DATE AS TIMESTAMP) Fecha,c.QUARTER,c.YEAR,0 UKURS,'' FCURR, DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-      LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY  WHERE CATEGORY NOT IN ('TOTAL MXN')
+    sql:
+    SELECT
+  V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, V.znetval,
+    V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
+    V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
+    V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
+    CASE WHEN V.CATEGORY = 'TOTAL MONEDA ORIGEN' THEN V.CATEGORY || ' ' || V.STAT_CURR ELSE V.CATEGORY END CATEGORY,
+    V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
+    c.QUARTER, c.YEAR, 0 UKURS, '' FCURR,
+  DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
+    r.PAIS || ' (' || V.STAT_CURR || ')' CATEGORY2,
+    CASE WHEN (V.CATEGORY = 'TOTAL MONEDA ORIGEN') OR (V.SALESORG IN ('MXF1', 'MXFC') and V.CATEGORY NOT IN ('Cubeta de Plastico')) THEN 1 ELSE 0 END SUMMARY_FLAG
+FROM
+  envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
+  envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
+    envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
+WHERE CATEGORY NOT IN ('TOTAL MXN')
 
       UNION ALL
 
-      SELECT V.NET_WGT_DL
-      ,V.UNIT_OF_WT
-      ,V.STAT_CURR
-      ,V.MATL_GROUP
-      ,V.BILL_QTY
-      ,V.znetval *UKURS  znetval
-      ,V.ZPPTOQTY
-      ,V.ZPPTO
-      ,V.ZPRICEVAL
-      ,V.LEN
-      ,V.UNIT_DIM
-      ,V.CURRENCY
-      ,V.UNIT
-      ,V.SOLD_TO
-      ,V.CUST_GROUP
-      ,V.MATL_TYPE
-      ,V.PRODH1
-      ,V.SIZE_DIM
-      ,V.EXTMATLGRP
-      ,V.COUNTRY
-      ,V.SALES_GRP
-      ,V.SALES_OFF
-      ,V.PRODH2
-      ,V.PRODH3
-      ,V.PRODH4
-      ,V.PROD_HIER
-      ,V.ZIOSD00A
-      ,V.VERSION
-      ,V.PLANT
-      ,V.MATERIAL
-      ,V.DISTR_CHAN
-      ,V.DIVISION
-      ,V.SALESORG
-      ,V.CALDAY
-      ,V.LOC_CURRCY
-      ,V.BASE_UOM
-      ,'TOTAL MXN' CATEGORY
-      ,V.SUBCATEGORY
-      ,V.CLIENT
-      ,CAST(c.DATE AS TIMESTAMP) Fecha,c.QUARTER,c.YEAR
-      ,mo.UKURS
-      ,mo.FCURR,
-      DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-      LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY
-      LEFT JOIN (
+      --CARGA TOTAL MXN DE MÉXICO
+      SELECT
+      V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, V.znetval,
+      V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
+      V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
+      V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
+      V.CATEGORY, V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
+      c.QUARTER, c.YEAR, 0 UKURS,'' TCURR,
+      DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
+      'TOTAL MXN' CATEGORY2,
+      1 SUMMARY_FLAG
+      FROM
+      envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY
+      WHERE
+      CATEGORY in ('TOTAL MXN') and SALESORG in ( "MXF1","MXFC")
 
-      SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY, TRIM(FCURR) FCURR, TRIM(TCURR) TCURR, UKURS,c.date FROM `envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR`
-      left join envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY=CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
-      WHERE TRIM(FCURR) IN ('USD', 'EUR', 'DKK', 'GTQ') AND TRIM(TCURR) = 'MXN' AND TRIM(KURST) = 'M'  AND    c.DATE= CAST({% date_start date_filter %} AS DATE)
+      UNION ALL
 
+      --CARGA TOTAL MXN DE TODO LO QUE NO ES MXN
+      SELECT
+      V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, V.znetval *UKURS  znetval,
+      V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
+      V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
+      V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
+      'TOTAL MXN' CATEGORY,
+      V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
+      c.QUARTER, c.YEAR, mo.UKURS, mo.FCURR,
+      DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
+      'TOTAL MXN' CATEGORY2,
+      1 SUMMARY_FLAG
+      FROM
+      envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
+      (
+      SELECT
+      CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
+      TRIM(FCURR) FCURR, TRIM(TCURR) TCURR,
+      CASE WHEN UKURS < 0 then 1 / (UKURS * -1) ELSE UKURS END UKURS, c.date
+      FROM
+      envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR left join
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY=CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+      WHERE
+      TRIM(FCURR) IN ('USD', 'EUR', 'DKK', 'GTQ', 'CAD') AND
+      TRIM(TCURR) = 'MXN' AND TRIM(KURST) = 'M' AND
+      c.DATE= CAST({% date_start date_filter %} AS DATE)
+      ) mo on   v.STAT_CURR = mo.FCURR
+      WHERE
+      CATEGORY='TOTAL MONEDA ORIGEN'
+
+      UNION ALL
+
+      --CARGA TOTAL USD
+
+      SELECT
+      V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, CASE WHEN mo.UKURS IS NULL THEN V.znetval ELSE V.znetval *mo.UKURS END znetval,
+      V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
+      V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
+      V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
+      'TOTAL USD' CATEGORY,
+
+      V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
+      c.QUARTER, c.YEAR, mo.UKURS, mo.FCURR,
+      DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
+      'TOTAL USD' CATEGORY2,
+      1 SUMMARY_FLAG
+      FROM
+      envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
+      (
+      SELECT
+      CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
+      TRIM(FCURR) FCURR, TRIM(TCURR) TCURR,
+      CASE WHEN UKURS < 0 then 1 / (UKURS * -1) ELSE UKURS END UKURS, c.date
+      FROM
+      envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR left join
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY=CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+      WHERE
+      TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ', 'CAD') AND
+      TRIM(TCURR) = 'USD' AND TRIM(KURST) = 'M' AND
+      c.DATE= CAST({% date_start date_filter %} AS DATE)
       ) mo on   v.STAT_CURR=mo.FCURR
-      WHERE CATEGORY='TOTAL MONEDA ORIGEN'
+      WHERE CATEGORY='TOTAL MONEDA ORIGEN' or (V.SALESORG IN ('MXF1', 'MXFC') AND V.CATEGORY = 'TOTAL MXN')
 
-      union all
+      UNION ALL
 
-      SELECT v.*,CAST(c.DATE AS TIMESTAMP) Fecha,c.QUARTER,c.YEAR,0 UKURS,'' TCURR, DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-      LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY  WHERE CATEGORY in ('TOTAL MXN') and SALESORG in ( "MXF1","MXFC")
+      --CARGA SUBTOTAL AMERICA EN USD
+      SELECT
+      V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, CASE WHEN mo.UKURS IS NULL THEN V.znetval ELSE V.znetval *mo.UKURS END znetval,
+      V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
+      V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
+      V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
+      'SUB America' CATEGORY,
+
+      V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
+      c.QUARTER, c.YEAR, mo.UKURS, mo.FCURR,
+      DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
+      'SUB America (USD)' CATEGORY2,
+      2 SUMMARY_FLAG
+      FROM
+      envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
+      envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION LEFT JOIN
+      (
+      SELECT
+      CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
+      TRIM(FCURR) FCURR, TRIM(TCURR) TCURR,
+      CASE WHEN UKURS < 0 then 1 / (UKURS * -1) ELSE UKURS END UKURS, c.date
+      FROM
+      envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR left join
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY=CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+      WHERE
+      TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ', 'CAD') AND
+      TRIM(TCURR) = 'USD' AND TRIM(KURST) = 'M' AND
+      c.DATE= CAST({% date_start date_filter %} AS DATE)
+      ) mo on   v.STAT_CURR=mo.FCURR
+      WHERE (CATEGORY='TOTAL MONEDA ORIGEN' or (V.SALESORG IN ('MXF1', 'MXFC') AND V.CATEGORY = 'TOTAL MXN')) AND r.REGION = 'America'
+
+      UNION ALL
+
+      --CARGA SUBTOTAL EUROPA EN EUR
+      SELECT
+      V.STAT_CURR, V.MATL_GROUP, V.BILL_QTY, CASE WHEN mo.UKURS IS NULL THEN V.znetval ELSE V.znetval *mo.UKURS END znetval,
+      V.SOLD_TO, V.PRODH1, V.SALES_GRP, V.SALES_OFF,
+      V.ZIOSD00A, V.VERSION, V.PLANT, V.MATERIAL,
+      V.DISTR_CHAN, V.SALESORG, V.CALDAY, V.BASE_UOM,
+      'SUB Europa' CATEGORY,
+
+      V.CLIENT, CAST(c.DATE AS TIMESTAMP) Fecha,
+      c.QUARTER, c.YEAR, mo.UKURS, mo.FCURR,
+      DATE_ADD(CURRENT_DATE(), INTERVAL -1 DAY) ACTUALIZACION,
+      'SUB Europa (EUR)' CATEGORY2,
+      2 SUMMARY_FLAG
+      FROM
+      envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v LEFT JOIN
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY=c.CALDAY LEFT JOIN
+      envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION LEFT JOIN
+      (
+      SELECT
+      CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
+      TRIM(FCURR) FCURR, TRIM(TCURR) TCURR,
+      CASE WHEN UKURS < 0 then 1 / (UKURS * -1) ELSE UKURS END UKURS, c.date
+      FROM
+      envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR left join
+      envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY=CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+      WHERE
+      TRIM(FCURR) IN ('MXN', 'USD', 'DKK', 'GTQ', 'CAD') AND
+      TRIM(TCURR) = 'EUR' AND TRIM(KURST) = 'M' AND
+      c.DATE= CAST({% date_start date_filter %} AS DATE)
+      ) mo on   v.STAT_CURR=mo.FCURR
+      WHERE CATEGORY='TOTAL MONEDA ORIGEN' AND r.REGION = 'Europa'
       ;;
   }
 
-
-
   dimension_group: created {
-    label: "Periodo"
+    label: "Fecha"
     type: time
     timeframes: [
       raw,
@@ -84,17 +191,73 @@ view: rpt_ventasytd {
 
   }
 
-  dimension: UKURS {
 
-    type: number
-    sql: ${TABLE}.UKURS ;;
-    value_format: "#,##0.00"
+  filter: date_filter {
+    label: "Período"
+    description: "Use this date filter in combination with the timeframes dimension for dynamic date filtering"
+    type: date
+    # default_value: "6 weeks"
+
   }
 
-  dimension: FCURR {
+
+
+  measure: count {
+    type: count
+    drill_fields: [detail*]
+  }
+
+
+  dimension: fechanumero {
 
     type: string
-    sql: ${TABLE}.FCURR ;;
+    sql:  replace(SUBSTR( CAST ({% date_start date_filter %} AS STRING), 1,10),"-","")    ;;
+  }
+
+  dimension: region {
+    type: string
+    sql: CASE WHEN ${TABLE}.SALESORG IN ('DE00', 'NLF1', '2000', 'DKF1', 'DKF3', 'SEF1', 'USF2', '1000') THEN 'Europa' ELSE 'America' END ;;
+  }
+
+  dimension: category2 {
+    type: string
+    label: "País"
+    sql: ${TABLE}.CATEGORY2 ;;
+    html: {% if value == 'TOTAL MXN' or
+          value == 'TOTAL USD'
+          %}
+        <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
+        {% elsif value == 'SUB America (USD)' or
+          value == 'SUB Europa (EUR)'
+          %}
+        <p style="color: white; background-color: #ab716f; font-size:100%; text-align:left">{{ rendered_value }}</p>
+        {% else %}
+        <p style="">{{ rendered_value }}</p>
+        {% endif %} ;;
+  }
+
+  dimension: category2_orden {
+    type: string
+    sql:
+    case
+      when ${TABLE}.CATEGORY2 = "Mexico (MXN)" then "A01"
+      when ${TABLE}.CATEGORY2 = "USA (USD)" then "A02"
+      when ${TABLE}.CATEGORY2 = "Canada (CAD)" then "A03"
+      when ${TABLE}.CATEGORY2 = "Guatemala (GTQ)" then "A04"
+      when ${TABLE}.CATEGORY2 = "SUB America (USD)" then "AZ1"
+      when ${TABLE}.CATEGORY2 = "Dinamarca (DKK)" then "E01"
+      when ${TABLE}.CATEGORY2 = "Alemania (EUR)" then "E02"
+      when ${TABLE}.CATEGORY2 = "España (EUR)" then "E03"
+      when ${TABLE}.CATEGORY2 = "Paises Bajos (EUR)" then "E04"
+      when ${TABLE}.CATEGORY2 = "SUB Europa (EUR)" then "EZ1"
+      when ${TABLE}.CATEGORY2 = "TOTAL MXN" then "Z01"
+      when ${TABLE}.CATEGORY2 = "TOTAL USD" then "Z02"
+      else "ZZZ" end ;;
+  }
+
+  dimension: summary_flag {
+    type: number
+    sql: ${TABLE}.SUMMARY_FLAG ;;
   }
 
   dimension: actualizacion {
@@ -111,104 +274,18 @@ view: rpt_ventasytd {
 
 
 
+  dimension: UKURS {
 
-  dimension: category_orden {
+    type: number
+    sql: ${TABLE}.UKURS ;;
+    value_format: "#,##0.00"
+  }
+
+  dimension: FCURR {
+
     type: string
-    sql: case
-
-         when ${TABLE}.CATEGORY="CP 19L" then "A01"
-      when ${TABLE}.CATEGORY="CP 15L" then "A02"
-      when ${TABLE}.CATEGORY="CP 10L" then "A03"
-      when ${TABLE}.CATEGORY="CP 08L" then "A04"
-      when ${TABLE}.CATEGORY="CP 04L" then "A05"
-      when ${TABLE}.CATEGORY="Cubeta de Plastico" then "A06"
-      when ${TABLE}.CATEGORY="Porron de Plastico" then "A07"
-      when ${TABLE}.CATEGORY="Tambores de Plastico" then "A08"
-      when ${TABLE}.CATEGORY="Bote bocan" then "A09"
-      when ${TABLE}.CATEGORY="Tambores" then "A10"
-      when ${TABLE}.CATEGORY="Tambores Conicos" then "A11"
-      when ${TABLE}.CATEGORY="Cubeta de Lamina" then "A12"
-      when ${TABLE}.CATEGORY="Alcoholero" then "A13"
-      when ${TABLE}.CATEGORY="Bote de Pintura" then "A14"
-      when ${TABLE}.CATEGORY="Bote de Aerosol" then "A15"
-      when ${TABLE}.CATEGORY="Línea General" then "A16"
-      when ${TABLE}.CATEGORY="Bote Sanitario" then "A17"
-      when ${TABLE}.CATEGORY="Bote Atún" then "A18"
-      when ${TABLE}.CATEGORY="Bote Oval" then "A19"
-      when ${TABLE}.CATEGORY="Tapa Easy Open" then "A20"
-      when ${TABLE}.CATEGORY="Fondo Charola y Bafle" then "A21"
-      when ${TABLE}.CATEGORY="Tapa Twiss Off" then "A22"
-      when ${TABLE}.CATEGORY="Varios" then "A23"
-      when ${TABLE}.CATEGORY="Fish." then "A24"
-      when ${TABLE}.CATEGORY="PeelOff." then "A25"
-
-      when ${TABLE}.CATEGORY="Coating and Printing Services" then "A26"
-      when ${TABLE}.CATEGORY="Miscelaneous" then "A27"
-      when ${TABLE}.CATEGORY="Pails and lids for pails" then "A28"
-      when ${TABLE}.CATEGORY="Tinplate and lids for tinplate" then "A29"
-
-      when ${TABLE}.CATEGORY="Beverage Draught" then "A30"
-      when ${TABLE}.CATEGORY="Beverage Gravity" then "A31"
-      when ${TABLE}.CATEGORY="Industrial" then "A32"
-      when ${TABLE}.CATEGORY="SC Print" then "A33"
-
-      when ${TABLE}.CATEGORY="Bote de Aerosol GT" then "A34"
-      when ${TABLE}.CATEGORY="Bote de Pintura GT" then "A35"
-      when ${TABLE}.CATEGORY="Bote Sanitario GT" then "A36"
-      when ${TABLE}.CATEGORY="Bote Sanitario GT" then "A37"
-      when ${TABLE}.CATEGORY="Varios GT" then "A38"
-
-
-      when ${TABLE}.CATEGORY="Bote Pint. Envases Ohio" then "A39"
-      when ${TABLE}.CATEGORY="Cub.Lam. Envases Ohio" then "A40"
-
-
-
-
-
-      when ${TABLE}.CATEGORY="TOTAL MONEDA ORIGEN" then "Z1"
-      when ${TABLE}.CATEGORY="TOTAL MXN" then "Z2" else "z"  end ;;
+    sql: ${TABLE}.FCURR ;;
   }
-
-
-  dimension: category_orden_dinamarca {
-    type: string
-    sql: case
-
-      when ${TABLE}.CATEGORY="Mediapack" then "a01"
-      when ${TABLE}.CATEGORY="Catering" then "a02"
-      when ${TABLE}.CATEGORY="Fish" then "a03"
-      when ${TABLE}.CATEGORY="Ham" then "a04"
-      when ${TABLE}.CATEGORY="Luncheon" then "a05"
-      when ${TABLE}.CATEGORY="Pullman" then "a06"
-      when ${TABLE}.CATEGORY="Roundfood" then "a07"
-      when ${TABLE}.CATEGORY="Beverage" then "a08"
-      when ${TABLE}.CATEGORY="Dekopak" then "a09"
-      when ${TABLE}.CATEGORY="Feta" then "a10"
-      when ${TABLE}.CATEGORY="Milkpowder" then "a11"
-      when ${TABLE}.CATEGORY="PockIt" then "a12"
-      when ${TABLE}.CATEGORY="PeelOff" then "a13"
-      when ${TABLE}.CATEGORY="Super" then "a14"
-      when ${TABLE}.CATEGORY="Other" then "a15"
-
-
-
-      when ${TABLE}.CATEGORY="TOTAL MONEDA ORIGEN" then "Z1"
-      when ${TABLE}.CATEGORY="TOTAL MXN" then "Z2" else "b"  end ;;
-  }
-
-
-
-  measure: count {
-    type: count
-    drill_fields: [detail*]
-  }
-
-
-
-
-
-
 
   dimension: Client {
     label: "Cliente"
@@ -221,16 +298,6 @@ view: rpt_ventasytd {
     label: "año"
     type: number
     sql: ${TABLE}.YEAR ;;
-  }
-
-  dimension: net_wgt_dl {
-    type: number
-    sql: ${TABLE}.NET_WGT_DL ;;
-  }
-
-  dimension: unit_of_wt {
-    type: string
-    sql: ${TABLE}.UNIT_OF_WT ;;
   }
 
   dimension: stat_curr {
@@ -254,74 +321,15 @@ view: rpt_ventasytd {
     sql: ${TABLE}.ZNETVAL ;;
   }
 
-  dimension: zpptoqty {
-    type: number
-    sql: ${TABLE}.ZPPTOQTY ;;
-  }
-
-  dimension: zppto {
-    type: number
-    sql: ${TABLE}.ZPPTO ;;
-  }
-
-  dimension: zpriceval {
-    type: number
-    sql: ${TABLE}.ZPRICEVAL ;;
-  }
-
-  dimension: len {
-    type: number
-    sql: ${TABLE}.LEN ;;
-  }
-
-  dimension: unit_dim {
-    type: string
-    sql: ${TABLE}.UNIT_DIM ;;
-  }
-
-  dimension: currency {
-    type: string
-    sql: ${TABLE}.CURRENCY ;;
-  }
-
-  dimension: unit {
-    type: string
-    sql: ${TABLE}.UNIT ;;
-  }
-
   dimension: sold_to {
     type: string
     sql: ${TABLE}.SOLD_TO ;;
   }
 
-  dimension: cust_group {
-    type: string
-    sql: ${TABLE}.CUST_GROUP ;;
-  }
-
-  dimension: matl_type {
-    type: string
-    sql: ${TABLE}.MATL_TYPE ;;
-  }
 
   dimension: prodh1 {
     type: string
     sql: ${TABLE}.PRODH1 ;;
-  }
-
-  dimension: size_dim {
-    type: string
-    sql: ${TABLE}.SIZE_DIM ;;
-  }
-
-  dimension: extmatlgrp {
-    type: string
-    sql: ${TABLE}.EXTMATLGRP ;;
-  }
-
-  dimension: country {
-    type: string
-    sql: ${TABLE}.COUNTRY ;;
   }
 
   dimension: sales_grp {
@@ -332,26 +340,6 @@ view: rpt_ventasytd {
   dimension: sales_off {
     type: string
     sql: ${TABLE}.SALES_OFF ;;
-  }
-
-  dimension: prodh2 {
-    type: string
-    sql: ${TABLE}.PRODH2 ;;
-  }
-
-  dimension: prodh3 {
-    type: string
-    sql: ${TABLE}.PRODH3 ;;
-  }
-
-  dimension: prodh4 {
-    type: string
-    sql: ${TABLE}.PRODH4 ;;
-  }
-
-  dimension: prod_hier {
-    type: string
-    sql: ${TABLE}.PROD_HIER ;;
   }
 
   dimension: ziosd00_a {
@@ -394,11 +382,6 @@ view: rpt_ventasytd {
     sql: ${TABLE}.CALDAY ;;
   }
 
-  dimension: loc_currcy {
-    type: string
-    sql: ${TABLE}.LOC_CURRCY ;;
-  }
-
   dimension: base_uom {
     type: string
     sql: ${TABLE}.BASE_UOM ;;
@@ -406,11 +389,16 @@ view: rpt_ventasytd {
 
   dimension: category {
     type: string
-    sql: case when ${TABLE}.CATEGORY is null then 'Otros' else ${TABLE}.CATEGORY  end ;;
+    # sql: case when ${TABLE}.CATEGORY is null then 'Otros' else ${TABLE}.CATEGORY  end ;;
+    sql:  ${TABLE}.CATEGORY ;;
 
-    html: {% if value == 'TOTAL MONEDA ORIGEN' or
-          value == 'TOTAL MXN'
-
+    html: {% if value == 'TOTAL MONEDA ORIGEN USD' or
+                value == 'TOTAL MONEDA ORIGEN DKK' or
+                value == 'TOTAL MONEDA ORIGEN EUR' or
+                value == 'TOTAL MONEDA ORIGEN GTQ' or
+                value == 'TOTAL MONEDA ORIGEN CAD' or
+                value == 'TOTAL MXN' or
+                value == 'TOTAL USD'
       %}
       <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
       {% else %}
@@ -418,20 +406,97 @@ view: rpt_ventasytd {
       {% endif %} ;;
   }
 
-
-  dimension: fecha {
-    label: "fecha filtro"
+  dimension: category_orden {
+    label: "category_orden_mexico"
     type: string
-    sql: CAST({% date_start date_filter %} AS DATE) ;;
+    sql: case
+
+                        when ${TABLE}.CATEGORY="CP 19L" then "A01"
+                        when ${TABLE}.CATEGORY="CP 15L" then "A02"
+                        when ${TABLE}.CATEGORY="CP 10L" then "A03"
+                        when ${TABLE}.CATEGORY="CP 08L" then "A04"
+                        when ${TABLE}.CATEGORY="CP 04L" then "A05"
+                        when ${TABLE}.CATEGORY="Cubeta de Plastico" then "A06"
+                        when ${TABLE}.CATEGORY="Porron de Plastico" then "A07"
+                        when ${TABLE}.CATEGORY="Tambores de Plastico" then "A08"
+                        when ${TABLE}.CATEGORY="Bote bocan" then "A09"
+                        when ${TABLE}.CATEGORY="Tambores" then "A10"
+                        when ${TABLE}.CATEGORY="Tambores Conicos" then "A11"
+                        when ${TABLE}.CATEGORY="Cubeta de Lamina" then "A12"
+                        when ${TABLE}.CATEGORY="Alcoholero" then "A13"
+                        when ${TABLE}.CATEGORY="Bote de Pintura" then "A14"
+                        when ${TABLE}.CATEGORY="Bote de Aerosol" then "A15"
+                        when ${TABLE}.CATEGORY="Línea General" then "A16"
+                        when ${TABLE}.CATEGORY="Bote Sanitario" then "A17"
+                        when ${TABLE}.CATEGORY="Bote Atún" then "A18"
+                        when ${TABLE}.CATEGORY="Bote Oval" then "A19"
+                        when ${TABLE}.CATEGORY="Tapa Easy Open" then "A20"
+                        when ${TABLE}.CATEGORY="Fondo Charola y Bafle" then "A21"
+                        when ${TABLE}.CATEGORY="Tapa Twiss Off" then "A22"
+                        when ${TABLE}.CATEGORY="Varios" then "A23"
+                        when ${TABLE}.CATEGORY="Fish." then "A24"
+                        when ${TABLE}.CATEGORY="PeelOff." then "A25"
+
+      when ${TABLE}.CATEGORY="Coating and Printing Services" then "A26"
+      when ${TABLE}.CATEGORY="Miscelaneous" then "A27"
+      when ${TABLE}.CATEGORY="Pails and lids for pails" then "A28"
+      when ${TABLE}.CATEGORY="Tinplate and lids for tinplate" then "A29"
+
+      when ${TABLE}.CATEGORY="Beverage Draught" then "A30"
+      when ${TABLE}.CATEGORY="Beverage Gravity" then "A31"
+      when ${TABLE}.CATEGORY="Industrial" then "A32"
+      when ${TABLE}.CATEGORY="SC Print" then "A33"
+
+      when ${TABLE}.CATEGORY="Bote de Aerosol GT" then "A34"
+      when ${TABLE}.CATEGORY="Bote de Pintura GT" then "A35"
+      when ${TABLE}.CATEGORY="Bote Sanitario GT" then "A36"
+      when ${TABLE}.CATEGORY="Bote Sanitario GT" then "A37"
+      when ${TABLE}.CATEGORY="Varios GT" then "A38"
+
+      when ${TABLE}.CATEGORY="Bote Pint. Envases Ohio" then "A39"
+      when ${TABLE}.CATEGORY="Cub.Lam. Envases Ohio" then "A40"
+      when ${TABLE}.CATEGORY="F-style" then "A43"
+      when ${TABLE}.CATEGORY="Varios." then "A44"
+
+      when ${TABLE}.CATEGORY="Bote Sanitario CA" then "A41"
+      when ${TABLE}.CATEGORY="Tapa Easy Open CA" then "A42"
+
+      when ${TABLE}.CATEGORY="Food" then "B01"
+      when ${TABLE}.CATEGORY="Fish" then "B02"
+      when ${TABLE}.CATEGORY="Print and Coating Services" then "B03"
+
+
+      when ${TABLE}.CATEGORY LIKE "TOTAL MONEDA ORIGEN%" then "Z1"
+      when ${TABLE}.CATEGORY="TOTAL MXN" then "Z2" else "z"  end ;;
   }
 
 
-
-
-  dimension: subcategory {
+  dimension: category_orden_dinamarca {
     type: string
-    sql:  ${TABLE}.SUBCATEGORY ;;
+    sql: case
+
+                        when ${TABLE}.CATEGORY="Mediapack" then "a01"
+                        when ${TABLE}.CATEGORY="Catering" then "a02"
+                        when ${TABLE}.CATEGORY="Fish" then "a03"
+                        when ${TABLE}.CATEGORY="Ham" then "a04"
+                        when ${TABLE}.CATEGORY="Luncheon" then "a05"
+                        when ${TABLE}.CATEGORY="Pullman" then "a06"
+                        when ${TABLE}.CATEGORY="Roundfood" then "a07"
+                        when ${TABLE}.CATEGORY="Beverage" then "a08"
+                        when ${TABLE}.CATEGORY="Dekopak" then "a09"
+                        when ${TABLE}.CATEGORY="Feta" then "a10"
+                        when ${TABLE}.CATEGORY="Milkpowder" then "a11"
+                        when ${TABLE}.CATEGORY="PockIt" then "a12"
+                        when ${TABLE}.CATEGORY="PeelOff" then "a13"
+                        when ${TABLE}.CATEGORY="Super" then "a14"
+                        when ${TABLE}.CATEGORY="Other" then "a15"
+
+
+
+      when ${TABLE}.CATEGORY="TOTAL MONEDA ORIGEN" then "Z1"
+      when ${TABLE}.CATEGORY="TOTAL MXN" then "Z2" else "b"  end ;;
   }
+
 
   dimension_group: fecha {
     type: time
@@ -447,16 +512,12 @@ view: rpt_ventasytd {
     type: sum
     sql: ${TABLE}.BILL_QTY/1000 ;;
     filters: [distr_chan: "10"]
+    filters: [version: "000"]
     drill_fields: [detail*]
   }
 
 ######  Filtros Periodos actuales y anteriores mes ########################################################################################
 
-  filter: date_filter {
-    label: "Período"
-    description: "Use this date filter in combination with the timeframes dimension for dynamic date filtering"
-    type: date
-  }
 
 
   dimension_group: filter_start_date {
@@ -485,6 +546,7 @@ view: rpt_ventasytd {
     hidden: yes
     type: string
     sql: DATE_ADD(DATE ${filter_start_date_raw}, INTERVAL -12 month);;
+    #sql: DATE_ADD(DATE ({% date_start created_date %}), INTERVAL -12 month);;
 
     # sql: DATE_ADD(day, - ${interval}, ${filter_start_date_raw});;
   }
@@ -494,6 +556,9 @@ view: rpt_ventasytd {
     hidden: yes
     type: string
     sql: DATE_ADD(DATE ${filter_end_date_raw}, INTERVAL -12 month);;
+
+    #sql: DATE_ADD(DATE ({% date_end created_date %}), INTERVAL -12 month);;
+
 
     # sql: DATE_ADD(day, - ${interval}, ${filter_start_date_raw});;
   }
@@ -519,15 +584,27 @@ view: rpt_ventasytd {
     hidden: yes
     type: yesno
     sql: CAST(${created_date} AS DATE) >= DATE_TRUNC(CAST({% date_start date_filter %} AS DATE), YEAR) AND CAST(${created_date} AS DATE) <= CAST({% date_start date_filter %} AS DATE) ;;
-    #sql: ${created_year} =  EXTRACT(YEAR FROM ${filter_start_date_raw}) ;;
+    #sql: ${created_date} >= ${filter_start_date_date} AND ${created_date} <= ${filter_end_date_date} ;;
+    # sql: EXTRACT(YEAR FROM CAST(${created_date} AS DATE))  =  EXTRACT(YEAR FROM CAST({% date_start date_filter %} AS DATE)) and EXTRACT(MONTH FROM CAST(${created_date} AS DATE))=EXTRACT(MONTH FROM CAST({% date_start date_filter %} AS DATE))  ;;
+# EXTRACT(YEAR FROM ${filter_start_date_date}) AND  EXTRACT(MONTH FROM ${filter_start_date_date})
+    # sql: ${created_date} >= cast({% date_start created_date %} AS DATE) AND ${created_date} <= cast({% date_end created_date %} AS DATE) ;;
+  }
+
+
+
+  dimension: fecha {
+    label: "fecha filtro"
+    type: string
+    sql: CAST({% date_start date_filter %} AS DATE) ;;
   }
 
   dimension: is_previous_period {
     hidden: yes
     type: yesno
-    # sql: ${created_date} >= ${previous_start_date} AND ${created_date} < ${filter_start_date_date} ;;
-    #sql:  ${created_year} =  EXTRACT(YEAR FROM ${filter_start_date_raw})-1 ;;
     sql: CAST(${created_date} AS DATE) >=  DATE_ADD(DATE (DATE_TRUNC(CAST({% date_start date_filter %} AS DATE), YEAR)), INTERVAL -1 year)   AND CAST(${created_date} AS DATE) <= DATE_ADD(DATE (CAST({% date_start date_filter %} AS DATE)), INTERVAL -1 year)   ;;
+    #sql: ${created_date} >= ${previous_start_date} AND ${created_date} <= ${previous_end_date} ;;
+    #sql: EXTRACT(YEAR FROM CAST(${created_date} AS DATE))  =  EXTRACT(YEAR FROM CAST({% date_start date_filter %} AS DATE))-1 and EXTRACT(MONTH FROM CAST(${created_date} AS DATE))=EXTRACT(MONTH FROM CAST({% date_start date_filter %} AS DATE))   ;;
+    #sql: ${created_date} >= cast(${previous_start_date} AS DATE) AND ${created_date} <= cast(${previous_end_date} AS DATE) ;;
   }
 
 
@@ -564,11 +641,11 @@ view: rpt_ventasytd {
         label: "Alemania"
       }
       when: {
-        sql: ${TABLE}.SALESORG = "NLF1" ;;
+        sql: ${TABLE}.SALESORG in ("NLF1", "2000") ;;
         label: "Holanda"
       }
       when: {
-        sql: ${TABLE}.SALESORG = "3100" ;;
+        sql: ${TABLE}.SALESORG = "3600" ;;
         label: "Canadá"
       }
       when: {
@@ -587,9 +664,28 @@ view: rpt_ventasytd {
         sql: ${TABLE}.SALESORG in ( "USF1") ;;
         label: "USA"
       }
+      when: {
+        sql: ${TABLE}.SALESORG in ( "1000") ;;
+        label: "España"
+      }
 
       else: "Otros"
     }
+  }
+
+  dimension: Paises_orden {
+    type: string
+    sql:
+    case
+      when ${TABLE}.SALESORG = "DE00" then "B02"
+      when ${TABLE}.SALESORG in ("NLF1", "2000") then "B04"
+      when ${TABLE}.SALESORG = "3100" then "A03"
+      when ${TABLE}.SALESORG in ( "MXF1","MXFC") then "A01"
+      when ${TABLE}.SALESORG in ( "GTF1") then "A04"
+      when ${TABLE}.SALESORG in ( "DKF1","DKF3","SEF1","USF2") then "B01"
+      when ${TABLE}.SALESORG in ( "USF1") then "A02"
+      when ${TABLE}.SALESORG in ( "1000") then "B03"
+      else "C00" end ;;
   }
 
   dimension: Agregacion_DIA {
@@ -615,12 +711,13 @@ view: rpt_ventasytd {
   ####################################################################################################################################
 
 
-  ####################################Medidas Calculadas###############################################################################
+  ####################################Medias Calculadas###############################################################################
 
   measure: NATIONAL_QTY_MTD {
     label: "NATIONAL QTY YTD"
     type: sum
-    sql: ${bill_qty}/1000 ;;
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
+      ${bill_qty}/1000 END;;
 
     filters: {
       field: is_current_period
@@ -630,7 +727,7 @@ view: rpt_ventasytd {
     filters: [distr_chan: "10"]
     filters: [version: "000"]
 
-    drill_fields: [ Client,NATIONAL_QTY_MTD]
+    drill_fields: [Client, NATIONAL_QTY_MTD]
 
     value_format: "#,##0"
   }
@@ -638,7 +735,8 @@ view: rpt_ventasytd {
   measure: NATIONAL_QTY_MTDY {
     label: "NATIONAL QTY_YTD AÑO ANT"
     type: sum
-    sql: ${bill_qty}/1000 ;;
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
+      ${bill_qty}/1000 END;;
 
     filters: {
       field: is_previous_period
@@ -660,13 +758,25 @@ view: rpt_ventasytd {
               WHEN (${NATIONAL_QTY_MTD}/NULLIF(${NATIONAL_QTY_MTDY},0))-1 = 0 THEN 0 ELSE (${NATIONAL_QTY_MTD}/NULLIF(${NATIONAL_QTY_MTDY},0))-1  END *100;;
     value_format: "0.00\%"
     drill_fields: [ Client,NATIONAL_QTY_MTD,NATIONAL_QTY_MTDY,VS_QTY]
+
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
   }
 
 
   measure: NATIONAL_BUD_QTY_MTD {
     label: "NATIONAL BUD QTY YTD"
     type: sum
-    sql: ${bill_qty}/1000 ;;
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
+      ${bill_qty}/1000 END;;
 
     filters: {
       field: is_current_period
@@ -707,7 +817,8 @@ view: rpt_ventasytd {
 
 
     type: sum
-    sql: ${bill_qty}/1000 ;;
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
+      ${bill_qty}/1000 END ;;
 
     filters: {
       field: is_current_period
@@ -740,6 +851,18 @@ view: rpt_ventasytd {
 
 
     drill_fields: [ Client,NATIONAL_QTY_MTD,BUD_NATIONAL_QTY_MTD,VS_BUD_QTY]
+
+
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
 
   }
 
@@ -793,6 +916,17 @@ view: rpt_ventasytd {
               WHEN (${NATIONAL_AMOUNT_MTD}/NULLIF(${NATIONAL_AMOUNT_MTD_YEAR_ANT},0))-1 = 0 THEN 0 ELSE (${NATIONAL_AMOUNT_MTD}/NULLIF(${NATIONAL_AMOUNT_MTD_YEAR_ANT},0)) -1 END * 100;;
     value_format: "0.00\%"
     drill_fields: [ Client,NATIONAL_AMOUNT_MTD,NATIONAL_AMOUNT_MTD_YEAR_ANT,VS_VAL]
+
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
   }
 
   measure: NATIONAL_BUD_AMOUNT_MTD_MIL {
@@ -882,6 +1016,18 @@ view: rpt_ventasytd {
 
     drill_fields: [ Client,NATIONAL_AMOUNT_MTD,Z_BUD_NATIONAL_AMOUNT,VS_BUD_VAL]
 
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
+
+
     # IF([#NATIONAL AMOUNT MTD] >0 and([#Z_BUD  NATIONAL AMOUNT]) = 0 ,1  ,
     # IF([#NATIONAL AMOUNT MTD] = 0and ([#Z_BUD  NATIONAL AMOUNT]) >0,-1 ,
     # IF(([#NATIONAL AMOUNT MTD]  /([#Z_BUD  NATIONAL AMOUNT]))-1 = -1 ,0 ,  ([#NATIONAL AMOUNT MTD] /([#Z_BUD  NATIONAL AMOUNT]))-1)))
@@ -894,7 +1040,8 @@ view: rpt_ventasytd {
   measure: EXPORT_QTY_MTD {
     label: "EXPORT QTY YTD"
     type: sum
-    sql: ${bill_qty}/1000 ;;
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
+      ${bill_qty}/1000 END;;
     filters: [distr_chan: "20"]
     filters: [version: "000"]
     filters: {
@@ -909,7 +1056,8 @@ view: rpt_ventasytd {
   measure: EXPORT_QTY_MTD_YEAR_ANT {
     label: "EXPORT QTY_YTD AÑO ANT"
     type: sum
-    sql: ${bill_qty}/1000 ;;
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
+      ${bill_qty}/1000 END;;
     filters: [distr_chan: "20"]
     filters: [version: "000"]
     filters: {
@@ -932,6 +1080,18 @@ view: rpt_ventasytd {
 
     drill_fields: [ Client,EXPORT_QTY_MTD,EXPORT_QTY_MTD_YEAR_ANT,VS_QTY_EXP]
 
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
+
+
     #IF( [#EXPORT QTY_MTD] >0 and([#EXPORT QTY_MTD_AÑO ANT]) = 0 ,1  ,
     #IF([#EXPORT QTY_MTD] = 0and ([#EXPORT QTY_MTD_AÑO ANT]) >0,-1 ,
     #IF(([#EXPORT QTY_MTD]  /([#EXPORT QTY_MTD_AÑO ANT]))-1 = -1 ,0 ,    ([#EXPORT QTY_MTD] /([#EXPORT QTY_MTD_AÑO ANT]))-1)))
@@ -942,7 +1102,8 @@ view: rpt_ventasytd {
   measure: EXPORT_BUD_QTY_MTD {
     label: "EXPORT BUD QTY YTD"
     type: sum
-    sql: ${bill_qty}/1000 ;;
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
+      ${bill_qty}/1000 END;;
     filters: [distr_chan: "20"]
     filters: [version: "A00"]
     filters: {
@@ -980,7 +1141,8 @@ view: rpt_ventasytd {
     label: "BUD EXPORT QTY YTD"
 
     type: sum
-    sql: ${bill_qty}/1000 ;;
+    sql: CASE WHEN (${TABLE}.CATEGORY LIKE 'TOTAL%') THEN NULL ELSE
+      ${bill_qty}/1000 END;;
     filters: [distr_chan: "20"]
     filters: [version: "A00"]
     filters: {
@@ -1011,6 +1173,18 @@ view: rpt_ventasytd {
     value_format: "0.00\%"
 
     drill_fields: [ Client,EXPORT_QTY_MTD,BUD_EXPORT_QTY_MTD,VS_BUD_QTY_EXP]
+
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
+
 
     # IF( [#EXPORT QTY_MTD] >0 and([#BUD EXPORT QTY_MTD]) = 0 ,1  ,
     #IF([#EXPORT QTY_MTD] = 0and ([#BUD EXPORT QTY_MTD]) >0,-1 ,
@@ -1059,6 +1233,16 @@ view: rpt_ventasytd {
     sql: CASE WHEN ${EXPORT_AMOUNT_MTD} > 1 AND ${EXPORT_AMOUNT_MTDY} = 0 THEN 1
               WHEN ${EXPORT_AMOUNT_MTD} = 0 AND ${EXPORT_AMOUNT_MTDY} > 0 THEN -1
               WHEN (${EXPORT_AMOUNT_MTD}/NULLIF(${EXPORT_AMOUNT_MTDY},0)) -1= 0 THEN 0 ELSE (${EXPORT_AMOUNT_MTD}/NULLIF(${EXPORT_AMOUNT_MTDY},0)) -1 END *100;;
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
     value_format: "0.00\%"
     drill_fields: [ Client,EXPORT_AMOUNT_MTD,EXPORT_AMOUNT_MTDY,VS_VAL_EXP]
   }
@@ -1147,6 +1331,17 @@ view: rpt_ventasytd {
     #          WHEN ${EXPORT_AMOUNT_MTD} = 0 AND ${Z_BUD_EXPORT_AMOUNT} > 0 THEN -1
     #          WHEN (${EXPORT_AMOUNT_MTD} /  NULLIF (${Z_BUD_EXPORT_AMOUNT},0))-1=-1 THEN 0 ELSE (${EXPORT_AMOUNT_MTD} /  NULLIF (${Z_BUD_EXPORT_AMOUNT},0))-1
     #         END *100 ;;
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
+
     value_format: "0.00\%"
 
     drill_fields: [ Client,EXPORT_AMOUNT_MTD,Z_BUD_EXPORT_AMOUNT,VS_BUD_VAL_EXP]
@@ -1185,6 +1380,17 @@ view: rpt_ventasytd {
     sql: CASE WHEN ${TOTAL_QTY} > 0 AND ${TOTAL_QTY_YEAR_ANT} = 0 THEN 1
               WHEN ${TOTAL_QTY} = 0 AND ${TOTAL_QTY_YEAR_ANT} > 0 THEN -1
               WHEN (${TOTAL_QTY}/NULLIF(${TOTAL_QTY_YEAR_ANT},0))-1  = 0 THEN 0 ELSE (${TOTAL_QTY}/NULLIF(${TOTAL_QTY_YEAR_ANT},0))-1   END *100;;
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
+
     value_format: "0.00\%"
 
     drill_fields: [ Client,TOTAL_QTY,TOTAL_QTY_YEAR_ANT,_VS_YEAR_ANT_QTY_T]
@@ -1215,6 +1421,16 @@ view: rpt_ventasytd {
               WHEN ${TOTAL_QTY} = 0 AND ${BUD_TOTAL_QTY} > 0 THEN -1
               WHEN (${TOTAL_QTY} /  NULLIF (${BUD_TOTAL_QTY},0))-1= 0 THEN 0 ELSE (${TOTAL_QTY} /  NULLIF (${BUD_TOTAL_QTY},0))-1
              END *100 ;;
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
     value_format: "0.00\%"
 
     drill_fields: [ Client,TOTAL_QTY,BUD_TOTAL_QTY,VS_BUD_QTY_T]
@@ -1255,6 +1471,16 @@ view: rpt_ventasytd {
               WHEN ${TOTAL_AMOUNT} = 0 AND ${TOTAL_AMOUNT_YEAR_ANT} > 0 THEN -1
               WHEN (${TOTAL_AMOUNT} /  NULLIF (${TOTAL_AMOUNT_YEAR_ANT},0))-1 = 0 THEN 0 ELSE (${TOTAL_AMOUNT} /  NULLIF (${TOTAL_AMOUNT_YEAR_ANT},0))-1
              END *100;;
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
     value_format: "0.00\%"
 
     drill_fields: [ Client,TOTAL_AMOUNT,TOTAL_AMOUNT_YEAR_ANT,VS_YEAR_ANT_VAL_T]
@@ -1288,6 +1514,17 @@ view: rpt_ventasytd {
               WHEN ${TOTAL_AMOUNT} = 0 AND ${BUD_TOTAL_AMOUNT_YEAR} > 0 THEN -1
               WHEN (${TOTAL_AMOUNT} /  NULLIF (${BUD_TOTAL_AMOUNT_YEAR},0))-1=-1 THEN 0 ELSE (${TOTAL_AMOUNT} /  NULLIF (${BUD_TOTAL_AMOUNT_YEAR},0))-1
              END * 100;;
+    html:
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
+
     value_format: "0.00\%"
 
     drill_fields: [ Client,TOTAL_AMOUNT,BUD_TOTAL_AMOUNT,VS_BUD_T]
@@ -1409,7 +1646,10 @@ view: rpt_ventasytd {
     value_format: "#,##0.00"
   }
 
-
+  dimension: concantenado {
+    type: string
+    sql:concat(${TABLE}.CATEGORY)  ,'-',  ${TABLE}.STAT_CURR) ;;
+  }
 
 
 
@@ -1445,39 +1685,44 @@ view: rpt_ventasytd {
 
   }
 
-
   ####################################################################################################################################
+
+
+  measure: dash_nav {
+    hidden: no
+    label: "Navigation Bar"
+    type: string
+    sql: "";;
+    html:
+
+    <p style="text-align: left;font-size:25px; color:#632424; white-space: pre-line;">
+                Informacion al
+            </p>
+            <font style="font-size:40px;color:#632424; ">
+                {{actualizacion}}
+            </font>
+             <font style="text-align: left; font-size:15px; color:#632424; white-space: pre-line; ">
+               Fecha y hora de ejecucion {{actualizacion}}
+            </font>
+
+      ;;
+  }
+
+
+
 
 
   set: detail {
     fields: [
       Client,
-      net_wgt_dl,
-      unit_of_wt,
       stat_curr,
       matl_group,
       bill_qty,
       znetval,
-      zpptoqty,
-      zppto,
-      zpriceval,
-      len,
-      unit_dim,
-      currency,
-      unit,
       sold_to,
-      cust_group,
-      matl_type,
       prodh1,
-      size_dim,
-      extmatlgrp,
-      country,
       sales_grp,
       sales_off,
-      prodh2,
-      prodh3,
-      prodh4,
-      prod_hier,
       ziosd00_a,
       version,
       plant,
@@ -1486,15 +1731,10 @@ view: rpt_ventasytd {
       division,
       salesorg,
       calday,
-      loc_currcy,
       base_uom,
       category,
-      subcategory,
       fecha_time,
       quarter
     ]
   }
-
-
-
 }
