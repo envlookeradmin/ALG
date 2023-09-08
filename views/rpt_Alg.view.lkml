@@ -377,8 +377,7 @@ view: rpt_alg {
     label: "TOTAL QTY MONTH"
     type: number
     sql: ${NATIONAL_QTY_MTD} + ${EXPORT_QTY_MTD} ;;
-    #drill_fields: [ Client,NATIONAL_QTY_MTD,EXPORT_QTY_MTD,TOTAL_QTY]
-    drill_fields: [ Client,TOTAL_QTY]
+    drill_fields: [ Client,NATIONAL_QTY_MTD,EXPORT_QTY_MTD,TOTAL_QTY]
     value_format: "#,##0"
   }
 
