@@ -531,13 +531,13 @@ FROM VENTAS_ALG ;;
     type: sum
     sql: ${TABLE}.VENTA *10000;;
    # drill_fields: [continente,pais,sucursal,Total_cantidad,Total_venta]
-    drill_fields: [continente,pais,sucursal,Total_cantidad,Total_venta]
+    drill_fields: [continente,pais,sucursal,Total_venta]
   }
 
   measure: Total_cantidad {
     type: sum
     sql: ${TABLE}.CANTIDAD *10000 ;;
-    drill_fields: [continente,pais,sucursal,Total_cantidad,Total_venta]
+    drill_fields: [continente,pais,sucursal,Total_cantidad]
   }
 
   set: detail {
