@@ -330,6 +330,13 @@ view: rpt_alg {
     value_format: "#,##0"
   }
 
+  measure: ult_act {
+    type: date
+    label: "Fecha actualización"
+    sql: MAX(${actualizacion});;
+    convert_tz: no
+  }
+
 
 
 #################################################################### CALCULOS MENSUALES ##################################################################
@@ -377,7 +384,8 @@ view: rpt_alg {
     label: "TOTAL QTY MONTH"
     type: number
     sql: ${NATIONAL_QTY_MTD} + ${EXPORT_QTY_MTD} ;;
-    drill_fields: [ Client,NATIONAL_QTY_MTD,EXPORT_QTY_MTD,TOTAL_QTY]
+   # drill_fields: [ Client,NATIONAL_QTY_MTD,EXPORT_QTY_MTD,TOTAL_QTY]
+    drill_fields: [ Client,TOTAL_QTY]
     value_format: "#,##0"
   }
 
@@ -671,18 +679,6 @@ view: rpt_alg {
     drill_fields: [ Client,TOTAL_AMOUNT,BUD_TOTAL_AMOUNT_YEAR,VS_BUD_T]
 
   }
-
-  measure: ult_act {
-    type: date
-    label: "Fecha actualización"
-    sql: MAX(${actualizacion});;
-    convert_tz: no
-  }
-
-
-
-
-
 
 
 #################################################################### CALCULOS MENSUALES ##################################################################
