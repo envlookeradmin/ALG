@@ -467,7 +467,7 @@ FROM VENTAS_ALG ;;
   dimension: division {
     type: string
     sql: ${TABLE}.DIVISION ;;
-    drill_fields: [continente,pais,created_raw,Total_cantidad,Total_venta]
+    drill_fields: [continente,pais,Total_cantidad,Total_venta]
   }
 
   dimension: continente {
