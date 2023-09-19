@@ -359,6 +359,17 @@ WHERE CATEGORY = 'TOTAL MONEDA ORIGEN'
 
   }
 
+  dimension: vacio_1 {
+    type: string
+    sql: ' ' ;;
+    html:  <div class="ag-header-cell ag-header-cell-wrap-text ag-focus-managed" role="columnheader" col-id="rpt_alg.vacio_1" style="background-color:#83FF33"> </div>;;
+  }
+
+  dimension: vacio_2 {
+    type: string
+    sql: ' ' ;;
+  }
+
   dimension: distr_chan {
     type: string
     sql: ${TABLE}.DISTR_CHAN ;;
