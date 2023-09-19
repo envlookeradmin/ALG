@@ -17,7 +17,8 @@ view: rpt_alg {
           V.CALDAY,
           V.BASE_UOM,
           CASE
-              WHEN V.CATEGORY = 'TOTAL MONEDA ORIGEN' THEN V.CATEGORY || ' ' || V.STAT_CURR
+              /*WHEN V.CATEGORY = 'TOTAL MONEDA ORIGEN' THEN V.CATEGORY || ' ' || V.STAT_CURR*/
+              WHEN V.CATEGORY = 'TOTAL MONEDA ORIGEN' THEN 'TOTAL SOURCE CURRENCY' || ' ' || V.STAT_CURR
               ELSE V.CATEGORY
           END CATEGORY,
           V.CLIENT,
@@ -411,11 +412,11 @@ view: rpt_alg {
     # sql: case when ${TABLE}.CATEGORY is null then 'Otros' else ${TABLE}.CATEGORY  end ;;
     sql:  ${TABLE}.CATEGORY ;;
 
-    html: {% if value == 'TOTAL MONEDA ORIGEN USD' or
-                value == 'TOTAL MONEDA ORIGEN DKK' or
-                value == 'TOTAL MONEDA ORIGEN EUR' or
-                value == 'TOTAL MONEDA ORIGEN GTQ' or
-                value == 'TOTAL MONEDA ORIGEN CAD' or
+    html: {% if value == 'TOTAL SOURCE CURRENCY USD' or
+                value == 'TOTAL SOURCE CURRENCY DKK' or
+                value == 'TOTAL SOURCE CURRENCY EUR' or
+                value == 'TOTAL SOURCE CURRENCY GTQ' or
+                value == 'TOTAL SOURCE CURRENCY CAD' or
                 value == 'TOTAL MXN' or
                 value == 'TOTAL USD' or
                 value == 'TOTAL EUR'
@@ -727,7 +728,7 @@ view: rpt_alg {
     group_label: "Daily"
     label: "SALES YESTERDAY"
     type: sum
-    sql: ${bill_qty} ;;
+    sql: ${znetval} ;;
 
     filters: {
       field: periodo_dia_anterior
