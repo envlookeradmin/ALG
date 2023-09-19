@@ -194,7 +194,7 @@ SELECT V.STAT_CURR,
     V.SALESORG,
     V.CALDAY,
     V.BASE_UOM,
-    'TOTAL USD' CATEGORY,
+    'TOTAL EUR' CATEGORY,
     V.CLIENT,
     CAST(c.DATE AS TIMESTAMP) Fecha,
     c.QUARTER,
@@ -359,6 +359,17 @@ WHERE CATEGORY = 'TOTAL MONEDA ORIGEN'
 
   }
 
+  dimension: vacio_1 {
+    type: string
+    sql: ' ' ;;
+    html:  <div class="ag-header-cell ag-header-cell-wrap-text ag-focus-managed" col-id="rpt_alg.vacio_1" style="background-color:#83FF33"> </div>;;
+  }
+
+  dimension: vacio_2 {
+    type: string
+    sql: ' ' ;;
+  }
+
   dimension: distr_chan {
     type: string
     sql: ${TABLE}.DISTR_CHAN ;;
@@ -392,7 +403,8 @@ WHERE CATEGORY = 'TOTAL MONEDA ORIGEN'
                 value == 'TOTAL MONEDA ORIGEN GTQ' or
                 value == 'TOTAL MONEDA ORIGEN CAD' or
                 value == 'TOTAL MXN' or
-                value == 'TOTAL USD'
+                value == 'TOTAL USD' or
+                value == 'TOTAL EUR'
       %}
       <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
       {% else %}
@@ -534,7 +546,8 @@ WHERE CATEGORY = 'TOTAL MONEDA ORIGEN'
     label: "Country"
     sql: ${TABLE}.CATEGORY2 ;;
     html: {% if value == 'TOTAL MXN' or
-          value == 'TOTAL USD'
+          value == 'TOTAL USD' or
+          value == 'TOTAL EUR'
           %}
         <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
         {% elsif value == 'SUB America (USD)' or
@@ -562,6 +575,7 @@ WHERE CATEGORY = 'TOTAL MONEDA ORIGEN'
       when ${TABLE}.CATEGORY2 = "SUB Europa (EUR)" then "EZ1"
       when ${TABLE}.CATEGORY2 = "TOTAL MXN" then "Z01"
       when ${TABLE}.CATEGORY2 = "TOTAL USD" then "Z02"
+      when ${TABLE}.CATEGORY2 = "TOTAL EUR" then "Z03"
       else "ZZZ" end ;;
   }
 
