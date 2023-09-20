@@ -18,7 +18,7 @@ view: rpt_alg {
           V.BASE_UOM,
           CASE
               /*WHEN V.CATEGORY = 'TOTAL MONEDA ORIGEN' THEN V.CATEGORY || ' ' || V.STAT_CURR*/
-              WHEN V.CATEGORY = 'TOTAL MONEDA ORIGEN' THEN 'TOTAL SOURCE CURRENCY' || ' ' || V.STAT_CURR
+              WHEN V.CATEGORY = 'TOTAL MONEDA ORIGEN' THEN 'TOTAL LOCAL CURREÑNCY' || ' ' || V.STAT_CURR
               ELSE V.CATEGORY
           END CATEGORY,
           V.CLIENT,
@@ -412,11 +412,11 @@ view: rpt_alg {
     # sql: case when ${TABLE}.CATEGORY is null then 'Otros' else ${TABLE}.CATEGORY  end ;;
     sql:  ${TABLE}.CATEGORY ;;
 
-    html: {% if value == 'TOTAL SOURCE CURRENCY USD' or
-                value == 'TOTAL SOURCE CURRENCY DKK' or
-                value == 'TOTAL SOURCE CURRENCY EUR' or
-                value == 'TOTAL SOURCE CURRENCY GTQ' or
-                value == 'TOTAL SOURCE CURRENCY CAD' or
+    html: {% if value == 'TOTAL LOCAL CURRENCY USD' or
+                value == 'TOTAL LOCAL CURRENCY DKK' or
+                value == 'TOTAL LOCAL CURRENCY EUR' or
+                value == 'TOTAL LOCAL CURRENCY GTQ' or
+                value == 'TOTAL LOCAL CURRENCY CAD' or
                 value == 'TOTAL MXN' or
                 value == 'TOTAL USD' or
                 value == 'TOTAL EUR'
