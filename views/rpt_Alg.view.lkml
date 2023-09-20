@@ -18,7 +18,7 @@ view: rpt_alg {
           V.BASE_UOM,
           CASE
               /*WHEN V.CATEGORY = 'TOTAL MONEDA ORIGEN' THEN V.CATEGORY || ' ' || V.STAT_CURR*/
-              WHEN V.CATEGORY = 'TOTAL MONEDA ORIGEN' THEN 'TOTAL LOCAL CURREÑNCY' || ' ' || V.STAT_CURR
+              WHEN V.CATEGORY = 'TOTAL MONEDA ORIGEN' THEN 'TOTAL LOCAL CURRENCY' || ' ' || V.STAT_CURR
               ELSE V.CATEGORY
           END CATEGORY,
           V.CLIENT,
@@ -741,7 +741,8 @@ view: rpt_alg {
 
     drill_fields: [ Client,SALES_DAY]
 
-    value_format: "#,##0"
+    #value_format: "#,##0"
+    value_format: "$#,##0.00"
   }
 
   measure: ult_act {
