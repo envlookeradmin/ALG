@@ -522,8 +522,8 @@ view: rpt_alg {
       when ${TABLE}.CATEGORY="Bote de Aerosol GT" then "A34"
       when ${TABLE}.CATEGORY="Bote de Pintura GT" then "A35"
       when ${TABLE}.CATEGORY="Bote Sanitario GT" then "A36"
-      when ${TABLE}.CATEGORY="Cubeta de Lamina GT" then "A37"
-      when ${TABLE}.CATEGORY="Varios GT" then "A38"
+      when ${TABLE}.CATEGORY="Varios GT" then "A37"
+      when ${TABLE}.CATEGORY="Cubeta de Lamina GT" then "A38"
 
       when ${TABLE}.CATEGORY="Bote Pint. Envases Ohio" then "A39"
       when ${TABLE}.CATEGORY="Cub.Lam. Envases Ohio" then "A40"
