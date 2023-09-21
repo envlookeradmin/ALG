@@ -538,8 +538,8 @@ view: rpt_alg {
       when ${TABLE}.CATEGORY="Print and Coating Services" then "B03"
 
 
-      when ${TABLE}.CATEGORY LIKE "TOTAL MONEDA ORIGEN%" then "Z1"
-      when ${TABLE}.CATEGORY="TOTAL MXN" then "Z2" else "z"  end ;;
+      when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
+      when ${TABLE}.CATEGORY="TOTAL MXN" then "Z02" else "z03"  end ;;
   }
 
   dimension: sort_category_denmark {
@@ -564,8 +564,8 @@ view: rpt_alg {
 
 
 
-      when ${TABLE}.CATEGORY="TOTAL MONEDA ORIGEN" then "Z1"
-      when ${TABLE}.CATEGORY="TOTAL MXN" then "Z2" else "b"  end ;;
+      when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
+      when ${TABLE}.CATEGORY="TOTAL MXN" then "Z02" else "z03"  end ;;
   }
 
   dimension: category2 {
@@ -601,9 +601,9 @@ view: rpt_alg {
       when ${TABLE}.CATEGORY2 = "ECW - WEST (EUR)" then "E04"
       when ${TABLE}.CATEGORY2 = "ECS - SOUTH (EUR)" then "E04"
       when ${TABLE}.CATEGORY2 = "SUB Europa (EUR)" then "EZ1"
-      when ${TABLE}.CATEGORY2 = "TOTAL MXN" then "Z01"
+      when ${TABLE}.CATEGORY2 = "TOTAL EUR" then "Z01"
       when ${TABLE}.CATEGORY2 = "TOTAL USD" then "Z02"
-      when ${TABLE}.CATEGORY2 = "TOTAL EUR" then "Z03"
+      when ${TABLE}.CATEGORY2 = "TOTAL MXN" then "Z03"
       else "ZZZ" end ;;
   }
 
