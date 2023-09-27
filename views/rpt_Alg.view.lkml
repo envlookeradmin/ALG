@@ -982,7 +982,8 @@ view: rpt_alg {
     filters: [distr_chan: "10"]
     filters: [version: "000"]
     drill_fields: [ sort_category,Client,NATIONAL_AMOUNT_MTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: EXPORT_AMOUNT_MTD {
@@ -998,7 +999,8 @@ view: rpt_alg {
     }
 
     drill_fields: [ Client,EXPORT_AMOUNT_MTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
 
   }
 
@@ -1011,7 +1013,8 @@ view: rpt_alg {
     #[#NATIONAL AMOUNT MTD]+[#EXPORT AMOUNT MTD]
 
     drill_fields: [ Client,NATIONAL_AMOUNT_MTD,EXPORT_AMOUNT_MTD,TOTAL_AMOUNT_MTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: NATIONAL_AMOUNT_MTD_LY{
@@ -1028,7 +1031,8 @@ view: rpt_alg {
     filters: [distr_chan: "10"]
     filters: [version: "000"]
     drill_fields: [ Client,NATIONAL_AMOUNT_MTD_LY]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: EXPORT_AMOUNT_MTD_LY {
@@ -1044,7 +1048,8 @@ view: rpt_alg {
       value: "yes"
     }
     drill_fields: [ Client,EXPORT_AMOUNT_MTD_LY]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
@@ -1055,7 +1060,8 @@ view: rpt_alg {
     sql: ${NATIONAL_AMOUNT_MTD_LY} + ${EXPORT_AMOUNT_MTD_LY} ;;
 
     drill_fields: [ Client,NATIONAL_AMOUNT_MTD_LY,EXPORT_AMOUNT_MTD_LY,TOTAL_AMOUNT_MTD_LY]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: VS_T_AMOUNT_MTD_LY {
@@ -1101,7 +1107,8 @@ view: rpt_alg {
     filters: [version: "A00"]
 
     drill_fields: [ Client,Z_NATIONAL_AMOUNT_BUD_MTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
@@ -1119,7 +1126,8 @@ view: rpt_alg {
     filters: [version: "A00"]
 
     drill_fields: [ Client,Z_EXPORT_AMOUNT_BUD_MTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
@@ -1132,7 +1140,8 @@ view: rpt_alg {
     #[#Z_BUD  NATIONAL AMOUNT]+ [#Z_BUD  EXPORT AMOUNT]
 
     drill_fields: [ Client,TOTAL_AMOUNT_BUD_MTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
@@ -1394,7 +1403,8 @@ view: rpt_alg {
     filters: [distr_chan: "10"]
     filters: [version: "000"]
     drill_fields: [ sort_category,Client,NATIONAL_AMOUNT_YTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: EXPORT_AMOUNT_YTD {
@@ -1410,7 +1420,8 @@ view: rpt_alg {
     }
 
     drill_fields: [ Client,EXPORT_AMOUNT_MTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
 
   }
 
@@ -1423,7 +1434,8 @@ view: rpt_alg {
     #[#NATIONAL AMOUNT MTD]+[#EXPORT AMOUNT MTD]
 
     drill_fields: [ Client,NATIONAL_AMOUNT_YTD,EXPORT_AMOUNT_YTD,TOTAL_AMOUNT_YTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: NATIONAL_AMOUNT_YTD_LY{
@@ -1440,7 +1452,8 @@ view: rpt_alg {
     filters: [distr_chan: "10"]
     filters: [version: "000"]
     drill_fields: [ Client,NATIONAL_AMOUNT_YTD_LY]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: EXPORT_AMOUNT_YTD_LY {
@@ -1456,7 +1469,8 @@ view: rpt_alg {
       value: "yes"
     }
     drill_fields: [ Client,EXPORT_AMOUNT_YTD_LY]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
@@ -1467,7 +1481,8 @@ view: rpt_alg {
     sql: ${NATIONAL_AMOUNT_YTD_LY} + ${EXPORT_AMOUNT_YTD_LY} ;;
 
     drill_fields: [ Client,NATIONAL_AMOUNT_YTD_LY,EXPORT_AMOUNT_YTD_LY,TOTAL_AMOUNT_YTD_LY]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: VS_T_AMOUNT_YTD_LY {
@@ -1513,7 +1528,8 @@ view: rpt_alg {
     filters: [version: "A00"]
 
     drill_fields: [ Client,Z_NATIONAL_AMOUNT_BUD_YTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
@@ -1531,7 +1547,8 @@ view: rpt_alg {
     filters: [version: "A00"]
 
     drill_fields: [ Client,Z_EXPORT_AMOUNT_BUD_YTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
@@ -1544,7 +1561,8 @@ view: rpt_alg {
     #[#Z_BUD  NATIONAL AMOUNT]+ [#Z_BUD  EXPORT AMOUNT]
 
     drill_fields: [ Client,TOTAL_AMOUNT_BUD_YTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
