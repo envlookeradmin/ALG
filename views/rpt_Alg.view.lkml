@@ -428,6 +428,7 @@ view: rpt_alg {
 
   }
 
+
   dimension: countries {
     case: {
       when: {
