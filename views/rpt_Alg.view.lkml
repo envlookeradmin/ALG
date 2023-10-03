@@ -428,6 +428,34 @@ view: rpt_alg {
 
   }
 
+#Se duplica category para prueba de link
+
+  dimension: category_v1 {
+    type: string
+    # sql: case when ${TABLE}.CATEGORY is null then 'Otros' else ${TABLE}.CATEGORY  end ;;
+    sql:  ${TABLE}.CATEGORY ;;
+
+    link: {
+      label: "Dist. Chanel"
+      url: "https://envases.cloud.looker.com/dashboards/48?&Período={{ _filters['rpt_alg.date_filter'] | url_encode }}&Category={{ rpt_alg.category._value | url_encode}}"
+    }
+
+    html: {% if value == 'TOTAL LOCAL CURRENCY USD' or
+                value == 'TOTAL LOCAL CURRENCY DKK' or
+                value == 'TOTAL LOCAL CURRENCY EUR' or
+                value == 'TOTAL LOCAL CURRENCY GTQ' or
+                value == 'TOTAL LOCAL CURRENCY CAD' or
+                value == 'TOTAL MXN' or
+                value == 'TOTAL USD' or
+                value == 'TOTAL EUR'
+      %}
+      <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
+      {% else %}
+      <p style="">{{ rendered_value }}</p>
+      {% endif %} ;;
+
+  }
+
 
   dimension: countries {
     case: {
