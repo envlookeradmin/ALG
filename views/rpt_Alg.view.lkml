@@ -437,7 +437,7 @@ view: rpt_alg {
 
     link: {
       label: "Dist. Chanel"
-      url: "https://envases.cloud.looker.com/dashboards/48?&Período={{ _filters['rpt_alg.date_filter'] | url_encode }}&Category={{ rpt_alg.category._value | url_encode}}"
+      url: "https://envases.cloud.looker.com/dashboards/48?&Período={{ _filters['rpt_alg.date_filter'] | url_encode }}&Category={{ rpt_alg.category_v1._value | url_encode}}"
     }
 
     html: {% if value == 'TOTAL LOCAL CURRENCY USD' or
