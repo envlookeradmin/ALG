@@ -785,12 +785,12 @@ view: rpt_alg {
     sql: ${znetval} ;;
 
     filters: {
-      field: periodo_dia_anterior
+      field: periodo_dia
       value: "yes"
     }
 
 
-    filters: [distr_chan: "10"]
+    #filters: [distr_chan: "10"]
     filters: [version: "000"]
 
     drill_fields: [ Client,SALES_DAY]
