@@ -34,7 +34,12 @@ view: rpt_alg_category {
               OR (
                   V.SALESORG IN ('MXF1', 'MXFC')
                   and V.CATEGORY NOT IN ('Cubeta de Plastico')
-              ) THEN 1
+              )
+              OR (
+                  V.CLUSTER IN ('ECN - NORTH', 'ECS - SOUTH', 'ECC - CENTRAL')
+                  and V.CATEGORY NOT IN ('Fish','Vegetables','Industrial','Print and Coating Services')
+              )
+              THEN 1
               ELSE 0
           END SUMMARY_FLAG,
           V.PLANT_COUNTRY,
@@ -412,7 +417,8 @@ view: rpt_alg_category {
     # sql: case when ${TABLE}.CATEGORY is null then 'Otros' else ${TABLE}.CATEGORY  end ;;
     sql:  ${TABLE}.CATEGORY ;;
 
-    html: {% if value == 'TOTAL LOCAL CURRENCY USD' or
+    html:
+      {% if value == 'TOTAL LOCAL CURRENCY USD' or
                 value == 'TOTAL LOCAL CURRENCY DKK' or
                 value == 'TOTAL LOCAL CURRENCY EUR' or
                 value == 'TOTAL LOCAL CURRENCY GTQ' or
@@ -422,6 +428,15 @@ view: rpt_alg_category {
                 value == 'TOTAL EUR'
       %}
       <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
+
+      {% elsif value == 'Fish' or
+                value == 'Vegetables' or
+                value == 'Industrial' or
+                value == 'Print and Coating Services'
+
+      %}
+      <p style="color: black; font-weight: bold; font-size:100%; text-align:left">{{ rendered_value }}</p>
+
       {% else %}
       <p style="">{{ rendered_value }}</p>
       {% endif %} ;;
@@ -598,8 +613,9 @@ view: rpt_alg_category {
                     when ${TABLE}.CATEGORY="PeelOff" then "a19"
                     when ${TABLE}.CATEGORY="Super" then "a20"
                     when ${TABLE}.CATEGORY="Other" then "a21"
+
                     when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
-                    when ${TABLE}.CATEGORY="TOTAL MXN" then "Z02"
+                    when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
                     else "Z03"
                 end
 
@@ -621,7 +637,55 @@ view: rpt_alg_category {
                     when ${TABLE}.CATEGORY="SC Print" then "a12"
 
                     when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
-                    when ${TABLE}.CATEGORY="TOTAL MXN" then "Z02"
+                    when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
+                    else "Z03"
+                end
+
+              when ${TABLE}.CLUSTER = "ECS - SOUTH" then
+
+                case
+                    when ${TABLE}.CATEGORY="Fish - 1/2 Oval" then "a01"
+                    when ${TABLE}.CATEGORY="Fish - 1/4 Oval" then "a02"
+                    when ${TABLE}.CATEGORY="Fish - 127" then "a03"
+                    when ${TABLE}.CATEGORY="Fish - 150" then "a04"
+                    when ${TABLE}.CATEGORY="Fish - 153" then "a05"
+                    when ${TABLE}.CATEGORY="Fish - 65" then "a06"
+                    when ${TABLE}.CATEGORY="Fish - 73" then "a07"
+                    when ${TABLE}.CATEGORY="Fish - 83" then "a08"
+                    when ${TABLE}.CATEGORY="Fish - 99" then "a09"
+                    when ${TABLE}.CATEGORY="Fish - Anchoas" then "a10"
+                    when ${TABLE}.CATEGORY="Fish - Club" then "a11"
+                    when ${TABLE}.CATEGORY="Fish - Goods for Resale" then "a12"
+                    when ${TABLE}.CATEGORY="Fish - Others" then "a13"
+                    when ${TABLE}.CATEGORY="Fish - Pails" then "a14"
+                    when ${TABLE}.CATEGORY="Fish - RR90" then "a15"
+                    when ${TABLE}.CATEGORY="Fish" then "a16"
+
+                    when ${TABLE}.CATEGORY="Vegetables - 153" then "a17"
+                    when ${TABLE}.CATEGORY="Vegetables - 65" then "a18"
+                    when ${TABLE}.CATEGORY="Vegetables - 73" then "a19"
+                    when ${TABLE}.CATEGORY="Vegetables - 83" then "a20"
+                    when ${TABLE}.CATEGORY="Vegetables - 99" then "a21"
+                    when ${TABLE}.CATEGORY="Vegetables - Club" then "a22"
+                    when ${TABLE}.CATEGORY="Vegetables - Goods for Resale" then "a23"
+                    when ${TABLE}.CATEGORY="Vegetables - Others" then "a24"
+                    when ${TABLE}.CATEGORY="Vegetables" then "a25"
+
+                    when ${TABLE}.CATEGORY="Industrial - 73" then "a26"
+                    when ${TABLE}.CATEGORY="Industrial - 99" then "a27"
+                    when ${TABLE}.CATEGORY="Industrial - General Line" then "a28"
+                    when ${TABLE}.CATEGORY="Industrial - Goods for Resale" then "a29"
+                    when ${TABLE}.CATEGORY="Industrial - Others" then "a30"
+                    when ${TABLE}.CATEGORY="Industrial - Pails" then "a31"
+                    when ${TABLE}.CATEGORY="Industrial" then "a32"
+
+                    when ${TABLE}.CATEGORY="Print and Coating Services - Goods for Resale" then "a33"
+                    when ${TABLE}.CATEGORY="Print and Coating Services - Others" then "a34"
+                    when ${TABLE}.CATEGORY="Print and Coating Services - Pails" then "a35"
+                    when ${TABLE}.CATEGORY="Print and Coating Services" then "a36"
+
+                    when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
+                    when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
                     else "Z03"
                 end
 
@@ -637,31 +701,31 @@ view: rpt_alg_category {
     type: string
     sql: case
 
-                                      when ${TABLE}.CATEGORY="CP 19L" then "A01"
-                                      when ${TABLE}.CATEGORY="CP 15L" then "A02"
-                                      when ${TABLE}.CATEGORY="CP 10L" then "A03"
-                                      when ${TABLE}.CATEGORY="CP 08L" then "A04"
-                                      when ${TABLE}.CATEGORY="CP 04L" then "A05"
-                                      when ${TABLE}.CATEGORY="Cubeta de Plastico" then "A06"
-                                      when ${TABLE}.CATEGORY="Porron de Plastico" then "A07"
-                                      when ${TABLE}.CATEGORY="Tambores de Plastico" then "A08"
-                                      when ${TABLE}.CATEGORY="Bote bocan" then "A09"
-                                      when ${TABLE}.CATEGORY="Tambores" then "A10"
-                                      when ${TABLE}.CATEGORY="Tambores Conicos" then "A11"
-                                      when ${TABLE}.CATEGORY="Cubeta de Lamina" then "A12"
-                                      when ${TABLE}.CATEGORY="Alcoholero" then "A13"
-                                      when ${TABLE}.CATEGORY="Bote de Pintura" then "A14"
-                                      when ${TABLE}.CATEGORY="Bote de Aerosol" then "A15"
-                                      when ${TABLE}.CATEGORY="Línea General" then "A16"
-                                      when ${TABLE}.CATEGORY="Bote Sanitario" then "A17"
-                                      when ${TABLE}.CATEGORY="Bote Atún" then "A18"
-                                      when ${TABLE}.CATEGORY="Bote Oval" then "A19"
-                                      when ${TABLE}.CATEGORY="Tapa Easy Open" then "A20"
-                                      when ${TABLE}.CATEGORY="Fondo Charola y Bafle" then "A21"
-                                      when ${TABLE}.CATEGORY="Tapa Twiss Off" then "A22"
-                                      when ${TABLE}.CATEGORY="Varios" then "A23"
-                                      when ${TABLE}.CATEGORY="Fish." then "A24"
-                                      when ${TABLE}.CATEGORY="PeelOff." then "A25"
+      when ${TABLE}.CATEGORY="CP 19L" then "A01"
+      when ${TABLE}.CATEGORY="CP 15L" then "A02"
+      when ${TABLE}.CATEGORY="CP 10L" then "A03"
+      when ${TABLE}.CATEGORY="CP 08L" then "A04"
+      when ${TABLE}.CATEGORY="CP 04L" then "A05"
+      when ${TABLE}.CATEGORY="Cubeta de Plastico" then "A06"
+      when ${TABLE}.CATEGORY="Porron de Plastico" then "A07"
+      when ${TABLE}.CATEGORY="Tambores de Plastico" then "A08"
+      when ${TABLE}.CATEGORY="Bote bocan" then "A09"
+      when ${TABLE}.CATEGORY="Tambores" then "A10"
+      when ${TABLE}.CATEGORY="Tambores Conicos" then "A11"
+      when ${TABLE}.CATEGORY="Cubeta de Lamina" then "A12"
+      when ${TABLE}.CATEGORY="Alcoholero" then "A13"
+      when ${TABLE}.CATEGORY="Bote de Pintura" then "A14"
+      when ${TABLE}.CATEGORY="Bote de Aerosol" then "A15"
+      when ${TABLE}.CATEGORY="Línea General" then "A16"
+      when ${TABLE}.CATEGORY="Bote Sanitario" then "A17"
+      when ${TABLE}.CATEGORY="Bote Atún" then "A18"
+      when ${TABLE}.CATEGORY="Bote Oval" then "A19"
+      when ${TABLE}.CATEGORY="Tapa Easy Open" then "A20"
+      when ${TABLE}.CATEGORY="Fondo Charola y Bafle" then "A21"
+      when ${TABLE}.CATEGORY="Tapa Twiss Off" then "A22"
+      when ${TABLE}.CATEGORY="Varios" then "A23"
+      when ${TABLE}.CATEGORY="Fish." then "A24"
+      when ${TABLE}.CATEGORY="PeelOff." then "A25"
 
       when ${TABLE}.CATEGORY="Coating and Printing Services" then "A26"
       when ${TABLE}.CATEGORY="Miscelaneous" then "A27"
@@ -903,9 +967,9 @@ view: rpt_alg_category {
 
 ################################################################### CALCULOS DIARIOS ######################################################
 
-  measure: SALES_DAY {
+  measure: DAILY_SALES {
     group_label: "Daily"
-    label: "SALES YESTERDAY"
+    label: "DAILY SALES"
     type: sum
     sql: ${znetval} ;;
 
@@ -918,7 +982,7 @@ view: rpt_alg_category {
     #filters: [distr_chan: "10"]
     filters: [version: "000"]
 
-    drill_fields: [ Client,SALES_DAY]
+    drill_fields: [ Client,DAILY_SALES]
 
     #value_format: "#,##0"
     value_format: "$#,##0.00"
