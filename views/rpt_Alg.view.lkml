@@ -428,6 +428,35 @@ view: rpt_alg {
 
   }
 
+#Se duplica category para prueba de link
+
+  dimension: category_v1 {
+    type: string
+    # sql: case when ${TABLE}.CATEGORY is null then 'Otros' else ${TABLE}.CATEGORY  end ;;
+    sql:  ${TABLE}.CATEGORY ;;
+
+    link: {
+      label: "Dist. Chanel"
+      url: "https://envases.cloud.looker.com/dashboards/48?&Período={{ _filters['rpt_alg.date_filter'] | url_encode }}&Category={{ rpt_alg.category_v1._value | url_encode}}"
+    }
+
+    html: {% if value == 'TOTAL LOCAL CURRENCY USD' or
+                value == 'TOTAL LOCAL CURRENCY DKK' or
+                value == 'TOTAL LOCAL CURRENCY EUR' or
+                value == 'TOTAL LOCAL CURRENCY GTQ' or
+                value == 'TOTAL LOCAL CURRENCY CAD' or
+                value == 'TOTAL MXN' or
+                value == 'TOTAL USD' or
+                value == 'TOTAL EUR'
+      %}
+      <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
+      {% else %}
+      <p style="">{{ rendered_value }}</p>
+      {% endif %} ;;
+
+  }
+
+
   dimension: countries {
     case: {
       when: {
@@ -733,6 +762,19 @@ view: rpt_alg {
 
   }
 
+################################################################### METRICA VACIOS ########################################################
+
+  measure: empty_value1 {
+    label: "Empty value 1"
+    type: string
+    sql: '';;
+  }
+
+  measure: empty_value2 {
+    label: "Empty value 2"
+    type: string
+    sql: '';;
+  }
 
 ################################################################### CALCULOS DIARIOS ######################################################
 
@@ -743,12 +785,12 @@ view: rpt_alg {
     sql: ${znetval} ;;
 
     filters: {
-      field: periodo_dia_anterior
+      field: periodo_dia
       value: "yes"
     }
 
 
-    filters: [distr_chan: "10"]
+    #filters: [distr_chan: "10"]
     filters: [version: "000"]
 
     drill_fields: [ Client,SALES_DAY]
@@ -982,7 +1024,8 @@ view: rpt_alg {
     filters: [distr_chan: "10"]
     filters: [version: "000"]
     drill_fields: [ sort_category,Client,NATIONAL_AMOUNT_MTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: EXPORT_AMOUNT_MTD {
@@ -998,7 +1041,8 @@ view: rpt_alg {
     }
 
     drill_fields: [ Client,EXPORT_AMOUNT_MTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
 
   }
 
@@ -1011,7 +1055,8 @@ view: rpt_alg {
     #[#NATIONAL AMOUNT MTD]+[#EXPORT AMOUNT MTD]
 
     drill_fields: [ Client,NATIONAL_AMOUNT_MTD,EXPORT_AMOUNT_MTD,TOTAL_AMOUNT_MTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: NATIONAL_AMOUNT_MTD_LY{
@@ -1028,7 +1073,8 @@ view: rpt_alg {
     filters: [distr_chan: "10"]
     filters: [version: "000"]
     drill_fields: [ Client,NATIONAL_AMOUNT_MTD_LY]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: EXPORT_AMOUNT_MTD_LY {
@@ -1044,7 +1090,8 @@ view: rpt_alg {
       value: "yes"
     }
     drill_fields: [ Client,EXPORT_AMOUNT_MTD_LY]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
@@ -1055,7 +1102,8 @@ view: rpt_alg {
     sql: ${NATIONAL_AMOUNT_MTD_LY} + ${EXPORT_AMOUNT_MTD_LY} ;;
 
     drill_fields: [ Client,NATIONAL_AMOUNT_MTD_LY,EXPORT_AMOUNT_MTD_LY,TOTAL_AMOUNT_MTD_LY]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: VS_T_AMOUNT_MTD_LY {
@@ -1101,7 +1149,8 @@ view: rpt_alg {
     filters: [version: "A00"]
 
     drill_fields: [ Client,Z_NATIONAL_AMOUNT_BUD_MTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
@@ -1119,7 +1168,8 @@ view: rpt_alg {
     filters: [version: "A00"]
 
     drill_fields: [ Client,Z_EXPORT_AMOUNT_BUD_MTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
@@ -1132,7 +1182,8 @@ view: rpt_alg {
     #[#Z_BUD  NATIONAL AMOUNT]+ [#Z_BUD  EXPORT AMOUNT]
 
     drill_fields: [ Client,TOTAL_AMOUNT_BUD_MTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
@@ -1394,7 +1445,8 @@ view: rpt_alg {
     filters: [distr_chan: "10"]
     filters: [version: "000"]
     drill_fields: [ sort_category,Client,NATIONAL_AMOUNT_YTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: EXPORT_AMOUNT_YTD {
@@ -1410,7 +1462,8 @@ view: rpt_alg {
     }
 
     drill_fields: [ Client,EXPORT_AMOUNT_MTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
 
   }
 
@@ -1423,7 +1476,8 @@ view: rpt_alg {
     #[#NATIONAL AMOUNT MTD]+[#EXPORT AMOUNT MTD]
 
     drill_fields: [ Client,NATIONAL_AMOUNT_YTD,EXPORT_AMOUNT_YTD,TOTAL_AMOUNT_YTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: NATIONAL_AMOUNT_YTD_LY{
@@ -1440,7 +1494,8 @@ view: rpt_alg {
     filters: [distr_chan: "10"]
     filters: [version: "000"]
     drill_fields: [ Client,NATIONAL_AMOUNT_YTD_LY]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: EXPORT_AMOUNT_YTD_LY {
@@ -1456,7 +1511,8 @@ view: rpt_alg {
       value: "yes"
     }
     drill_fields: [ Client,EXPORT_AMOUNT_YTD_LY]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
@@ -1467,7 +1523,8 @@ view: rpt_alg {
     sql: ${NATIONAL_AMOUNT_YTD_LY} + ${EXPORT_AMOUNT_YTD_LY} ;;
 
     drill_fields: [ Client,NATIONAL_AMOUNT_YTD_LY,EXPORT_AMOUNT_YTD_LY,TOTAL_AMOUNT_YTD_LY]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
   measure: VS_T_AMOUNT_YTD_LY {
@@ -1513,7 +1570,8 @@ view: rpt_alg {
     filters: [version: "A00"]
 
     drill_fields: [ Client,Z_NATIONAL_AMOUNT_BUD_YTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
@@ -1531,7 +1589,8 @@ view: rpt_alg {
     filters: [version: "A00"]
 
     drill_fields: [ Client,Z_EXPORT_AMOUNT_BUD_YTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
@@ -1544,7 +1603,8 @@ view: rpt_alg {
     #[#Z_BUD  NATIONAL AMOUNT]+ [#Z_BUD  EXPORT AMOUNT]
 
     drill_fields: [ Client,TOTAL_AMOUNT_BUD_YTD]
-    value_format: "#,##0.00"
+    #value_format: "#,##0.00"
+    value_format: "$#,##0.00"
   }
 
 
