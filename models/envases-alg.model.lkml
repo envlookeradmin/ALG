@@ -37,6 +37,7 @@ explore: rpt_ventas {
 explore: rpt_ventasytd {}
 explore: calendar {}
 explore: rpt_alg {}
+explore: rpt_alg_category{}
 explore: ventas {}
 
 
