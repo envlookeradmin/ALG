@@ -778,9 +778,9 @@ view: rpt_alg {
 
 ################################################################### CALCULOS DIARIOS ######################################################
 
-  measure: SALES_DAY {
+  measure: DAILY_SALES {
     group_label: "Daily"
-    label: "SALES YESTERDAY"
+    label: "DAILY SALES"
     type: sum
     sql: ${znetval} ;;
 
@@ -793,7 +793,7 @@ view: rpt_alg {
     #filters: [distr_chan: "10"]
     filters: [version: "000"]
 
-    drill_fields: [ Client,SALES_DAY]
+    drill_fields: [ Client,DAILY_SALES]
 
     #value_format: "#,##0"
     value_format: "$#,##0.00"
@@ -904,7 +904,7 @@ view: rpt_alg {
     type: number
     sql: ${NATIONAL_QTY_MTD_LY} + ${EXPORT_QTY_MTD_LY} ;;
 
-    drill_fields: [ Client,NATIONAL_QTY_MTD_LY,EXPORT_QTY_MTD_LY,TOTAL_QTY_MTD_LY]
+    drill_fields: [ Client,TOTAL_QTY_MTD_LY]
     value_format: "#,##0.00"
   }
 
@@ -931,7 +931,7 @@ view: rpt_alg {
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_QTY_MTD,TOTAL_QTY_MTD_LY,VS_T_QTY_MTD_LY]
+    drill_fields: [ Client,VS_T_QTY_MTD_LY,TOTAL_QTY_MTD,TOTAL_QTY_MTD_LY]
 
   }
 
@@ -976,7 +976,7 @@ view: rpt_alg {
     sql: ${NATIONAL_QTY_BUD_MTD} + ${EXPORT_QTY_BUD_MTD} ;;
     #[#NATIONAL BUD QTY MTD]+ [#EXPORT BUD QTY MTD]
 
-    drill_fields: [ Client,NATIONAL_QTY_BUD_MTD,EXPORT_QTY_BUD_MTD,T_QTY_BUD_MTD]
+    drill_fields: [ Client,T_QTY_BUD_MTD]
     value_format: "#,##0"
   }
 
@@ -1005,7 +1005,7 @@ view: rpt_alg {
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_QTY_MTD,T_QTY_BUD_MTD,VS_T_QTY_BUD_MTD]
+    drill_fields: [ Client,VS_T_QTY_BUD_MTD,TOTAL_QTY_MTD,T_QTY_BUD_MTD]
 
   }
 
@@ -1023,7 +1023,8 @@ view: rpt_alg {
 
     filters: [distr_chan: "10"]
     filters: [version: "000"]
-    drill_fields: [ sort_category,Client,NATIONAL_AMOUNT_MTD]
+    #drill_fields: [ sort_category,Client,NATIONAL_AMOUNT_MTD]
+    drill_fields: [Client,NATIONAL_AMOUNT_MTD]
     #value_format: "#,##0.00"
     value_format: "$#,##0.00"
   }
@@ -1054,7 +1055,7 @@ view: rpt_alg {
     sql: ${NATIONAL_AMOUNT_MTD} + ${EXPORT_AMOUNT_MTD} ;;
     #[#NATIONAL AMOUNT MTD]+[#EXPORT AMOUNT MTD]
 
-    drill_fields: [ Client,NATIONAL_AMOUNT_MTD,EXPORT_AMOUNT_MTD,TOTAL_AMOUNT_MTD]
+    drill_fields: [ Client,TOTAL_AMOUNT_MTD]
     #value_format: "#,##0.00"
     value_format: "$#,##0.00"
   }
@@ -1101,7 +1102,7 @@ view: rpt_alg {
     type: number
     sql: ${NATIONAL_AMOUNT_MTD_LY} + ${EXPORT_AMOUNT_MTD_LY} ;;
 
-    drill_fields: [ Client,NATIONAL_AMOUNT_MTD_LY,EXPORT_AMOUNT_MTD_LY,TOTAL_AMOUNT_MTD_LY]
+    drill_fields: [ Client,TOTAL_AMOUNT_MTD_LY]
     #value_format: "#,##0.00"
     value_format: "$#,##0.00"
   }
@@ -1129,7 +1130,7 @@ view: rpt_alg {
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_AMOUNT_MTD,TOTAL_AMOUNT_MTD_LY,VS_T_AMOUNT_MTD_LY]
+    drill_fields: [ Client,VS_T_AMOUNT_MTD_LY,TOTAL_AMOUNT_MTD,TOTAL_AMOUNT_MTD_LY]
 
   }
 
@@ -1210,7 +1211,7 @@ view: rpt_alg {
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_AMOUNT_MTD,TOTAL_AMOUNT_BUD_MTD,VS_TOTAL_BUD_MTD]
+    drill_fields: [ Client,VS_TOTAL_BUD_MTD,TOTAL_AMOUNT_MTD,TOTAL_AMOUNT_BUD_MTD]
 
   }
 
@@ -1324,7 +1325,7 @@ view: rpt_alg {
     type: number
     sql: ${NATIONAL_QTY_YTD_LY} + ${EXPORT_QTY_YTD_LY} ;;
 
-    drill_fields: [ Client,NATIONAL_QTY_YTD_LY,EXPORT_QTY_YTD_LY,TOTAL_QTY_YTD_LY]
+    drill_fields: [ Client,TOTAL_QTY_YTD_LY]
     value_format: "#,##0.00"
   }
 
@@ -1351,7 +1352,7 @@ view: rpt_alg {
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_QTY_YTD,TOTAL_QTY_YTD_LY,VS_T_QTY_YTD_LY]
+    drill_fields: [ Client,VS_T_QTY_YTD_LY,TOTAL_QTY_YTD,TOTAL_QTY_YTD_LY]
 
   }
 
@@ -1398,7 +1399,7 @@ view: rpt_alg {
     sql: ${NATIONAL_QTY_BUD_YTD} + ${EXPORT_QTY_BUD_YTD} ;;
     #[#NATIONAL BUD QTY MTD]+ [#EXPORT BUD QTY MTD]
 
-    drill_fields: [ Client,NATIONAL_QTY_BUD_YTD,EXPORT_QTY_BUD_YTD,T_QTY_BUD_YTD]
+    drill_fields: [ Client,T_QTY_BUD_YTD]
     value_format: "#,##0"
   }
 
@@ -1426,7 +1427,7 @@ view: rpt_alg {
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_QTY_YTD,T_QTY_BUD_YTD,VS_T_QTY_BUD_YTD]
+    drill_fields: [ Client,VS_T_QTY_BUD_YTD,TOTAL_QTY_YTD,T_QTY_BUD_YTD]
 
   }
 
@@ -1444,7 +1445,8 @@ view: rpt_alg {
 
     filters: [distr_chan: "10"]
     filters: [version: "000"]
-    drill_fields: [ sort_category,Client,NATIONAL_AMOUNT_YTD]
+    #drill_fields: [ sort_category,Client,NATIONAL_AMOUNT_YTD]
+    drill_fields: [ Client,NATIONAL_AMOUNT_YTD]
     #value_format: "#,##0.00"
     value_format: "$#,##0.00"
   }
@@ -1461,7 +1463,7 @@ view: rpt_alg {
       value: "yes"
     }
 
-    drill_fields: [ Client,EXPORT_AMOUNT_MTD]
+    drill_fields: [ Client,EXPORT_AMOUNT_YTD]
     #value_format: "#,##0.00"
     value_format: "$#,##0.00"
 
@@ -1475,7 +1477,7 @@ view: rpt_alg {
     sql: ${NATIONAL_AMOUNT_YTD} + ${EXPORT_AMOUNT_YTD} ;;
     #[#NATIONAL AMOUNT MTD]+[#EXPORT AMOUNT MTD]
 
-    drill_fields: [ Client,NATIONAL_AMOUNT_YTD,EXPORT_AMOUNT_YTD,TOTAL_AMOUNT_YTD]
+    drill_fields: [ Client,TOTAL_AMOUNT_YTD]
     #value_format: "#,##0.00"
     value_format: "$#,##0.00"
   }
@@ -1522,7 +1524,7 @@ view: rpt_alg {
     type: number
     sql: ${NATIONAL_AMOUNT_YTD_LY} + ${EXPORT_AMOUNT_YTD_LY} ;;
 
-    drill_fields: [ Client,NATIONAL_AMOUNT_YTD_LY,EXPORT_AMOUNT_YTD_LY,TOTAL_AMOUNT_YTD_LY]
+    drill_fields: [ Client,TOTAL_AMOUNT_YTD_LY]
     #value_format: "#,##0.00"
     value_format: "$#,##0.00"
   }
@@ -1550,7 +1552,7 @@ view: rpt_alg {
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_AMOUNT_YTD,TOTAL_AMOUNT_YTD_LY,VS_T_AMOUNT_YTD_LY]
+    drill_fields: [ Client,VS_T_AMOUNT_YTD_LY,TOTAL_AMOUNT_YTD,TOTAL_AMOUNT_YTD_LY]
 
   }
 
@@ -1631,7 +1633,7 @@ view: rpt_alg {
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_AMOUNT_YTD,TOTAL_AMOUNT_BUD_YTD,VS_TOTAL_BUD_YTD]
+    drill_fields: [ Client,VS_TOTAL_BUD_YTD,TOTAL_AMOUNT_YTD,TOTAL_AMOUNT_BUD_YTD]
 
   }
 
