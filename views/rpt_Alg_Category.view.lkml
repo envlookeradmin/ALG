@@ -429,7 +429,10 @@ view: rpt_alg_category {
       %}
       <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
 
-      {% elsif value == 'Fish' or
+      {% elsif
+               value == 'Mediapack' or
+               value == 'Catering' or
+               value == 'Fish' or
                value == 'Ham' or
                value == 'Luncheon' or
                value == 'Pullman' or
