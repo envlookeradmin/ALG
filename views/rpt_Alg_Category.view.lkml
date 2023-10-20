@@ -430,9 +430,21 @@ view: rpt_alg_category {
       <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
 
       {% elsif value == 'Fish' or
-                value == 'Vegetables' or
-                value == 'Industrial' or
-                value == 'Print and Coating Services'
+               value == 'Ham' or
+               value == 'Luncheon' or
+               value == 'Pullman' or
+               value == 'Roundfood' or
+               value == 'Beverage' or
+               value == 'Dekopak' or
+               value == 'Feta' or
+               value == 'Milkpowder' or
+               value == 'PeelOff' or
+               value == 'Super' or
+               value == 'Other' or
+
+               value == 'Vegetables' or
+               value == 'Industrial' or
+               value == 'Print and Coating Services'
 
       %}
       <p style="color: black; font-weight: bold; font-size:100%; text-align:left">{{ rendered_value }}</p>
