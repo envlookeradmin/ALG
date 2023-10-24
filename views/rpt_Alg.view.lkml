@@ -583,7 +583,12 @@ view: rpt_alg {
                     when ${TABLE}.CATEGORY="TOTAL USD" then "Z02"
                 else "Z03" end
 
-              end
+              when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
+              when ${TABLE}.CATEGORY="TOTAL USD" then "Z02"
+              when ${TABLE}.CATEGORY="TOTAL EUR" then "Z03"
+              when ${TABLE}.CATEGORY="TOTAL MXN" then "Z04"
+
+        end
                     ;;
   }
 
