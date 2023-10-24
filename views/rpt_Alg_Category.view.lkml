@@ -447,7 +447,12 @@ view: rpt_alg_category {
 
                value == 'Vegetables' or
                value == 'Industrial' or
-               value == 'Print and Coating Services'
+               value == 'Print and Coating Services' or
+               value == 'KEGs Draught' or
+               value == 'KEGs Gravity' or
+               value == 'Industrial Total' or
+               value == 'Plastik' or
+               value == 'SC Print'
 
       %}
       <p style="color: black; font-weight: bold; font-size:100%; text-align:left">{{ rendered_value }}</p>
@@ -637,19 +642,25 @@ view: rpt_alg_category {
             when ${TABLE}.CLUSTER = 'ECC - CENTRAL' then
 
                 case
-                    when ${TABLE}.CATEGORY="Beverage Draught" then "a01"
-                    when ${TABLE}.CATEGORY="Beverage Gravity" then "a02"
-                    when ${TABLE}.CATEGORY="Tin cans" then "a03"
-                    when ${TABLE}.CATEGORY="Hobbocks" then "a04"
-                    when ${TABLE}.CATEGORY="MISC" then "a05"
-                    when ${TABLE}.CATEGORY="Pails" then "a06"
-                    when ${TABLE}.CATEGORY="Square" then "a07"
-                    when ${TABLE}.CATEGORY="Vacuum ink cans" then "a08"
-                    when ${TABLE}.CATEGORY="Plastic" then "a09"
-                    when ${TABLE}.CATEGORY="Industrial - Other" then "a10"
-                    when ${TABLE}.CATEGORY="Industrial" then "a11"
+                    /*when ${TABLE}.CATEGORY="Beverage Draught" then "a01"*/
+                    when ${TABLE}.CATEGORY="KEGs Draught" then "a01"
+                    /*when ${TABLE}.CATEGORY="Beverage Gravity" then "a02"*/
+                    when ${TABLE}.CATEGORY="KEGs Gravity" then "a02"
 
-                    when ${TABLE}.CATEGORY="SC Print" then "a12"
+                    when ${TABLE}.CATEGORY="Tin Cans" then "a03"
+                    when ${TABLE}.CATEGORY="Vacuum Ink" then "a04"
+                    when ${TABLE}.CATEGORY="Cans" then "a05"
+                    when ${TABLE}.CATEGORY="Pails" then "a06"
+                    when ${TABLE}.CATEGORY="Hobbocks" then "a07"
+                    when ${TABLE}.CATEGORY="Rectangular" then "a08"
+                    when ${TABLE}.CATEGORY="Miscellaneous" then "a09"
+
+                    when ${TABLE}.CATEGORY="Plastik" then "a10"
+
+                    /*when ${TABLE}.CATEGORY="Industrial - Other" then "a11"*/
+                    when ${TABLE}.CATEGORY="Industrial Total" then "a12"
+
+                    when ${TABLE}.CATEGORY="SC Print" then "a13"
 
                     when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
                     when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
