@@ -511,64 +511,80 @@ view: rpt_alg {
     label: "sort_category_mexico"
     type: string
     sql: case
+             when ${TABLE}.CLUSTER = 'MEXICO' then
+                case
+                    when ${TABLE}.CATEGORY="CP 19L" then "A01"
+                    when ${TABLE}.CATEGORY="CP 15L" then "A02"
+                    when ${TABLE}.CATEGORY="CP 10L" then "A03"
+                    when ${TABLE}.CATEGORY="CP 08L" then "A04"
+                    when ${TABLE}.CATEGORY="CP 04L" then "A05"
+                    when ${TABLE}.CATEGORY="Cubeta de Plastico" then "A06"
+                    when ${TABLE}.CATEGORY="Porron de Plastico" then "A07"
+                    when ${TABLE}.CATEGORY="Tambores de Plastico" then "A08"
+                    when ${TABLE}.CATEGORY="Bote bocan" then "A09"
+                    when ${TABLE}.CATEGORY="Tambores" then "A10"
+                    when ${TABLE}.CATEGORY="Tambores Conicos" then "A11"
+                    when ${TABLE}.CATEGORY="Cubeta de Lamina" then "A12"
+                    when ${TABLE}.CATEGORY="Alcoholero" then "A13"
+                    when ${TABLE}.CATEGORY="Bote de Pintura" then "A14"
+                    when ${TABLE}.CATEGORY="Bote de Aerosol" then "A15"
+                    when ${TABLE}.CATEGORY="Línea General" then "A16"
+                    when ${TABLE}.CATEGORY="Bote Sanitario" then "A17"
+                    when ${TABLE}.CATEGORY="Bote Atún" then "A18"
+                    when ${TABLE}.CATEGORY="Bote Oval" then "A19"
+                    when ${TABLE}.CATEGORY="Tapa Easy Open" then "A20"
+                    when ${TABLE}.CATEGORY="Fondo Charola y Bafle" then "A21"
+                    when ${TABLE}.CATEGORY="Tapa Twiss Off" then "A22"
+                    when ${TABLE}.CATEGORY="Varios" then "A23"
+                    when ${TABLE}.CATEGORY="Fish." then "A24"
+                    when ${TABLE}.CATEGORY="PeelOff." then "A25"
 
-                        when ${TABLE}.CATEGORY="CP 19L" then "A01"
-                        when ${TABLE}.CATEGORY="CP 15L" then "A02"
-                        when ${TABLE}.CATEGORY="CP 10L" then "A03"
-                        when ${TABLE}.CATEGORY="CP 08L" then "A04"
-                        when ${TABLE}.CATEGORY="CP 04L" then "A05"
-                        when ${TABLE}.CATEGORY="Cubeta de Plastico" then "A06"
-                        when ${TABLE}.CATEGORY="Porron de Plastico" then "A07"
-                        when ${TABLE}.CATEGORY="Tambores de Plastico" then "A08"
-                        when ${TABLE}.CATEGORY="Bote bocan" then "A09"
-                        when ${TABLE}.CATEGORY="Tambores" then "A10"
-                        when ${TABLE}.CATEGORY="Tambores Conicos" then "A11"
-                        when ${TABLE}.CATEGORY="Cubeta de Lamina" then "A12"
-                        when ${TABLE}.CATEGORY="Alcoholero" then "A13"
-                        when ${TABLE}.CATEGORY="Bote de Pintura" then "A14"
-                        when ${TABLE}.CATEGORY="Bote de Aerosol" then "A15"
-                        when ${TABLE}.CATEGORY="Línea General" then "A16"
-                        when ${TABLE}.CATEGORY="Bote Sanitario" then "A17"
-                        when ${TABLE}.CATEGORY="Bote Atún" then "A18"
-                        when ${TABLE}.CATEGORY="Bote Oval" then "A19"
-                        when ${TABLE}.CATEGORY="Tapa Easy Open" then "A20"
-                        when ${TABLE}.CATEGORY="Fondo Charola y Bafle" then "A21"
-                        when ${TABLE}.CATEGORY="Tapa Twiss Off" then "A22"
-                        when ${TABLE}.CATEGORY="Varios" then "A23"
-                        when ${TABLE}.CATEGORY="Fish." then "A24"
-                        when ${TABLE}.CATEGORY="PeelOff." then "A25"
+                    when ${TABLE}.CATEGORY="Coating and Printing Services" then "A26"
+                    when ${TABLE}.CATEGORY="Miscelaneous" then "A27"
+                    when ${TABLE}.CATEGORY="Pails and lids for pails" then "A28"
+                    when ${TABLE}.CATEGORY="Tinplate and lids for tinplate" then "A29"
 
-      when ${TABLE}.CATEGORY="Coating and Printing Services" then "A26"
-      when ${TABLE}.CATEGORY="Miscelaneous" then "A27"
-      when ${TABLE}.CATEGORY="Pails and lids for pails" then "A28"
-      when ${TABLE}.CATEGORY="Tinplate and lids for tinplate" then "A29"
+                    when ${TABLE}.CATEGORY="Beverage Draught" then "A30"
+                    when ${TABLE}.CATEGORY="Beverage Gravity" then "A31"
+                    when ${TABLE}.CATEGORY="Industrial" then "A32"
+                    when ${TABLE}.CATEGORY="SC Print" then "A33"
 
-      when ${TABLE}.CATEGORY="Beverage Draught" then "A30"
-      when ${TABLE}.CATEGORY="Beverage Gravity" then "A31"
-      when ${TABLE}.CATEGORY="Industrial" then "A32"
-      when ${TABLE}.CATEGORY="SC Print" then "A33"
+                    when ${TABLE}.CATEGORY="Bote de Aerosol GT" then "A34"
+                    when ${TABLE}.CATEGORY="Bote de Pintura GT" then "A35"
+                    when ${TABLE}.CATEGORY="Bote Sanitario GT" then "A36"
+                    when ${TABLE}.CATEGORY="Varios GT" then "A37"
+                    when ${TABLE}.CATEGORY="Cubeta de Lamina GT" then "A38"
 
-      when ${TABLE}.CATEGORY="Bote de Aerosol GT" then "A34"
-      when ${TABLE}.CATEGORY="Bote de Pintura GT" then "A35"
-      when ${TABLE}.CATEGORY="Bote Sanitario GT" then "A36"
-      when ${TABLE}.CATEGORY="Varios GT" then "A37"
-      when ${TABLE}.CATEGORY="Cubeta de Lamina GT" then "A38"
+                    when ${TABLE}.CATEGORY="Bote Pint. Envases Ohio" then "A39"
+                    when ${TABLE}.CATEGORY="Cub.Lam. Envases Ohio" then "A40"
+                    when ${TABLE}.CATEGORY="F-style" then "A43"
+                    when ${TABLE}.CATEGORY="Varios." then "A44"
 
-      when ${TABLE}.CATEGORY="Bote Pint. Envases Ohio" then "A39"
-      when ${TABLE}.CATEGORY="Cub.Lam. Envases Ohio" then "A40"
-      when ${TABLE}.CATEGORY="F-style" then "A43"
-      when ${TABLE}.CATEGORY="Varios." then "A44"
+                    when ${TABLE}.CATEGORY="Bote Sanitario CA" then "A41"
+                    when ${TABLE}.CATEGORY="Tapa Easy Open CA" then "A42"
 
-      when ${TABLE}.CATEGORY="Bote Sanitario CA" then "A41"
-      when ${TABLE}.CATEGORY="Tapa Easy Open CA" then "A42"
-
-      when ${TABLE}.CATEGORY="Food" then "B01"
-      when ${TABLE}.CATEGORY="Fish" then "B02"
-      when ${TABLE}.CATEGORY="Print and Coating Services" then "B03"
+                    when ${TABLE}.CATEGORY="Food" then "B01"
+                    when ${TABLE}.CATEGORY="Fish" then "B02"
+                    when ${TABLE}.CATEGORY="Print and Coating Services" then "B03"
 
 
-      when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
-      when ${TABLE}.CATEGORY="TOTAL MXN" then "Z02" else "z03"  end ;;
+                    when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
+                    when ${TABLE}.CATEGORY="TOTAL MXN" then "Z02"
+                else "Z03" end
+
+              when ${TABLE}.CLUSTER = 'USA' then
+                case
+                    when ${TABLE}.CATEGORY="Bote Pint. Envases Ohio" then "A01"
+                    when ${TABLE}.CATEGORY="Cub.Lam. Envases Ohio" then "A02"
+                    when ${TABLE}.CATEGORY="F-style" then "A03"
+                    when ${TABLE}.CATEGORY="Varios." then "A04"
+
+                    when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
+                    when ${TABLE}.CATEGORY="TOTAL USD" then "Z02"
+                else "Z03" end
+
+              end
+                    ;;
   }
 
   dimension: sort_category_denmark {
