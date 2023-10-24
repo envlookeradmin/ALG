@@ -656,7 +656,7 @@ view: rpt_alg_category {
 
                     when ${TABLE}.CATEGORY="Plastic" then "a09"
 
-                    when ${TABLE}.CATEGORY="Industrial - Other" then "a10"
+                    when ${TABLE}.CATEGORY="Industrial - Others" then "a10"
 
                     when ${TABLE}.CATEGORY="Industrial" then "a11"
 
