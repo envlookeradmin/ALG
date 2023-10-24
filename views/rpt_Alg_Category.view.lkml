@@ -448,9 +448,8 @@ view: rpt_alg_category {
                value == 'Vegetables' or
                value == 'Industrial' or
                value == 'Print and Coating Services' or
-               value == 'KEGs Draught' or
-               value == 'KEGs Gravity' or
-               value == 'Industrial Total' or
+               value == 'Beverage Draught' or
+               value == 'Beverage Gravity' or
                value == 'Plastik' or
                value == 'SC Print'
 
@@ -642,25 +641,26 @@ view: rpt_alg_category {
             when ${TABLE}.CLUSTER = 'ECC - CENTRAL' then
 
                 case
-                    /*when ${TABLE}.CATEGORY="Beverage Draught" then "a01"*/
-                    when ${TABLE}.CATEGORY="KEGs Draught" then "a01"
-                    /*when ${TABLE}.CATEGORY="Beverage Gravity" then "a02"*/
-                    when ${TABLE}.CATEGORY="KEGs Gravity" then "a02"
+                    when ${TABLE}.CATEGORY="Beverage Draught" then "a01"
+                    /*when ${TABLE}.CATEGORY="KEGs Draught" then "a01"*/
+                    when ${TABLE}.CATEGORY="Beverage Gravity" then "a02"
+                    /*when ${TABLE}.CATEGORY="KEGs Gravity" then "a02"*/
 
                     when ${TABLE}.CATEGORY="Tin Cans" then "a03"
                     when ${TABLE}.CATEGORY="Vacuum Ink" then "a04"
-                    when ${TABLE}.CATEGORY="Cans" then "a05"
-                    when ${TABLE}.CATEGORY="Pails" then "a06"
-                    when ${TABLE}.CATEGORY="Hobbocks" then "a07"
-                    when ${TABLE}.CATEGORY="Rectangular" then "a08"
-                    when ${TABLE}.CATEGORY="Miscellaneous" then "a09"
 
-                    when ${TABLE}.CATEGORY="Plastik" then "a10"
+                    when ${TABLE}.CATEGORY="Pails" then "a05"
+                    when ${TABLE}.CATEGORY="Hobbocks" then "a06"
+                    when ${TABLE}.CATEGORY="Square" then "a07"
+                    when ${TABLE}.CATEGORY="Miscellaneous" then "a08"
 
-                    /*when ${TABLE}.CATEGORY="Industrial - Other" then "a11"*/
-                    when ${TABLE}.CATEGORY="Industrial Total" then "a12"
+                    when ${TABLE}.CATEGORY="Plastic" then "a09"
 
-                    when ${TABLE}.CATEGORY="SC Print" then "a13"
+                    when ${TABLE}.CATEGORY="Industrial - Other" then "a10"
+
+                    when ${TABLE}.CATEGORY="Industrial" then "a11"
+
+                    when ${TABLE}.CATEGORY="SC Print" then "a12"
 
                     when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
                     when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
@@ -714,6 +714,11 @@ view: rpt_alg_category {
                     when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
                     else "Z03"
                 end
+
+              when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
+              when ${TABLE}.CATEGORY="TOTAL MXN" then "Z02"
+              when ${TABLE}.CATEGORY="TOTAL USD" then "Z03"
+              when ${TABLE}.CATEGORY="TOTAL EUR" then "Z04"
 
          end
 
@@ -790,21 +795,21 @@ view: rpt_alg_category {
     type: string
     sql: case
 
-                                              when ${TABLE}.CATEGORY="Mediapack" then "a01"
-                                      when ${TABLE}.CATEGORY="Catering" then "a02"
-                                      when ${TABLE}.CATEGORY="Fish" then "a03"
-                                      when ${TABLE}.CATEGORY="Ham" then "a04"
-                                      when ${TABLE}.CATEGORY="Luncheon" then "a05"
-                                      when ${TABLE}.CATEGORY="Pullman" then "a06"
-                                      when ${TABLE}.CATEGORY="Roundfood" then "a07"
-                                      when ${TABLE}.CATEGORY="Beverage" then "a08"
-                                      when ${TABLE}.CATEGORY="Dekopak" then "a09"
-                                      when ${TABLE}.CATEGORY="Feta" then "a10"
-                                      when ${TABLE}.CATEGORY="Milkpowder" then "a11"
-                                      when ${TABLE}.CATEGORY="PockIt" then "a12"
-                                      when ${TABLE}.CATEGORY="PeelOff" then "a13"
-                                      when ${TABLE}.CATEGORY="Super" then "a14"
-                                      when ${TABLE}.CATEGORY="Other" then "a15"
+            when ${TABLE}.CATEGORY="Mediapack" then "a01"
+            when ${TABLE}.CATEGORY="Catering" then "a02"
+            when ${TABLE}.CATEGORY="Fish" then "a03"
+            when ${TABLE}.CATEGORY="Ham" then "a04"
+            when ${TABLE}.CATEGORY="Luncheon" then "a05"
+            when ${TABLE}.CATEGORY="Pullman" then "a06"
+            when ${TABLE}.CATEGORY="Roundfood" then "a07"
+            when ${TABLE}.CATEGORY="Beverage" then "a08"
+            when ${TABLE}.CATEGORY="Dekopak" then "a09"
+            when ${TABLE}.CATEGORY="Feta" then "a10"
+            when ${TABLE}.CATEGORY="Milkpowder" then "a11"
+            when ${TABLE}.CATEGORY="PockIt" then "a12"
+            when ${TABLE}.CATEGORY="PeelOff" then "a13"
+            when ${TABLE}.CATEGORY="Super" then "a14"
+            when ${TABLE}.CATEGORY="Other" then "a15"
 
 
 
