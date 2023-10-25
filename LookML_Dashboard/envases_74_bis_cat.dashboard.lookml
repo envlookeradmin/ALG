@@ -26,7 +26,7 @@
   - title: Dato_dia
     name: Dato_dia
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: single_value
     fields: [rpt_alg_category.fecha]
     filters: {}
@@ -98,7 +98,7 @@
   - title: Info_act_hasta
     name: Info_act_hasta
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: single_value
     fields: [rpt_alg_category.ult_act]
     limit: 500
@@ -168,7 +168,7 @@
   - title: CURRENCY
     name: CURRENCY
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: looker_grid
     fields: [rpt_alg_category.FCURR, rpt_alg_category.UKURS]
     filters:
@@ -240,7 +240,7 @@
   - name: SUMMARY (copy 2)
     title: SUMMARY (copy 2)
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: looker_grid
     fields: [rpt_alg_category.sort_category2, rpt_alg_category.category2, rpt_alg_category.vacio_1, rpt_alg_category.vacio_2,
       rpt_alg_category.DAILY_SALES, rpt_alg_category.TOTAL_AMOUNT_MTD, rpt_alg_category.VS_T_AMOUNT_MTD_LY, rpt_alg_category.VS_TOTAL_BUD_MTD,
@@ -356,7 +356,7 @@
   - title: MEXICO
     name: MEXICO
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: looker_grid
     fields: [rpt_alg_category.category, rpt_alg_category.vacio_1, rpt_alg_category.vacio_2, rpt_alg_category.sort_category,
       rpt_alg_category.DAILY_SALES, rpt_alg_category.TOTAL_QTY_MTD, rpt_alg_category.VS_T_QTY_MTD_LY, rpt_alg_category.VS_T_QTY_BUD_MTD,
@@ -494,7 +494,7 @@
   - title: USA
     name: USA
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: looker_grid
     fields: [rpt_alg_category.category, rpt_alg_category.vacio_1, rpt_alg_category.vacio_2, rpt_alg_category.sort_category,
       rpt_alg_category.DAILY_SALES, rpt_alg_category.TOTAL_QTY_MTD, rpt_alg_category.VS_T_QTY_MTD_LY, rpt_alg_category.VS_T_QTY_BUD_MTD,
@@ -633,7 +633,7 @@
   - title: CANADA
     name: CANADA
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: looker_grid
     fields: [rpt_alg_category.category, rpt_alg_category.vacio_1, rpt_alg_category.vacio_2, rpt_alg_category.DAILY_SALES,
       rpt_alg_category.TOTAL_QTY_MTD, rpt_alg_category.VS_T_QTY_MTD_LY, rpt_alg_category.VS_T_QTY_BUD_MTD, rpt_alg_category.TOTAL_AMOUNT_MTD,
@@ -770,7 +770,7 @@
   - title: GUATEMALA
     name: GUATEMALA
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: looker_grid
     fields: [rpt_alg_category.category, rpt_alg_category.vacio_1, rpt_alg_category.vacio_2, rpt_alg_category.sort_category,
       rpt_alg_category.DAILY_SALES, rpt_alg_category.TOTAL_QTY_MTD, rpt_alg_category.VS_T_QTY_MTD_LY, rpt_alg_category.VS_T_QTY_BUD_MTD,
@@ -908,7 +908,7 @@
   - title: ECN - NORTH
     name: ECN - NORTH
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: looker_grid
     fields: [rpt_alg_category.category, rpt_alg_category.vacio_1, rpt_alg_category.vacio_2, rpt_alg_category.sort_category_denmark,
       rpt_alg_category.DAILY_SALES, rpt_alg_category.TOTAL_QTY_MTD, rpt_alg_category.VS_T_QTY_MTD_LY, rpt_alg_category.VS_T_QTY_BUD_MTD,
@@ -1046,7 +1046,7 @@
   - title: ECW - WEST
     name: ECW - WEST
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: looker_grid
     fields: [rpt_alg_category.category, rpt_alg_category.vacio_1, rpt_alg_category.vacio_2, rpt_alg_category.sort_category,
       rpt_alg_category.DAILY_SALES, rpt_alg_category.TOTAL_QTY_MTD, rpt_alg_category.VS_T_QTY_MTD_LY, rpt_alg_category.VS_T_QTY_BUD_MTD,
@@ -1185,7 +1185,7 @@
   - title: ECC - CENTRAL
     name: ECC - CENTRAL
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: looker_grid
     fields: [rpt_alg_category.category, rpt_alg_category.vacio_1, rpt_alg_category.vacio_2, rpt_alg_category.DAILY_SALES,
       rpt_alg_category.TOTAL_QTY_MTD, rpt_alg_category.VS_T_QTY_MTD_LY, rpt_alg_category.VS_T_QTY_BUD_MTD, rpt_alg_category.TOTAL_AMOUNT_MTD,
@@ -1323,7 +1323,7 @@
   - title: ECS - SOUTH
     name: ECS - SOUTH
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: looker_grid
     fields: [rpt_alg_category.category, rpt_alg_category.vacio_1, rpt_alg_category.vacio_2, rpt_alg_category.sort_category,
       rpt_alg_category.DAILY_SALES, rpt_alg_category.TOTAL_QTY_MTD, rpt_alg_category.VS_T_QTY_MTD_LY, rpt_alg_category.VS_T_QTY_BUD_MTD,
@@ -1462,7 +1462,7 @@
   - title: TOTAL
     name: TOTAL
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: looker_grid
     fields: [rpt_alg_category.category, rpt_alg_category.vacio_1, rpt_alg_category.vacio_2, rpt_alg_category.DAILY_SALES,
       rpt_alg_category.TOTAL_QTY_MTD, rpt_alg_category.VS_T_QTY_MTD_LY, rpt_alg_category.VS_T_QTY_BUD_MTD, rpt_alg_category.TOTAL_AMOUNT_MTD,
@@ -1598,7 +1598,7 @@
   - title: TOTAL AMERICA
     name: TOTAL AMERICA
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: looker_grid
     fields: [rpt_alg_category.category, rpt_alg_category.vacio_1, rpt_alg_category.vacio_2, rpt_alg_category.DAILY_SALES,
       rpt_alg_category.TOTAL_QTY_MTD, rpt_alg_category.VS_T_QTY_MTD_LY, rpt_alg_category.VS_T_QTY_BUD_MTD, rpt_alg_category.TOTAL_AMOUNT_MTD,
@@ -1735,7 +1735,7 @@
   - title: TOTAL EUROPE
     name: TOTAL EUROPE
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     type: looker_grid
     fields: [rpt_alg_category.category, rpt_alg_category.vacio_1, rpt_alg_category.vacio_2, rpt_alg_category.DAILY_SALES,
       rpt_alg_category.TOTAL_QTY_MTD, rpt_alg_category.VS_T_QTY_MTD_LY, rpt_alg_category.VS_T_QTY_BUD_MTD, rpt_alg_category.TOTAL_AMOUNT_MTD,
@@ -1881,6 +1881,6 @@
       display: inline
       options: []
     model: envases-alg
-    explore: rpt_alg
+    explore: rpt_alg_category
     listens_to_filters: []
     field: rpt_alg_category.date_filter
