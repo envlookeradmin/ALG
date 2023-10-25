@@ -412,6 +412,7 @@ view: rpt_alg_category {
     sql: ${TABLE}.STAT_CURR ;;
   }
 
+
   dimension: category {
     type: string
     # sql: case when ${TABLE}.CATEGORY is null then 'Otros' else ${TABLE}.CATEGORY  end ;;
@@ -430,28 +431,63 @@ view: rpt_alg_category {
       <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
 
       {% elsif
-               value == 'Mediapack' or
-               value == 'Catering' or
-               value == 'Fish' or
-               value == 'Ham' or
-               value == 'Luncheon' or
-               value == 'Pullman' or
-               value == 'Roundfood' or
-               value == 'Beverage' or
-               value == 'Dekopak' or
-               value == 'Feta' or
-               value == 'Milkpowder' or
-               value == 'PeelOff' or
-               value == 'Super' or
-               value == 'Other' or
+              value != 'CP 19L' and
+              value != 'CP 15L' and
+              value != 'CP 10L' and
+              value != 'CP 08L' and
+              value != 'CP 04L' and
 
-               value == 'Vegetables' or
-               value == 'Industrial' or
-               value == 'Print and Coating Services' or
-               value == 'Beverage Draught' or
-               value == 'Beverage Gravity' or
-               value == 'Plastik' or
-               value == 'SC Print'
+              value != 'Club (Alu)' and
+              value != 'Club (Steel)' and
+              value != 'Hansa' and
+              value != 'Dingley' and
+              value != 'Round Fish' and
+              value != 'Fish - Other' and
+
+              value != 'Tin Cans' and
+              value != 'Vacuum Ink' and
+              value != 'Pails' and
+              value != 'Hobbocks' and
+              value != 'Square' and
+              value != 'Miscellaneous' and
+              value != 'Plastic' and
+              value != 'Industrial - Others' and
+
+              value != 'Fish - 1/2 Oval' and
+              value != 'Fish - 1/4 Oval' and
+              value != 'Fish - 127' and
+              value != 'Fish - 150' and
+              value != 'Fish - 153' and
+              value != 'Fish - 65' and
+              value != 'Fish - 73' and
+              value != 'Fish - 83' and
+              value != 'Fish - 99' and
+              value != 'Fish - Anchoas' and
+              value != 'Fish - Club' and
+              value != 'Fish - Goods for Resale' and
+              value != 'Fish - Others' and
+              value != 'Fish - Pails' and
+              value != 'Fish - RR90' and
+
+              value != 'Vegetables - 153' and
+              value != 'Vegetables - 65' and
+              value != 'Vegetables - 73' and
+              value != 'Vegetables - 83' and
+              value != 'Vegetables - 99' and
+              value != 'Vegetables - Club' and
+              value != 'Vegetables - Goods for Resale' and
+              value != 'Vegetables - Others' and
+
+              value != 'Industrial - 73' and
+              value != 'Industrial - 99' and
+              value != 'Industrial - General Line' and
+              value != 'Industrial - Goods for Resale' and
+              value != 'Industrial - Others' and
+              value != 'Industrial - Pails' and
+
+              value != 'Print and Coating Services - Goods for Resale' and
+              value != 'Print and Coating Services - Others' and
+              value != 'Print and Coating Services - Pails'
 
       %}
       <p style="color: black; font-weight: bold; font-size:100%; text-align:left">{{ rendered_value }}</p>
