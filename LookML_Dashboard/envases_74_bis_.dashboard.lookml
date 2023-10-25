@@ -1,4 +1,3 @@
----
 - dashboard: envases_74_bis_
   title: Envases_74_BIS_
   layout: newspaper
