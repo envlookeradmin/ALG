@@ -36,10 +36,6 @@ view: rpt_alg_category {
                   V.SALESORG IN ('MXF1', 'MXFC')
                   and V.CATEGORY NOT IN ('Cubeta de Plastico')
               )
-              OR (
-                  V.CLUSTER IN ('ECN - NORTH', 'ECS - SOUTH', 'ECC - CENTRAL')
-                  and V.CATEGORY NOT IN ('Fish','Vegetables','Industrial','Print and Coating Services')
-              )
               THEN 1
               ELSE 0
           END SUMMARY_FLAG,
