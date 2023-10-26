@@ -21,6 +21,7 @@ view: rpt_alg_category {
               WHEN V.CATEGORY = 'TOTAL MONEDA ORIGEN' THEN 'TOTAL LOCAL CURRENCY' || ' ' || V.STAT_CURR
               ELSE V.CATEGORY
           END CATEGORY,
+          V.SUBCATEGORY,
           V.CLIENT,
           CAST(c.DATE AS TIMESTAMP) Fecha,
           c.QUARTER,
@@ -67,6 +68,7 @@ view: rpt_alg_category {
           V.CALDAY,
           V.BASE_UOM,
           V.CATEGORY,
+          '0' AS SUBCATEGORY,
           V.CLIENT,
           CAST(c.DATE AS TIMESTAMP) Fecha,
           c.QUARTER,
@@ -101,6 +103,7 @@ view: rpt_alg_category {
           V.CALDAY,
           V.BASE_UOM,
           'TOTAL MXN' CATEGORY,
+          '0' AS SUBCATEGORY,
           V.CLIENT,
           CAST(c.DATE AS TIMESTAMP) Fecha,
           c.QUARTER,
@@ -153,6 +156,7 @@ view: rpt_alg_category {
           V.CALDAY,
           V.BASE_UOM,
           'TOTAL USD' CATEGORY,
+          '0' AS SUBCATEGORY,
           V.CLIENT,
           CAST(c.DATE AS TIMESTAMP) Fecha,
           c.QUARTER,
@@ -209,6 +213,7 @@ view: rpt_alg_category {
           V.CALDAY,
           V.BASE_UOM,
           'TOTAL EUR' CATEGORY,
+          '0' AS SUBCATEGORY,
           V.CLIENT,
           CAST(c.DATE AS TIMESTAMP) Fecha,
           c.QUARTER,
@@ -265,6 +270,7 @@ view: rpt_alg_category {
           V.CALDAY,
           V.BASE_UOM,
           'SUB America' CATEGORY,
+          '0' AS SUBCATEGORY,
           V.CLIENT,
           CAST(c.DATE AS TIMESTAMP) Fecha,
           c.QUARTER,
@@ -325,6 +331,7 @@ view: rpt_alg_category {
           V.CALDAY,
           V.BASE_UOM,
           'SUB Europa' CATEGORY,
+          '0' AS SUBCATEGORY,
           V.CLIENT,
           CAST(c.DATE AS TIMESTAMP) Fecha,
           c.QUARTER,
@@ -417,8 +424,7 @@ view: rpt_alg_category {
     # sql: case when ${TABLE}.CATEGORY is null then 'Otros' else ${TABLE}.CATEGORY  end ;;
     sql:  ${TABLE}.CATEGORY ;;
 
-    html:
-      {% if value == 'TOTAL LOCAL CURRENCY USD' or
+    html: {% if value == 'TOTAL LOCAL CURRENCY USD' or
                 value == 'TOTAL LOCAL CURRENCY DKK' or
                 value == 'TOTAL LOCAL CURRENCY EUR' or
                 value == 'TOTAL LOCAL CURRENCY GTQ' or
@@ -430,29 +436,63 @@ view: rpt_alg_category {
       <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
 
       {% elsif
-               value == 'Mediapack' or
-               value == 'Catering' or
-               value == 'Fish' or
-               value == 'Ham' or
-               value == 'Luncheon' or
-               value == 'Pullman' or
-               value == 'Roundfood' or
-               value == 'Beverage' or
-               value == 'Dekopak' or
-               value == 'Feta' or
-               value == 'Milkpowder' or
-               value == 'PeelOff' or
-               value == 'Super' or
-               value == 'Other' or
+              value != 'CP 19L' and
+              value != 'CP 15L' and
+              value != 'CP 10L' and
+              value != 'CP 08L' and
+              value != 'CP 04L' and
 
-               value == 'Vegetables' or
-               value == 'Industrial' or
-               value == 'Print and Coating Services' or
-               value == 'KEGs Draught' or
-               value == 'KEGs Gravity' or
-               value == 'Industrial Total' or
-               value == 'Plastik' or
-               value == 'SC Print'
+              value != 'Club (Alu)' and
+              value != 'Club (Steel)' and
+              value != 'Hansa' and
+              value != 'Dingley' and
+              value != 'Round Fish' and
+              value != 'Fish - Other' and
+
+              value != 'Tin Cans' and
+              value != 'Vacuum Ink' and
+              value != 'Pails' and
+              value != 'Hobbocks' and
+              value != 'Square' and
+              value != 'Miscellaneous' and
+              value != 'Plastic' and
+              value != 'Industrial - Others' and
+
+              value != 'Fish - 1/2 Oval' and
+              value != 'Fish - 1/4 Oval' and
+              value != 'Fish - 127' and
+              value != 'Fish - 150' and
+              value != 'Fish - 153' and
+              value != 'Fish - 65' and
+              value != 'Fish - 73' and
+              value != 'Fish - 83' and
+              value != 'Fish - 99' and
+              value != 'Fish - Anchoas' and
+              value != 'Fish - Club' and
+              value != 'Fish - Goods for Resale' and
+              value != 'Fish - Others' and
+              value != 'Fish - Pails' and
+              value != 'Fish - RR90' and
+
+              value != 'Vegetables - 153' and
+              value != 'Vegetables - 65' and
+              value != 'Vegetables - 73' and
+              value != 'Vegetables - 83' and
+              value != 'Vegetables - 99' and
+              value != 'Vegetables - Club' and
+              value != 'Vegetables - Goods for Resale' and
+              value != 'Vegetables - Others' and
+
+              value != 'Industrial - 73' and
+              value != 'Industrial - 99' and
+              value != 'Industrial - General Line' and
+              value != 'Industrial - Goods for Resale' and
+              value != 'Industrial - Others' and
+              value != 'Industrial - Pails' and
+
+              value != 'Print and Coating Services - Goods for Resale' and
+              value != 'Print and Coating Services - Others' and
+              value != 'Print and Coating Services - Pails'
 
       %}
       <p style="color: black; font-weight: bold; font-size:100%; text-align:left">{{ rendered_value }}</p>
@@ -460,6 +500,12 @@ view: rpt_alg_category {
       {% else %}
       <p style="">{{ rendered_value }}</p>
       {% endif %} ;;
+
+  }
+
+  dimension: sub_category {
+    type: string
+    sql:  ${TABLE}.SUBCATEGORY ;;
 
   }
 
@@ -542,7 +588,8 @@ view: rpt_alg_category {
       else "C00" end ;;
   }
 
-  dimension: sort_category_subcategory {
+  dimension: sort_category {
+    label: "sort_category_mexico"
     type: string
     sql: case
              when ${TABLE}.CLUSTER = 'MEXICO' then
@@ -607,6 +654,18 @@ view: rpt_alg_category {
                     else "Z03"
                  end
 
+             when ${TABLE}.CLUSTER = 'USA' then
+                 case
+                    when ${TABLE}.CATEGORY="Bote Pint. Envases Ohio" then "A01"
+                    when ${TABLE}.CATEGORY="Cub.Lam. Envases Ohio" then "A02"
+                    when ${TABLE}.CATEGORY="F-style" then "A03"
+                    when ${TABLE}.CATEGORY="Varios." then "A04"
+
+                    when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
+                    when ${TABLE}.CATEGORY="TOTAL USD" then "Z02"
+                    else "Z03"
+                 end
+
              when ${TABLE}.CLUSTER = 'ECN - NORTH' then
 
                  case
@@ -642,25 +701,18 @@ view: rpt_alg_category {
             when ${TABLE}.CLUSTER = 'ECC - CENTRAL' then
 
                 case
-                    /*when ${TABLE}.CATEGORY="Beverage Draught" then "a01"*/
-                    when ${TABLE}.CATEGORY="KEGs Draught" then "a01"
-                    /*when ${TABLE}.CATEGORY="Beverage Gravity" then "a02"*/
-                    when ${TABLE}.CATEGORY="KEGs Gravity" then "a02"
-
+                    when ${TABLE}.CATEGORY="Beverage Draught" then "a01"
+                    when ${TABLE}.CATEGORY="Beverage Gravity" then "a02"
                     when ${TABLE}.CATEGORY="Tin Cans" then "a03"
                     when ${TABLE}.CATEGORY="Vacuum Ink" then "a04"
-                    when ${TABLE}.CATEGORY="Cans" then "a05"
-                    when ${TABLE}.CATEGORY="Pails" then "a06"
-                    when ${TABLE}.CATEGORY="Hobbocks" then "a07"
-                    when ${TABLE}.CATEGORY="Rectangular" then "a08"
-                    when ${TABLE}.CATEGORY="Miscellaneous" then "a09"
-
-                    when ${TABLE}.CATEGORY="Plastik" then "a10"
-
-                    /*when ${TABLE}.CATEGORY="Industrial - Other" then "a11"*/
-                    when ${TABLE}.CATEGORY="Industrial Total" then "a12"
-
-                    when ${TABLE}.CATEGORY="SC Print" then "a13"
+                    when ${TABLE}.CATEGORY="Pails" then "a05"
+                    when ${TABLE}.CATEGORY="Hobbocks" then "a06"
+                    when ${TABLE}.CATEGORY="Square" then "a07"
+                    when ${TABLE}.CATEGORY="Miscellaneous" then "a08"
+                    when ${TABLE}.CATEGORY="Plastic" then "a09"
+                    when ${TABLE}.CATEGORY="Industrial - Others" then "a10"
+                    when ${TABLE}.CATEGORY="Industrial" then "a11"
+                    when ${TABLE}.CATEGORY="SC Print" then "a12"
 
                     when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
                     when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
@@ -715,101 +767,46 @@ view: rpt_alg_category {
                     else "Z03"
                 end
 
+              when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
+              when ${TABLE}.CATEGORY="TOTAL MXN" then "Z02"
+              when ${TABLE}.CATEGORY="TOTAL USD" then "Z03"
+              when ${TABLE}.CATEGORY="TOTAL EUR" then "Z04"
+
          end
-
       ;;
-
-  }
-
-
-  dimension: sort_category {
-    label: "sort_category_mexico"
-    type: string
-    sql: case
-
-      when ${TABLE}.CATEGORY="CP 19L" then "A01"
-      when ${TABLE}.CATEGORY="CP 15L" then "A02"
-      when ${TABLE}.CATEGORY="CP 10L" then "A03"
-      when ${TABLE}.CATEGORY="CP 08L" then "A04"
-      when ${TABLE}.CATEGORY="CP 04L" then "A05"
-      when ${TABLE}.CATEGORY="Cubeta de Plastico" then "A06"
-      when ${TABLE}.CATEGORY="Porron de Plastico" then "A07"
-      when ${TABLE}.CATEGORY="Tambores de Plastico" then "A08"
-      when ${TABLE}.CATEGORY="Bote bocan" then "A09"
-      when ${TABLE}.CATEGORY="Tambores" then "A10"
-      when ${TABLE}.CATEGORY="Tambores Conicos" then "A11"
-      when ${TABLE}.CATEGORY="Cubeta de Lamina" then "A12"
-      when ${TABLE}.CATEGORY="Alcoholero" then "A13"
-      when ${TABLE}.CATEGORY="Bote de Pintura" then "A14"
-      when ${TABLE}.CATEGORY="Bote de Aerosol" then "A15"
-      when ${TABLE}.CATEGORY="Línea General" then "A16"
-      when ${TABLE}.CATEGORY="Bote Sanitario" then "A17"
-      when ${TABLE}.CATEGORY="Bote Atún" then "A18"
-      when ${TABLE}.CATEGORY="Bote Oval" then "A19"
-      when ${TABLE}.CATEGORY="Tapa Easy Open" then "A20"
-      when ${TABLE}.CATEGORY="Fondo Charola y Bafle" then "A21"
-      when ${TABLE}.CATEGORY="Tapa Twiss Off" then "A22"
-      when ${TABLE}.CATEGORY="Varios" then "A23"
-      when ${TABLE}.CATEGORY="Fish." then "A24"
-      when ${TABLE}.CATEGORY="PeelOff." then "A25"
-
-      when ${TABLE}.CATEGORY="Coating and Printing Services" then "A26"
-      when ${TABLE}.CATEGORY="Miscelaneous" then "A27"
-      when ${TABLE}.CATEGORY="Pails and lids for pails" then "A28"
-      when ${TABLE}.CATEGORY="Tinplate and lids for tinplate" then "A29"
-
-      when ${TABLE}.CATEGORY="Beverage Draught" then "A30"
-      when ${TABLE}.CATEGORY="Beverage Gravity" then "A31"
-      when ${TABLE}.CATEGORY="Industrial" then "A32"
-      when ${TABLE}.CATEGORY="SC Print" then "A33"
-
-      when ${TABLE}.CATEGORY="Bote de Aerosol GT" then "A34"
-      when ${TABLE}.CATEGORY="Bote de Pintura GT" then "A35"
-      when ${TABLE}.CATEGORY="Bote Sanitario GT" then "A36"
-      when ${TABLE}.CATEGORY="Varios GT" then "A37"
-      when ${TABLE}.CATEGORY="Cubeta de Lamina GT" then "A38"
-
-      when ${TABLE}.CATEGORY="Bote Pint. Envases Ohio" then "A39"
-      when ${TABLE}.CATEGORY="Cub.Lam. Envases Ohio" then "A40"
-      when ${TABLE}.CATEGORY="F-style" then "A43"
-      when ${TABLE}.CATEGORY="Varios." then "A44"
-
-      when ${TABLE}.CATEGORY="Bote Sanitario CA" then "A41"
-      when ${TABLE}.CATEGORY="Tapa Easy Open CA" then "A42"
-
-      when ${TABLE}.CATEGORY="Food" then "B01"
-      when ${TABLE}.CATEGORY="Fish" then "B02"
-      when ${TABLE}.CATEGORY="Print and Coating Services" then "B03"
-
-
-      when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
-      when ${TABLE}.CATEGORY="TOTAL MXN" then "Z02" else "z03"  end ;;
   }
 
   dimension: sort_category_denmark {
     type: string
     sql: case
+            when ${TABLE}.CATEGORY="Mediapack" then "a01"
+            when ${TABLE}.CATEGORY="Catering" then "a02"
 
-                                              when ${TABLE}.CATEGORY="Mediapack" then "a01"
-                                      when ${TABLE}.CATEGORY="Catering" then "a02"
-                                      when ${TABLE}.CATEGORY="Fish" then "a03"
-                                      when ${TABLE}.CATEGORY="Ham" then "a04"
-                                      when ${TABLE}.CATEGORY="Luncheon" then "a05"
-                                      when ${TABLE}.CATEGORY="Pullman" then "a06"
-                                      when ${TABLE}.CATEGORY="Roundfood" then "a07"
-                                      when ${TABLE}.CATEGORY="Beverage" then "a08"
-                                      when ${TABLE}.CATEGORY="Dekopak" then "a09"
-                                      when ${TABLE}.CATEGORY="Feta" then "a10"
-                                      when ${TABLE}.CATEGORY="Milkpowder" then "a11"
-                                      when ${TABLE}.CATEGORY="PockIt" then "a12"
-                                      when ${TABLE}.CATEGORY="PeelOff" then "a13"
-                                      when ${TABLE}.CATEGORY="Super" then "a14"
-                                      when ${TABLE}.CATEGORY="Other" then "a15"
+            when ${TABLE}.CATEGORY="Club (Alu)" then "a03"
+            when ${TABLE}.CATEGORY="Club (Steel)" then "a04"
+            when ${TABLE}.CATEGORY="Hansa" then "a05"
+            when ${TABLE}.CATEGORY="Dingley" then "a06"
+            when ${TABLE}.CATEGORY="Round Fish" then "a07"
+            when ${TABLE}.CATEGORY="Fish - Other" then "a08"
+            when ${TABLE}.CATEGORY="Fish" then "a09"
 
+            when ${TABLE}.CATEGORY="Ham" then "a10"
+            when ${TABLE}.CATEGORY="Luncheon" then "a11"
+            when ${TABLE}.CATEGORY="Pullman" then "a12"
+            when ${TABLE}.CATEGORY="Roundfood" then "a13"
+            when ${TABLE}.CATEGORY="Beverage" then "a14"
+            when ${TABLE}.CATEGORY="Dekopak" then "a15"
+            when ${TABLE}.CATEGORY="Feta" then "a16"
+            when ${TABLE}.CATEGORY="Milkpowder" then "a17"
+            when ${TABLE}.CATEGORY="PockIt" then "a18"
+            when ${TABLE}.CATEGORY="PeelOff" then "a19"
+            when ${TABLE}.CATEGORY="Super" then "a20"
+            when ${TABLE}.CATEGORY="Other" then "a21"
 
-
-      when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
-      when ${TABLE}.CATEGORY="TOTAL MXN" then "Z02" else "z03"  end ;;
+            when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
+            when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
+            else "Z03"
+          end ;;
   }
 
   dimension: category2 {
@@ -833,22 +830,22 @@ view: rpt_alg_category {
   dimension: sort_category2 {
     type: string
     sql:
-          case
-            when ${TABLE}.CATEGORY2 = "MEXICO (MXN)" then "A01"
-            when ${TABLE}.CATEGORY2 = "USA (USD)" then "A02"
-            when ${TABLE}.CATEGORY2 = "CANADA (CAD)" then "A03"
-            when ${TABLE}.CATEGORY2 = "GUATEMALA (GTQ)" then "A04"
-            when ${TABLE}.CATEGORY2 = "SUB America (USD)" then "AZ1"
-            when ${TABLE}.CATEGORY2 = "ECN - NORTH (DKK)" then "E01"
-            when ${TABLE}.CATEGORY2 = "ECC - NORTH (USD)" then "E02"
-            when ${TABLE}.CATEGORY2 = "ECC - CENTRAL (EUR)" then "E03"
-            when ${TABLE}.CATEGORY2 = "ECW - WEST (EUR)" then "E04"
-            when ${TABLE}.CATEGORY2 = "ECS - SOUTH (EUR)" then "E04"
-            when ${TABLE}.CATEGORY2 = "SUB Europa (EUR)" then "EZ1"
-            when ${TABLE}.CATEGORY2 = "TOTAL EUR" then "Z01"
-            when ${TABLE}.CATEGORY2 = "TOTAL USD" then "Z02"
-            when ${TABLE}.CATEGORY2 = "TOTAL MXN" then "Z03"
-            else "ZZZ" end ;;
+    case
+      when ${TABLE}.CATEGORY2 = "MEXICO (MXN)" then "A01"
+      when ${TABLE}.CATEGORY2 = "USA (USD)" then "A02"
+      when ${TABLE}.CATEGORY2 = "CANADA (CAD)" then "A03"
+      when ${TABLE}.CATEGORY2 = "GUATEMALA (GTQ)" then "A04"
+      when ${TABLE}.CATEGORY2 = "SUB America (USD)" then "AZ1"
+      when ${TABLE}.CATEGORY2 = "ECN - NORTH (DKK)" then "E01"
+      when ${TABLE}.CATEGORY2 = "ECC - NORTH (USD)" then "E02"
+      when ${TABLE}.CATEGORY2 = "ECC - CENTRAL (EUR)" then "E03"
+      when ${TABLE}.CATEGORY2 = "ECW - WEST (EUR)" then "E04"
+      when ${TABLE}.CATEGORY2 = "ECS - SOUTH (EUR)" then "E04"
+      when ${TABLE}.CATEGORY2 = "SUB Europa (EUR)" then "EZ1"
+      when ${TABLE}.CATEGORY2 = "TOTAL EUR" then "Z01"
+      when ${TABLE}.CATEGORY2 = "TOTAL USD" then "Z02"
+      when ${TABLE}.CATEGORY2 = "TOTAL MXN" then "Z03"
+      else "ZZZ" end ;;
   }
 
   dimension: summary_flag {
@@ -1119,7 +1116,7 @@ view: rpt_alg_category {
     type: number
     sql: ${NATIONAL_QTY_MTD_LY} + ${EXPORT_QTY_MTD_LY} ;;
 
-    drill_fields: [ Client,NATIONAL_QTY_MTD_LY,EXPORT_QTY_MTD_LY,TOTAL_QTY_MTD_LY]
+    drill_fields: [ Client,TOTAL_QTY_MTD_LY]
     value_format: "#,##0.00"
   }
 
@@ -1134,19 +1131,19 @@ view: rpt_alg_category {
               ELSE (${TOTAL_QTY_MTD}/NULLIF(${TOTAL_QTY_MTD_LY},0))-1   END *100;;
 
     html:
-          {% if value > 0 %}
-          <span style="color: green;">{{ rendered_value }}</span></p>
-          {% elsif  value < 0 %}
-          <span style="color: red;">{{ rendered_value }}</span></p>
-          {% elsif  value == 0 %}
-          {{rendered_value}}
-          {% else %}
-          {{rendered_value}}
-          {% endif %} ;;
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_QTY_MTD,TOTAL_QTY_MTD_LY,VS_T_QTY_MTD_LY]
+    drill_fields: [ Client,VS_T_QTY_MTD_LY,TOTAL_QTY_MTD,TOTAL_QTY_MTD_LY]
 
   }
 
@@ -1191,7 +1188,7 @@ view: rpt_alg_category {
     sql: ${NATIONAL_QTY_BUD_MTD} + ${EXPORT_QTY_BUD_MTD} ;;
     #[#NATIONAL BUD QTY MTD]+ [#EXPORT BUD QTY MTD]
 
-    drill_fields: [ Client,NATIONAL_QTY_BUD_MTD,EXPORT_QTY_BUD_MTD,T_QTY_BUD_MTD]
+    drill_fields: [ Client,T_QTY_BUD_MTD]
     value_format: "#,##0"
   }
 
@@ -1208,19 +1205,19 @@ view: rpt_alg_category {
              END *100 ;;
 
     html:
-          {% if value > 0 %}
-          <span style="color: green;">{{ rendered_value }}</span></p>
-          {% elsif  value < 0 %}
-          <span style="color: red;">{{ rendered_value }}</span></p>
-          {% elsif  value == 0 %}
-          {{rendered_value}}
-          {% else %}
-          {{rendered_value}}
-          {% endif %} ;;
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_QTY_MTD,T_QTY_BUD_MTD,VS_T_QTY_BUD_MTD]
+    drill_fields: [ Client,VS_T_QTY_BUD_MTD,TOTAL_QTY_MTD,T_QTY_BUD_MTD]
 
   }
 
@@ -1238,7 +1235,8 @@ view: rpt_alg_category {
 
     filters: [distr_chan: "10"]
     filters: [version: "000"]
-    drill_fields: [ sort_category,Client,NATIONAL_AMOUNT_MTD]
+    #drill_fields: [ sort_category,Client,NATIONAL_AMOUNT_MTD]
+    drill_fields: [Client,NATIONAL_AMOUNT_MTD]
     #value_format: "#,##0.00"
     value_format: "$#,##0.00"
   }
@@ -1269,7 +1267,7 @@ view: rpt_alg_category {
     sql: ${NATIONAL_AMOUNT_MTD} + ${EXPORT_AMOUNT_MTD} ;;
     #[#NATIONAL AMOUNT MTD]+[#EXPORT AMOUNT MTD]
 
-    drill_fields: [ Client,NATIONAL_AMOUNT_MTD,EXPORT_AMOUNT_MTD,TOTAL_AMOUNT_MTD]
+    drill_fields: [ Client,TOTAL_AMOUNT_MTD]
     #value_format: "#,##0.00"
     value_format: "$#,##0.00"
   }
@@ -1316,7 +1314,7 @@ view: rpt_alg_category {
     type: number
     sql: ${NATIONAL_AMOUNT_MTD_LY} + ${EXPORT_AMOUNT_MTD_LY} ;;
 
-    drill_fields: [ Client,NATIONAL_AMOUNT_MTD_LY,EXPORT_AMOUNT_MTD_LY,TOTAL_AMOUNT_MTD_LY]
+    drill_fields: [ Client,TOTAL_AMOUNT_MTD_LY]
     #value_format: "#,##0.00"
     value_format: "$#,##0.00"
   }
@@ -1332,19 +1330,19 @@ view: rpt_alg_category {
              END *100;;
 
     html:
-          {% if value > 0 %}
-          <span style="color: green;">{{ rendered_value }}</span></p>
-          {% elsif  value < 0 %}
-          <span style="color: red;">{{ rendered_value }}</span></p>
-          {% elsif  value == 0 %}
-          {{rendered_value}}
-          {% else %}
-          {{rendered_value}}
-          {% endif %} ;;
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_AMOUNT_MTD,TOTAL_AMOUNT_MTD_LY,VS_T_AMOUNT_MTD_LY]
+    drill_fields: [ Client,VS_T_AMOUNT_MTD_LY,TOTAL_AMOUNT_MTD,TOTAL_AMOUNT_MTD_LY]
 
   }
 
@@ -1413,19 +1411,19 @@ view: rpt_alg_category {
              END * 100;;
 
     html:
-          {% if value > 0 %}
-          <span style="color: green;">{{ rendered_value }}</span></p>
-          {% elsif  value < 0 %}
-          <span style="color: red;">{{ rendered_value }}</span></p>
-          {% elsif  value == 0 %}
-          {{rendered_value}}
-          {% else %}
-          {{rendered_value}}
-          {% endif %} ;;
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_AMOUNT_MTD,TOTAL_AMOUNT_BUD_MTD,VS_TOTAL_BUD_MTD]
+    drill_fields: [ Client,VS_TOTAL_BUD_MTD,TOTAL_AMOUNT_MTD,TOTAL_AMOUNT_BUD_MTD]
 
   }
 
@@ -1539,7 +1537,7 @@ view: rpt_alg_category {
     type: number
     sql: ${NATIONAL_QTY_YTD_LY} + ${EXPORT_QTY_YTD_LY} ;;
 
-    drill_fields: [ Client,NATIONAL_QTY_YTD_LY,EXPORT_QTY_YTD_LY,TOTAL_QTY_YTD_LY]
+    drill_fields: [ Client,TOTAL_QTY_YTD_LY]
     value_format: "#,##0.00"
   }
 
@@ -1554,19 +1552,19 @@ view: rpt_alg_category {
               ELSE (${TOTAL_QTY_YTD}/NULLIF(${TOTAL_QTY_YTD_LY},0))-1   END *100;;
 
     html:
-          {% if value > 0 %}
-          <span style="color: green;">{{ rendered_value }}</span></p>
-          {% elsif  value < 0 %}
-          <span style="color: red;">{{ rendered_value }}</span></p>
-          {% elsif  value == 0 %}
-          {{rendered_value}}
-          {% else %}
-          {{rendered_value}}
-          {% endif %} ;;
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_QTY_YTD,TOTAL_QTY_YTD_LY,VS_T_QTY_YTD_LY]
+    drill_fields: [ Client,VS_T_QTY_YTD_LY,TOTAL_QTY_YTD,TOTAL_QTY_YTD_LY]
 
   }
 
@@ -1613,7 +1611,7 @@ view: rpt_alg_category {
     sql: ${NATIONAL_QTY_BUD_YTD} + ${EXPORT_QTY_BUD_YTD} ;;
     #[#NATIONAL BUD QTY MTD]+ [#EXPORT BUD QTY MTD]
 
-    drill_fields: [ Client,NATIONAL_QTY_BUD_YTD,EXPORT_QTY_BUD_YTD,T_QTY_BUD_YTD]
+    drill_fields: [ Client,T_QTY_BUD_YTD]
     value_format: "#,##0"
   }
 
@@ -1629,19 +1627,19 @@ view: rpt_alg_category {
              END *100 ;;
 
     html:
-          {% if value > 0 %}
-          <span style="color: green;">{{ rendered_value }}</span></p>
-          {% elsif  value < 0 %}
-          <span style="color: red;">{{ rendered_value }}</span></p>
-          {% elsif  value == 0 %}
-          {{rendered_value}}
-          {% else %}
-          {{rendered_value}}
-          {% endif %} ;;
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_QTY_YTD,T_QTY_BUD_YTD,VS_T_QTY_BUD_YTD]
+    drill_fields: [ Client,VS_T_QTY_BUD_YTD,TOTAL_QTY_YTD,T_QTY_BUD_YTD]
 
   }
 
@@ -1659,7 +1657,8 @@ view: rpt_alg_category {
 
     filters: [distr_chan: "10"]
     filters: [version: "000"]
-    drill_fields: [ sort_category,Client,NATIONAL_AMOUNT_YTD]
+    #drill_fields: [ sort_category,Client,NATIONAL_AMOUNT_YTD]
+    drill_fields: [ Client,NATIONAL_AMOUNT_YTD]
     #value_format: "#,##0.00"
     value_format: "$#,##0.00"
   }
@@ -1676,7 +1675,7 @@ view: rpt_alg_category {
       value: "yes"
     }
 
-    drill_fields: [ Client,EXPORT_AMOUNT_MTD]
+    drill_fields: [ Client,EXPORT_AMOUNT_YTD]
     #value_format: "#,##0.00"
     value_format: "$#,##0.00"
 
@@ -1690,7 +1689,7 @@ view: rpt_alg_category {
     sql: ${NATIONAL_AMOUNT_YTD} + ${EXPORT_AMOUNT_YTD} ;;
     #[#NATIONAL AMOUNT MTD]+[#EXPORT AMOUNT MTD]
 
-    drill_fields: [ Client,NATIONAL_AMOUNT_YTD,EXPORT_AMOUNT_YTD,TOTAL_AMOUNT_YTD]
+    drill_fields: [ Client,TOTAL_AMOUNT_YTD]
     #value_format: "#,##0.00"
     value_format: "$#,##0.00"
   }
@@ -1737,7 +1736,7 @@ view: rpt_alg_category {
     type: number
     sql: ${NATIONAL_AMOUNT_YTD_LY} + ${EXPORT_AMOUNT_YTD_LY} ;;
 
-    drill_fields: [ Client,NATIONAL_AMOUNT_YTD_LY,EXPORT_AMOUNT_YTD_LY,TOTAL_AMOUNT_YTD_LY]
+    drill_fields: [ Client,TOTAL_AMOUNT_YTD_LY]
     #value_format: "#,##0.00"
     value_format: "$#,##0.00"
   }
@@ -1753,19 +1752,19 @@ view: rpt_alg_category {
              END *100;;
 
     html:
-          {% if value > 0 %}
-          <span style="color: green;">{{ rendered_value }}</span></p>
-          {% elsif  value < 0 %}
-          <span style="color: red;">{{ rendered_value }}</span></p>
-          {% elsif  value == 0 %}
-          {{rendered_value}}
-          {% else %}
-          {{rendered_value}}
-          {% endif %} ;;
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_AMOUNT_YTD,TOTAL_AMOUNT_YTD_LY,VS_T_AMOUNT_YTD_LY]
+    drill_fields: [ Client,VS_T_AMOUNT_YTD_LY,TOTAL_AMOUNT_YTD,TOTAL_AMOUNT_YTD_LY]
 
   }
 
@@ -1834,19 +1833,19 @@ view: rpt_alg_category {
              END * 100;;
 
     html:
-          {% if value > 0 %}
-          <span style="color: green;">{{ rendered_value }}</span></p>
-          {% elsif  value < 0 %}
-          <span style="color: red;">{{ rendered_value }}</span></p>
-          {% elsif  value == 0 %}
-          {{rendered_value}}
-          {% else %}
-          {{rendered_value}}
-          {% endif %} ;;
+    {% if value > 0 %}
+    <span style="color: green;">{{ rendered_value }}</span></p>
+    {% elsif  value < 0 %}
+    <span style="color: red;">{{ rendered_value }}</span></p>
+    {% elsif  value == 0 %}
+    {{rendered_value}}
+    {% else %}
+    {{rendered_value}}
+    {% endif %} ;;
 
     value_format: "0.00\%"
 
-    drill_fields: [ Client,TOTAL_AMOUNT_YTD,TOTAL_AMOUNT_BUD_YTD,VS_TOTAL_BUD_YTD]
+    drill_fields: [ Client,VS_TOTAL_BUD_YTD,TOTAL_AMOUNT_YTD,TOTAL_AMOUNT_BUD_YTD]
 
   }
 
