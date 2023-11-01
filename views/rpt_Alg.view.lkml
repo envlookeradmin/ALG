@@ -41,9 +41,9 @@ view: rpt_alg {
           END SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
+      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas` v
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
       WHERE CATEGORY NOT IN ('TOTAL MXN')
       UNION ALL
       --CARGA TOTAL MXN DE MÉXICO
@@ -76,8 +76,8 @@ view: rpt_alg {
           1 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas` v
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
       WHERE CATEGORY in ('TOTAL MXN')
           and SALESORG in ("MXF1", "MXFC")
       UNION ALL
@@ -111,8 +111,8 @@ view: rpt_alg {
           1 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas` v
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -122,8 +122,8 @@ view: rpt_alg {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR
-                  left join envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-eon-poc.RAW_ECC_USA_DEV.tcurr`
+                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('USD', 'EUR', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'MXN'
                   AND TRIM(KURST) = 'M'
@@ -164,8 +164,8 @@ view: rpt_alg {
           1 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas` v
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -175,8 +175,8 @@ view: rpt_alg {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR
-                  left join envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-eon-poc.RAW_ECC_USA_DEV.tcurr`
+                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'USD'
                   AND TRIM(KURST) = 'M'
@@ -221,8 +221,8 @@ view: rpt_alg {
           1 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas` v
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -232,8 +232,8 @@ view: rpt_alg {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR
-                  left join envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-eon-poc.RAW_ECC_USA_DEV.tcurr`
+                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'USD', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'EUR'
                   AND TRIM(KURST) = 'M'
@@ -278,9 +278,9 @@ view: rpt_alg {
           2 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
+      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas` v
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -290,8 +290,8 @@ view: rpt_alg {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR
-                  left join envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-eon-poc.RAW_ECC_USA_DEV.tcurr`
+                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'USD'
                   AND TRIM(KURST) = 'M'
@@ -339,9 +339,9 @@ view: rpt_alg {
           2 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
+      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas` v
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -351,8 +351,8 @@ view: rpt_alg {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR
-                  left join envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-eon-poc.RAW_ECC_USA_DEV.tcurr`
+                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'USD', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'EUR'
                   AND TRIM(KURST) = 'M'
