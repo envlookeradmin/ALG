@@ -122,7 +122,7 @@ view: rpt_alg {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM `envases-analytics-eon-poc.RAW_ECC_USA_DEV.tcurr`
+              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
                   left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('USD', 'EUR', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'MXN'
@@ -175,7 +175,7 @@ view: rpt_alg {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM `envases-analytics-eon-poc.RAW_ECC_USA_DEV.tcurr`
+              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
                   left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'USD'
@@ -232,7 +232,7 @@ view: rpt_alg {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM `envases-analytics-eon-poc.RAW_ECC_USA_DEV.tcurr`
+              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
                   left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'USD', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'EUR'
@@ -290,7 +290,7 @@ view: rpt_alg {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM `envases-analytics-eon-poc.RAW_ECC_USA_DEV.tcurr`
+              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
                   left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'USD'
@@ -351,7 +351,7 @@ view: rpt_alg {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM `envases-analytics-eon-poc.RAW_ECC_USA_DEV.tcurr`
+              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
                   left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'USD', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'EUR'
