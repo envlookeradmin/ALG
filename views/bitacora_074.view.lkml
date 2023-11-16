@@ -1,8 +1,9 @@
 view: bitacora_074 {
   derived_table: {
     sql: select
-         max(format_datetime('%F %R', cst_datetime)) as cst_datetime,
-         max(format_datetime('%F %R', cet_datetime)) as cet_datetime
+         max(case when time_zone = 'CST' then format_datetime('%F %R', date_time) end) as cst_datetime,
+         max(case when time_zone = 'CET' then format_datetime('%F %R', date_time) end) as cet_datetime,
+         max(case when time_zone = 'EST' then format_datetime('%F %R', date_time) end) as est_datetime
          from `envases-analytics-eon-poc.ENVASES_REPORTING.bitacora_074`
       ;;
 }
@@ -15,6 +16,11 @@ view: bitacora_074 {
   dimension: cet_datetime {
     type: string
     sql: ${TABLE}.CET_DATETIME ;;
+  }
+
+  dimension: est_datetime {
+    type: string
+    sql: ${TABLE}.EST_DATETIME ;;
   }
 
 
