@@ -40,6 +40,7 @@ explore: rpt_ventasytd {}
 explore: calendar {}
 explore: rpt_alg {}
 explore: rpt_alg_category{}
+explore: bitacora_074{}
 explore: ventas {}
 
 
