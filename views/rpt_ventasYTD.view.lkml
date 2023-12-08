@@ -485,7 +485,7 @@ WHERE CATEGORY NOT IN ('TOTAL MXN')
                         when ${TABLE}.CATEGORY="Pullman" then "a06"
                         when ${TABLE}.CATEGORY="Roundfood" then "a07"
                         when ${TABLE}.CATEGORY="Beverage" then "a08"
-                        when ${TABLE}.CATEGORY="Dekopak" then "a09"
+                        when ${TABLE}.CATEGORY="Cookie" then "a09"
                         when ${TABLE}.CATEGORY="Feta" then "a10"
                         when ${TABLE}.CATEGORY="Milkpowder" then "a11"
                         when ${TABLE}.CATEGORY="PockIt" then "a12"
