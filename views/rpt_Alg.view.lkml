@@ -446,6 +446,7 @@ view: rpt_alg {
       value != 'Fish - Other' and
 
       value != 'Tin Cans' and
+      value != 'Cans' and
       value != 'Vacuum Ink' and
       value != 'Pails' and
       value != 'Hobbocks' and
@@ -453,6 +454,10 @@ view: rpt_alg {
       value != 'Miscellaneous' and
       value != 'Plastic' and
       value != 'Industrial - Others' and
+      value != 'Draught - Cans' and
+      value != 'Gravity - Cans' and
+      value != 'Draught - Miscellaneous' and
+      value != 'Gravity - Miscellaneous' and
 
       value != 'Fish - 1/2 Oval' and
       value != 'Fish - 1/4 Oval' and
@@ -697,18 +702,23 @@ view: rpt_alg {
       when ${TABLE}.CLUSTER = 'ECC - CENTRAL' then
 
       case
-      when ${TABLE}.CATEGORY="Beverage Draught" then "a01"
-      when ${TABLE}.CATEGORY="Beverage Gravity" then "a02"
-      when ${TABLE}.CATEGORY="Tin Cans" then "a03"
-      when ${TABLE}.CATEGORY="Vacuum Ink" then "a04"
-      when ${TABLE}.CATEGORY="Pails" then "a05"
-      when ${TABLE}.CATEGORY="Hobbocks" then "a06"
-      when ${TABLE}.CATEGORY="Square" then "a07"
-      when ${TABLE}.CATEGORY="Miscellaneous" then "a08"
-      when ${TABLE}.CATEGORY="Plastic" then "a09"
-      when ${TABLE}.CATEGORY="Industrial - Others" then "a10"
-      when ${TABLE}.CATEGORY="Industrial" then "a11"
-      when ${TABLE}.CATEGORY="SC Print" then "a12"
+      when ${TABLE}.CATEGORY="Draught - Cans" then "a01"
+      when ${TABLE}.CATEGORY="Draught - Miscellaneous" then "a02"
+      when ${TABLE}.CATEGORY="Beverage Draught" then "a03"
+      when ${TABLE}.CATEGORY="Gravity - Cans" then "a04"
+      when ${TABLE}.CATEGORY="Gravity - Miscellaneous" then "a05"
+      when ${TABLE}.CATEGORY="Beverage Gravity" then "a06"
+      when ${TABLE}.CATEGORY="Tin Cans" then "a07"
+      when ${TABLE}.CATEGORY="Cans" then "a08"
+      when ${TABLE}.CATEGORY="Vacuum Ink" then "a09"
+      when ${TABLE}.CATEGORY="Pails" then "a10"
+      when ${TABLE}.CATEGORY="Hobbocks" then "a11"
+      when ${TABLE}.CATEGORY="Square" then "a12"
+      when ${TABLE}.CATEGORY="Miscellaneous" then "a13"
+      when ${TABLE}.CATEGORY="Plastic" then "a14"
+      when ${TABLE}.CATEGORY="Industrial - Others" then "a15"
+      when ${TABLE}.CATEGORY="Industrial" then "a16"
+      when ${TABLE}.CATEGORY="SC Print" then "a17"
 
       when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
       when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
