@@ -4,6 +4,7 @@ connection: "envases-eon-alg"
 # include all the views
 include: "/views/**/*.view"
 
+include: "/**/*.dashboard"
 
 
 # Datagroups define a caching policy for an Explore. To learn more,
