@@ -420,109 +420,102 @@ view: rpt_alg {
     # sql: case when ${TABLE}.CATEGORY is null then 'Otros' else ${TABLE}.CATEGORY  end ;;
     sql:  ${TABLE}.CATEGORY ;;
 
-    html: {% if rpt_alg_category.sub_category._value == '2' %}
-    <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
+    #html: {% if rpt_alg_category.sub_category._value == '2' %}
+    #<p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
 
-    {% elsif rpt_alg_category.sub_category._value != '1' %}
-    <p style="color: black; font-weight: bold; font-size:100%; text-align:left">{{ rendered_value }}</p>
+    #{% elsif rpt_alg_category.sub_category._value != '1' %}
+    #<p style="color: black; font-weight: bold; font-size:100%; text-align:left">{{ rendered_value }}</p>
 
-    {% else %}
-    <p style="">{{ rendered_value }}</p>
-    {% endif %} ;;
+    #{% else %}
+    #<p style="">{{ rendered_value }}</p>
+    #{% endif %} ;;
 
 
-    #html: {% if value == 'TOTAL LOCAL CURRENCY USD' or
-#                value == 'TOTAL LOCAL CURRENCY DKK' or
-#                value == 'TOTAL LOCAL CURRENCY EUR' or
-#                value == 'TOTAL LOCAL CURRENCY GTQ' or
-#                value == 'TOTAL LOCAL CURRENCY CAD' or
-#                value == 'TOTAL MXN' or
-#                value == 'TOTAL USD' or
-#                value == 'TOTAL EUR'
-#      %}
-#      <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
-#
-#      {% elsif
-#      value != 'CP 19L' and
-#      value != 'CP 15L' and
-#      value != 'CP 10L' and
-#      value != 'CP 08L' and
-#      value != 'CP 04L' and
-#
-#      value != 'Club (Alu)' and
-#      value != 'Club (Steel)' and
-#      value != 'Hansa' and
-#      value != 'Dingley' and
-#      value != 'Round Fish' and
-#      value != 'Fish - Other' and
-#      value != 'Draught Kegs' and
-#      value != 'Gravity Kegs' and
-#      value != 'Beverage Miscellaneous' and
-#      value != 'Tin Cans' and
-#      value != 'Vacuum Ink' and
-#      value != 'Pails' and
-#      value != 'Hobbocks' and
-#      value != 'Square' and
-#      value != 'Miscellaneous' and
-#      value != 'Plastic' and
-#      value != 'Industrial - Others' and
-#
-#      value != 'Fish - 1/2 Oval' and
-#      value != 'Fish - 1/4 Oval' and
-#      value != 'Fish - 127' and
-#      value != 'Fish - 150' and
-#      value != 'Fish - 153' and
-#      value != 'Fish - 65' and
-#      value != 'Fish - 73' and
-#      value != 'Fish - 83' and
-#      value != 'Fish - 99' and
-#      value != 'Fish - Anchoas' and
-#      value != 'Fish - Club' and
-#      value != 'Fish - Goods for Resale' and
-#      value != 'Fish - Others' and
-#      value != 'Fish - Pails' and
-#      value != 'Fish - RR90' and
-#
-#      value != 'Vegetables - 153' and
-#      value != 'Vegetables - 65' and
-#      value != 'Vegetables - 73' and
-#      value != 'Vegetables - 83' and
-#      value != 'Vegetables - 99' and
-#      value != 'Vegetables - Club' and
-#      value != 'Vegetables - Goods for Resale' and
-#      value != 'Vegetables - Others' and
-#
-#      value != 'Industrial - 73' and
-#      value != 'Industrial - 99' and
-#      value != 'Industrial - General Line' and
-#      value != 'Industrial - Goods for Resale' and
-#      value != 'Industrial - Others' and
-#      value != 'Industrial - Pails' and
-#
-#      value != 'Print and Coating Services - Goods for Resale' and
-#      value != 'Print and Coating Services - Others' and
-#      value != 'Print and Coating Services - Pails'
-#
-#      %}
-#      <p style="color: black; font-weight: bold; font-size:100%; text-align:left">{{ rendered_value }}</p>
-#
-#      {% else %}
-#      <p style="">{{ rendered_value }}</p>
-#      {% endif %} ;;
+    html: {% if value == 'TOTAL LOCAL CURRENCY USD' or
+    value == 'TOTAL LOCAL CURRENCY DKK' or
+    value == 'TOTAL LOCAL CURRENCY EUR' or
+    value == 'TOTAL LOCAL CURRENCY GTQ' or
+    value == 'TOTAL LOCAL CURRENCY CAD' or
+    value == 'TOTAL MXN' or
+    value == 'TOTAL USD' or
+    value == 'TOTAL EUR'
+    %}
+  <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
+
+  {% elsif
+    value != 'CP 19L' and
+    value != 'CP 15L' and
+    value != 'CP 10L' and
+    value != 'CP 08L' and
+    value != 'CP 04L' and
+
+    value != 'Club (Alu)' and
+    value != 'Club (Steel)' and
+    value != 'Hansa' and
+    value != 'Dingley' and
+    value != 'Round Fish' and
+    value != 'Fish - Other' and
+    value != 'Draught Kegs' and
+    value != 'Gravity Kegs' and
+    value != 'Beverage Miscellaneous' and
+    value != 'Tin Cans' and
+    value != 'Vacuum Ink' and
+    value != 'Pails' and
+    value != 'Hobbocks' and
+    value != 'Square' and
+    value != 'Miscellaneous' and
+    value != 'Plastic' and
+    value != 'Industrial - Others' and
+
+    value != 'Fish - 1/2 Oval' and
+    value != 'Fish - 1/4 Oval' and
+    value != 'Fish - 127' and
+    value != 'Fish - 150' and
+    value != 'Fish - 153' and
+    value != 'Fish - 65' and
+    value != 'Fish - 73' and
+    value != 'Fish - 83' and
+    value != 'Fish - 99' and
+    value != 'Fish - Anchoas' and
+    value != 'Fish - Club' and
+    value != 'Fish - Goods for Resale' and
+    value != 'Fish - Others' and
+    value != 'Fish - Pails' and
+    value != 'Fish - RR90' and
+
+    value != 'Vegetables - 153' and
+    value != 'Vegetables - 65' and
+    value != 'Vegetables - 73' and
+    value != 'Vegetables - 83' and
+    value != 'Vegetables - 99' and
+    value != 'Vegetables - Club' and
+    value != 'Vegetables - Goods for Resale' and
+    value != 'Vegetables - Others' and
+
+    value != 'Industrial - 73' and
+    value != 'Industrial - 99' and
+    value != 'Industrial - General Line' and
+    value != 'Industrial - Goods for Resale' and
+    value != 'Industrial - Others' and
+    value != 'Industrial - Pails' and
+
+    value != 'Print and Coating Services - Goods for Resale' and
+    value != 'Print and Coating Services - Others' and
+    value != 'Print and Coating Services - Pails'
+
+    %}
+  <p style="color: black; font-weight: bold; font-size:100%; text-align:left">{{ rendered_value }}</p>
+
+  {% else %}
+  <p style="">{{ rendered_value }}</p>
+  {% endif %} ;;
 
     }
 
     dimension: sub_category {
       type: string
-      sql:  CASE
-          WHEN ${TABLE}.CATEGORY IN ('TOTAL LOCAL CURRENCY USD', 'TOTAL LOCAL CURRENCY DKK',
-                                     'TOTAL LOCAL CURRENCY EUR', 'TOTAL LOCAL CURRENCY GTQ',
-                                     'TOTAL LOCAL CURRENCY CAD', 'TOTAL MXN',
-                                     'TOTAL USD', 'TOTAL EUR') THEN '2'
-          WHEN ${TABLE}.CATEGORY IN ('CP 19L','CP 15L', 'CP 10L', 'CP 08L', 'CP 04L') THEN '1'
-          WHEN ${TABLE}.SUBCATEGORY IS NULL THEN '0'
-          ELSE ${TABLE}.SUBCATEGORY
-          END  ;;
+      sql: ${TABLE}.SUBCATEGORY
+           ;;
 
     }
 
