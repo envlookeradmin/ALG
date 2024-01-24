@@ -3,6 +3,7 @@ connection: "envases-eon-alg"
 
 # include all the views
 include: "/views/**/*.view"
+
 #include: "/**/*.dashboard"
 
 

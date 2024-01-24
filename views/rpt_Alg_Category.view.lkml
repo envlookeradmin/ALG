@@ -41,9 +41,15 @@ view: rpt_alg_category {
           END SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
+
       FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
           LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
           LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
+
+      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
+          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
+
       WHERE CATEGORY NOT IN ('TOTAL MXN')
       UNION ALL
       --CARGA TOTAL MXN DE MÉXICO
@@ -76,8 +82,13 @@ view: rpt_alg_category {
           1 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
+
       FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
           LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+
+      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
+          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+
       WHERE CATEGORY in ('TOTAL MXN')
           and SALESORG in ("MXF1", "MXFC")
       UNION ALL
@@ -111,8 +122,13 @@ view: rpt_alg_category {
           1 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
+
       FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
           LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+
+      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
+          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -164,8 +180,13 @@ view: rpt_alg_category {
           1 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
+
       FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
           LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+
+      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
+          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -221,8 +242,13 @@ view: rpt_alg_category {
           1 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
+
       FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
           LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+
+      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
+          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -278,9 +304,15 @@ view: rpt_alg_category {
           2 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
+
       FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
           LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
           LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
+
+      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
+          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
+
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -339,9 +371,15 @@ view: rpt_alg_category {
           2 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
+
       FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
           LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
           LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
+
+      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
+          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
+
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -702,7 +740,7 @@ view: rpt_alg_category {
       when ${TABLE}.CATEGORY="Pullman" then "a12"
       when ${TABLE}.CATEGORY="Roundfood" then "a13"
       when ${TABLE}.CATEGORY="Beverage" then "a14"
-      when ${TABLE}.CATEGORY="Dekopak" then "a15"
+      when ${TABLE}.CATEGORY="Cookie" then "a15"
       when ${TABLE}.CATEGORY="Feta" then "a16"
       when ${TABLE}.CATEGORY="Milkpowder" then "a17"
       when ${TABLE}.CATEGORY="PockIt" then "a18"
@@ -831,7 +869,7 @@ view: rpt_alg_category {
       when ${TABLE}.CATEGORY="Pullman" then "a12"
       when ${TABLE}.CATEGORY="Roundfood" then "a13"
       when ${TABLE}.CATEGORY="Beverage" then "a14"
-      when ${TABLE}.CATEGORY="Dekopak" then "a15"
+      when ${TABLE}.CATEGORY="Cookie" then "a15"
       when ${TABLE}.CATEGORY="Feta" then "a16"
       when ${TABLE}.CATEGORY="Milkpowder" then "a17"
       when ${TABLE}.CATEGORY="PockIt" then "a18"

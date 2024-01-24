@@ -430,6 +430,7 @@ view: rpt_alg {
     <p style="">{{ rendered_value }}</p>
     {% endif %} ;;
 
+
     #html: {% if value == 'TOTAL LOCAL CURRENCY USD' or
 #                value == 'TOTAL LOCAL CURRENCY DKK' or
 #                value == 'TOTAL LOCAL CURRENCY EUR' or
@@ -701,7 +702,7 @@ view: rpt_alg {
       when ${TABLE}.CATEGORY="Pullman" then "a12"
       when ${TABLE}.CATEGORY="Roundfood" then "a13"
       when ${TABLE}.CATEGORY="Beverage" then "a14"
-      when ${TABLE}.CATEGORY="Dekopak" then "a15"
+      when ${TABLE}.CATEGORY="Cookie" then "a15"
       when ${TABLE}.CATEGORY="Feta" then "a16"
       when ${TABLE}.CATEGORY="Milkpowder" then "a17"
       when ${TABLE}.CATEGORY="PockIt" then "a18"
@@ -718,6 +719,7 @@ view: rpt_alg {
       when ${TABLE}.CLUSTER = 'ECC - CENTRAL' then
 
       case
+
       when ${TABLE}.CATEGORY="Draught Kegs" then "a01"
       when ${TABLE}.CATEGORY="Gravity Kegs" then "a02"
       when ${TABLE}.CATEGORY="Beverage Miscellaneous" then "a03"
@@ -733,6 +735,25 @@ view: rpt_alg {
       when ${TABLE}.CATEGORY="Industrial - Others" then "a12"
       when ${TABLE}.CATEGORY="Industrial" then "a13"
       when ${TABLE}.CATEGORY="SC Print" then "a14"
+
+      when ${TABLE}.CATEGORY="Draught - Cans" then "a01"
+      when ${TABLE}.CATEGORY="Draught - Miscellaneous" then "a02"
+      when ${TABLE}.CATEGORY="Beverage Draught" then "a03"
+      when ${TABLE}.CATEGORY="Gravity - Cans" then "a04"
+      when ${TABLE}.CATEGORY="Gravity - Miscellaneous" then "a05"
+      when ${TABLE}.CATEGORY="Beverage Gravity" then "a06"
+      when ${TABLE}.CATEGORY="Tin Cans" then "a07"
+      when ${TABLE}.CATEGORY="Cans" then "a08"
+      when ${TABLE}.CATEGORY="Vacuum Ink" then "a09"
+      when ${TABLE}.CATEGORY="Pails" then "a10"
+      when ${TABLE}.CATEGORY="Hobbocks" then "a11"
+      when ${TABLE}.CATEGORY="Square" then "a12"
+      when ${TABLE}.CATEGORY="Miscellaneous" then "a13"
+      when ${TABLE}.CATEGORY="Plastic" then "a14"
+      when ${TABLE}.CATEGORY="Industrial - Others" then "a15"
+      when ${TABLE}.CATEGORY="Industrial" then "a16"
+      when ${TABLE}.CATEGORY="SC Print" then "a17"
+
 
       when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
       when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
@@ -830,7 +851,7 @@ view: rpt_alg {
       when ${TABLE}.CATEGORY="Pullman" then "a12"
       when ${TABLE}.CATEGORY="Roundfood" then "a13"
       when ${TABLE}.CATEGORY="Beverage" then "a14"
-      when ${TABLE}.CATEGORY="Dekopak" then "a15"
+      when ${TABLE}.CATEGORY="Cookie" then "a15"
       when ${TABLE}.CATEGORY="Feta" then "a16"
       when ${TABLE}.CATEGORY="Milkpowder" then "a17"
       when ${TABLE}.CATEGORY="PockIt" then "a18"
