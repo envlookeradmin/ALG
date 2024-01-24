@@ -1,26 +1,25 @@
 view: bitacora_074 {
   derived_table: {
     sql: select
-         max(case when time_zone = 'CST' then format_datetime('%F %R', date_time) end) as cst_datetime,
-         max(case when time_zone = 'CET' then format_datetime('%F %R', date_time) end) as cet_datetime,
-         max(case when time_zone = 'EST' then format_datetime('%F %R', date_time) end) as est_datetime
-         from `envases-analytics-eon-poc.ENVASES_REPORTING.bitacora_074`
+          case
+          when time_zone = 'CST' THEN 'MEXICO (CST)'
+          when time_zone = 'CET' THEN 'EUROPE (CET)'
+          when time_zone = 'EST' THEN 'USA - CANADA (EST)'
+          end as time_zone,
+          max(format_datetime('%F %R', date_time) ) as date_time
+          from `envases-analytics-eon-poc.ENVASES_REPORTING.bitacora_074`
+         group by 1
       ;;
 }
 
-  dimension: cst_datetime {
+  dimension: time_zone {
     type: string
-    sql: ${TABLE}.CST_DATETIME ;;
+    sql: ${TABLE}.TIME_ZONE ;;
   }
 
-  dimension: cet_datetime {
+  dimension: date_time {
     type: string
-    sql: ${TABLE}.CET_DATETIME ;;
-  }
-
-  dimension: est_datetime {
-    type: string
-    sql: ${TABLE}.EST_DATETIME ;;
+    sql: ${TABLE}.DATE_TIME ;;
   }
 
 

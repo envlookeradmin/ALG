@@ -41,9 +41,9 @@ view: rpt_alg_category {
           END SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
+      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
       WHERE CATEGORY NOT IN ('TOTAL MXN')
       UNION ALL
       --CARGA TOTAL MXN DE MÉXICO
@@ -76,8 +76,8 @@ view: rpt_alg_category {
           1 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
       WHERE CATEGORY in ('TOTAL MXN')
           and SALESORG in ("MXF1", "MXFC")
       UNION ALL
@@ -111,8 +111,8 @@ view: rpt_alg_category {
           1 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -122,8 +122,8 @@ view: rpt_alg_category {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR
-                  left join envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
+                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('USD', 'EUR', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'MXN'
                   AND TRIM(KURST) = 'M'
@@ -164,8 +164,8 @@ view: rpt_alg_category {
           1 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -175,8 +175,8 @@ view: rpt_alg_category {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR
-                  left join envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
+                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'USD'
                   AND TRIM(KURST) = 'M'
@@ -221,8 +221,8 @@ view: rpt_alg_category {
           1 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -232,8 +232,8 @@ view: rpt_alg_category {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR
-                  left join envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
+                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'USD', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'EUR'
                   AND TRIM(KURST) = 'M'
@@ -278,9 +278,9 @@ view: rpt_alg_category {
           2 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
+      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -290,8 +290,8 @@ view: rpt_alg_category {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR
-                  left join envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
+                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'USD'
                   AND TRIM(KURST) = 'M'
@@ -339,9 +339,9 @@ view: rpt_alg_category {
           2 SUMMARY_FLAG,
           V.PLANT_COUNTRY,
           V.CLUSTER
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
+      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
                   TRIM(FCURR) FCURR,
@@ -351,8 +351,8 @@ view: rpt_alg_category {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM envases-analytics-eon-poc.DATASET_RAW.ECC_PROD_TCURR
-                  left join envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
+                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'USD', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'EUR'
                   AND TRIM(KURST) = 'M'
@@ -420,88 +420,109 @@ view: rpt_alg_category {
     # sql: case when ${TABLE}.CATEGORY is null then 'Otros' else ${TABLE}.CATEGORY  end ;;
     sql:  ${TABLE}.CATEGORY ;;
 
-    html: {% if value == 'TOTAL LOCAL CURRENCY USD' or
-                value == 'TOTAL LOCAL CURRENCY DKK' or
-                value == 'TOTAL LOCAL CURRENCY EUR' or
-                value == 'TOTAL LOCAL CURRENCY GTQ' or
-                value == 'TOTAL LOCAL CURRENCY CAD' or
-                value == 'TOTAL MXN' or
-                value == 'TOTAL USD' or
-                value == 'TOTAL EUR'
-      %}
+    html: {% if rpt_alg_category.sub_category._value == '2' %}
       <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
 
-      {% elsif
-      value != 'CP 19L' and
-      value != 'CP 15L' and
-      value != 'CP 10L' and
-      value != 'CP 08L' and
-      value != 'CP 04L' and
-
-      value != 'Club (Alu)' and
-      value != 'Club (Steel)' and
-      value != 'Hansa' and
-      value != 'Dingley' and
-      value != 'Round Fish' and
-      value != 'Fish - Other' and
-
-      value != 'Tin Cans' and
-      value != 'Vacuum Ink' and
-      value != 'Pails' and
-      value != 'Hobbocks' and
-      value != 'Square' and
-      value != 'Miscellaneous' and
-      value != 'Plastic' and
-      value != 'Industrial - Others' and
-
-      value != 'Fish - 1/2 Oval' and
-      value != 'Fish - 1/4 Oval' and
-      value != 'Fish - 127' and
-      value != 'Fish - 150' and
-      value != 'Fish - 153' and
-      value != 'Fish - 65' and
-      value != 'Fish - 73' and
-      value != 'Fish - 83' and
-      value != 'Fish - 99' and
-      value != 'Fish - Anchoas' and
-      value != 'Fish - Club' and
-      value != 'Fish - Goods for Resale' and
-      value != 'Fish - Others' and
-      value != 'Fish - Pails' and
-      value != 'Fish - RR90' and
-
-      value != 'Vegetables - 153' and
-      value != 'Vegetables - 65' and
-      value != 'Vegetables - 73' and
-      value != 'Vegetables - 83' and
-      value != 'Vegetables - 99' and
-      value != 'Vegetables - Club' and
-      value != 'Vegetables - Goods for Resale' and
-      value != 'Vegetables - Others' and
-
-      value != 'Industrial - 73' and
-      value != 'Industrial - 99' and
-      value != 'Industrial - General Line' and
-      value != 'Industrial - Goods for Resale' and
-      value != 'Industrial - Others' and
-      value != 'Industrial - Pails' and
-
-      value != 'Print and Coating Services - Goods for Resale' and
-      value != 'Print and Coating Services - Others' and
-      value != 'Print and Coating Services - Pails'
-
-      %}
+          {% elsif rpt_alg_category.sub_category._value != '1' %}
       <p style="color: black; font-weight: bold; font-size:100%; text-align:left">{{ rendered_value }}</p>
 
       {% else %}
       <p style="">{{ rendered_value }}</p>
       {% endif %} ;;
 
+      #html: {% if value == 'TOTAL LOCAL CURRENCY USD' or
+      #          value == 'TOTAL LOCAL CURRENCY DKK' or
+      #          value == 'TOTAL LOCAL CURRENCY EUR' or
+      #          value == 'TOTAL LOCAL CURRENCY GTQ' or
+      #          value == 'TOTAL LOCAL CURRENCY CAD' or
+      #          value == 'TOTAL MXN' or
+      #          value == 'TOTAL USD' or
+      #          value == 'TOTAL EUR'
+      #%}
+      #<p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
+    #
+      #{% elsif
+      #value != 'CP 19L' and
+      #value != 'CP 15L' and
+      #value != 'CP 10L' and
+      #value != 'CP 08L' and
+      #value != 'CP 04L' and
+    #
+      #value != 'Club (Alu)' and
+      #value != 'Club (Steel)' and
+      #value != 'Hansa' and
+      #value != 'Dingley' and
+      #value != 'Round Fish' and
+      #value != 'Fish - Other' and
+    #
+      #value != 'Draught Kegs' and
+      #value != 'Gravity Kegs' and
+      #value != 'Beverage Miscellaneous' and
+      #value != 'Tin Cans' and
+      #value != 'Vacuum Ink' and
+      #value != 'Pails' and
+      #value != 'Hobbocks' and
+      #value != 'Square' and
+      #value != 'Miscellaneous' and
+      #value != 'Plastic' and
+      #value != 'Industrial - Others' and
+    #
+      #value != 'Fish - 1/2 Oval' and
+      #value != 'Fish - 1/4 Oval' and
+      #value != 'Fish - 127' and
+      #value != 'Fish - 150' and
+      #value != 'Fish - 153' and
+      #value != 'Fish - 65' and
+      #value != 'Fish - 73' and
+      #value != 'Fish - 83' and
+      #value != 'Fish - 99' and
+      #value != 'Fish - Anchoas' and
+      #value != 'Fish - Club' and
+      #value != 'Fish - Goods for Resale' and
+      #value != 'Fish - Others' and
+      #value != 'Fish - Pails' and
+      #value != 'Fish - RR90' and
+    #
+      #value != 'Vegetables - 153' and
+      #value != 'Vegetables - 65' and
+      #value != 'Vegetables - 73' and
+      #value != 'Vegetables - 83' and
+      #value != 'Vegetables - 99' and
+      #value != 'Vegetables - Club' and
+      #value != 'Vegetables - Goods for Resale' and
+      #value != 'Vegetables - Others' and
+    #
+      #value != 'Industrial - 73' and
+      #value != 'Industrial - 99' and
+      #value != 'Industrial - General Line' and
+      #value != 'Industrial - Goods for Resale' and
+      #value != 'Industrial - Others' and
+      #value != 'Industrial - Pails' and
+    #
+      #value != 'Print and Coating Services - Goods for Resale' and
+      #value != 'Print and Coating Services - Others' and
+      #value != 'Print and Coating Services - Pails'
+    #
+      #%}
+      #<p style="color: black; font-weight: bold; font-size:100%; text-align:left">{{ rendered_value }}</p>
+    #
+      #{% else %}
+      #<p style="">{{ rendered_value }}</p>
+      #{% endif %} ;;
+
   }
 
   dimension: sub_category {
     type: string
-    sql:  ${TABLE}.SUBCATEGORY ;;
+    sql:  CASE
+          WHEN ${TABLE}.CATEGORY IN ('TOTAL LOCAL CURRENCY USD', 'TOTAL LOCAL CURRENCY DKK',
+                                     'TOTAL LOCAL CURRENCY EUR', 'TOTAL LOCAL CURRENCY GTQ',
+                                     'TOTAL LOCAL CURRENCY CAD', 'TOTAL MXN',
+                                     'TOTAL USD', 'TOTAL EUR') THEN '2'
+          WHEN ${TABLE}.CATEGORY IN ('CP 19L','CP 15L', 'CP 10L', 'CP 08L', 'CP 04L') THEN '1'
+          WHEN ${TABLE}.SUBCATEGORY IS NULL THEN '0'
+          ELSE ${TABLE}.SUBCATEGORY
+          END  ;;
 
   }
 
@@ -514,7 +535,7 @@ view: rpt_alg_category {
 
     link: {
       label: "Dist. Chanel"
-      url: "https://envases.cloud.looker.com/dashboards/48?&Período={{ _filters['rpt_alg_category.date_filter'] | url_encode }}&Category={{ rpt_alg_category.category_v1._value | url_encode}}"
+      url: "https://envases.cloud.looker.com/dashboards/48?&Período={{ _filters['rpt_alg_category.date_filter'] | url_encode }}&Category={{ rpt_alg.category_v1._value | url_encode}}"
     }
 
     html: {% if value == 'TOTAL LOCAL CURRENCY USD' or
@@ -572,16 +593,16 @@ view: rpt_alg_category {
   dimension: sort_country {
     type: string
     sql:
-    case
-      when ${TABLE}.SALESORG = "DE00" then "B02"
-      when ${TABLE}.SALESORG in ("NLF1", "2000") then "B04"
-      when ${TABLE}.SALESORG = "3100" then "A03"
-      when ${TABLE}.SALESORG in ( "MXF1","MXFC") then "A01"
-      when ${TABLE}.SALESORG in ( "GTF1") then "A04"
-      when ${TABLE}.SALESORG in ( "DKF1","DKF3","SEF1","USF2") then "B01"
-      when ${TABLE}.SALESORG in ( "USF1") then "A02"
-      when ${TABLE}.SALESORG in ( "1000") then "B03"
-      else "C00" end ;;
+            case
+              when ${TABLE}.SALESORG = "DE00" then "B02"
+              when ${TABLE}.SALESORG in ("NLF1", "2000") then "B04"
+              when ${TABLE}.SALESORG = "3100" then "A03"
+              when ${TABLE}.SALESORG in ( "MXF1","MXFC") then "A01"
+              when ${TABLE}.SALESORG in ( "GTF1") then "A04"
+              when ${TABLE}.SALESORG in ( "DKF1","DKF3","SEF1","USF2") then "B01"
+              when ${TABLE}.SALESORG in ( "USF1") then "A02"
+              when ${TABLE}.SALESORG in ( "1000") then "B03"
+              else "C00" end ;;
   }
 
   dimension: sort_category {
@@ -650,7 +671,7 @@ view: rpt_alg_category {
       else "Z03"
       end
 
-      when ${TABLE}.CLUSTER = 'USA' then
+      when ${TABLE}.CLUSTER = "USA" then
       case
       when ${TABLE}.CATEGORY="Bote Pint. Envases Ohio" then "A01"
       when ${TABLE}.CATEGORY="Cub.Lam. Envases Ohio" then "A02"
@@ -662,7 +683,7 @@ view: rpt_alg_category {
       else "Z03"
       end
 
-      when ${TABLE}.CLUSTER = 'ECN - NORTH' then
+      when ${TABLE}.CLUSTER = "ECN - NORTH" then
 
       case
       when ${TABLE}.CATEGORY="Mediapack" then "a01"
@@ -687,28 +708,32 @@ view: rpt_alg_category {
       when ${TABLE}.CATEGORY="PockIt" then "a18"
       when ${TABLE}.CATEGORY="PeelOff" then "a19"
       when ${TABLE}.CATEGORY="Super" then "a20"
-      when ${TABLE}.CATEGORY="Other" then "a21"
+      when ${TABLE}.CATEGORY="Cookie" then "a21"
+      when ${TABLE}.CATEGORY="Other" then "a22"
 
       when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
       when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
       else "Z03"
       end
 
-      when ${TABLE}.CLUSTER = 'ECC - CENTRAL' then
+      when ${TABLE}.CLUSTER = "ECC - CENTRAL" then
 
       case
-      when ${TABLE}.CATEGORY="Beverage Draught" then "a01"
-      when ${TABLE}.CATEGORY="Beverage Gravity" then "a02"
-      when ${TABLE}.CATEGORY="Tin Cans" then "a03"
-      when ${TABLE}.CATEGORY="Vacuum Ink" then "a04"
-      when ${TABLE}.CATEGORY="Pails" then "a05"
-      when ${TABLE}.CATEGORY="Hobbocks" then "a06"
-      when ${TABLE}.CATEGORY="Square" then "a07"
-      when ${TABLE}.CATEGORY="Miscellaneous" then "a08"
-      when ${TABLE}.CATEGORY="Plastic" then "a09"
-      when ${TABLE}.CATEGORY="Industrial - Others" then "a10"
-      when ${TABLE}.CATEGORY="Industrial" then "a11"
-      when ${TABLE}.CATEGORY="SC Print" then "a12"
+      when ${TABLE}.CATEGORY="Draught Kegs" then "a01"
+      when ${TABLE}.CATEGORY="Gravity Kegs" then "a02"
+      when ${TABLE}.CATEGORY="Beverage Miscellaneous" then "a03"
+      when ${TABLE}.CATEGORY="Beverage" then "a04"
+
+      when ${TABLE}.CATEGORY="Tin Cans" then "a05"
+      when ${TABLE}.CATEGORY="Vacuum Ink" then "a06"
+      when ${TABLE}.CATEGORY="Pails" then "a07"
+      when ${TABLE}.CATEGORY="Hobbocks" then "a08"
+      when ${TABLE}.CATEGORY="Square" then "a09"
+      when ${TABLE}.CATEGORY="Miscellaneous" then "a10"
+      when ${TABLE}.CATEGORY="Plastic" then "a11"
+      when ${TABLE}.CATEGORY="Industrial - Others" then "a12"
+      when ${TABLE}.CATEGORY="Industrial" then "a13"
+      when ${TABLE}.CATEGORY="SC Print" then "a14"
 
       when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
       when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
@@ -763,6 +788,21 @@ view: rpt_alg_category {
       else "Z03"
       end
 
+      when ${TABLE}.CLUSTER = "ECW - WEST" then
+
+      case
+      when ${TABLE}.CATEGORY="Coating and Printing Services" then "a01"
+      when ${TABLE}.CATEGORY="Tin cans and closures for tin cans" then "a02"
+      when ${TABLE}.CATEGORY="Vegetables" then "a03"
+      when ${TABLE}.CATEGORY="Industrial" then "a04"
+      when ${TABLE}.CATEGORY="Miscelaneous" then "a05"
+      when ${TABLE}.CATEGORY="Pails and lids for pails" then "a06"
+
+      when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
+      when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
+      else "Z03"
+      end
+
       when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
       when ${TABLE}.CATEGORY="TOTAL MXN" then "Z02"
       when ${TABLE}.CATEGORY="TOTAL USD" then "Z03"
@@ -797,7 +837,8 @@ view: rpt_alg_category {
       when ${TABLE}.CATEGORY="PockIt" then "a18"
       when ${TABLE}.CATEGORY="PeelOff" then "a19"
       when ${TABLE}.CATEGORY="Super" then "a20"
-      when ${TABLE}.CATEGORY="Other" then "a21"
+      when ${TABLE}.CATEGORY="Cookie" then "a21"
+      when ${TABLE}.CATEGORY="Other" then "a22"
 
       when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
       when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
@@ -826,22 +867,22 @@ view: rpt_alg_category {
   dimension: sort_category2 {
     type: string
     sql:
-    case
-      when ${TABLE}.CATEGORY2 = "MEXICO (MXN)" then "A01"
-      when ${TABLE}.CATEGORY2 = "USA (USD)" then "A02"
-      when ${TABLE}.CATEGORY2 = "CANADA (CAD)" then "A03"
-      when ${TABLE}.CATEGORY2 = "GUATEMALA (GTQ)" then "A04"
-      when ${TABLE}.CATEGORY2 = "SUB America (USD)" then "AZ1"
-      when ${TABLE}.CATEGORY2 = "ECN - NORTH (DKK)" then "E01"
-      when ${TABLE}.CATEGORY2 = "ECC - NORTH (USD)" then "E02"
-      when ${TABLE}.CATEGORY2 = "ECC - CENTRAL (EUR)" then "E03"
-      when ${TABLE}.CATEGORY2 = "ECW - WEST (EUR)" then "E04"
-      when ${TABLE}.CATEGORY2 = "ECS - SOUTH (EUR)" then "E04"
-      when ${TABLE}.CATEGORY2 = "SUB Europa (EUR)" then "EZ1"
-      when ${TABLE}.CATEGORY2 = "TOTAL EUR" then "Z01"
-      when ${TABLE}.CATEGORY2 = "TOTAL USD" then "Z02"
-      when ${TABLE}.CATEGORY2 = "TOTAL MXN" then "Z03"
-      else "ZZZ" end ;;
+            case
+              when ${TABLE}.CATEGORY2 = "MEXICO (MXN)" then "A01"
+              when ${TABLE}.CATEGORY2 = "USA (USD)" then "A02"
+              when ${TABLE}.CATEGORY2 = "CANADA (CAD)" then "A03"
+              when ${TABLE}.CATEGORY2 = "GUATEMALA (GTQ)" then "A04"
+              when ${TABLE}.CATEGORY2 = "SUB America (USD)" then "AZ1"
+              when ${TABLE}.CATEGORY2 = "ECN - NORTH (DKK)" then "E01"
+              when ${TABLE}.CATEGORY2 = "ECC - NORTH (USD)" then "E02"
+              when ${TABLE}.CATEGORY2 = "ECC - CENTRAL (EUR)" then "E03"
+              when ${TABLE}.CATEGORY2 = "ECW - WEST (EUR)" then "E04"
+              when ${TABLE}.CATEGORY2 = "ECS - SOUTH (EUR)" then "E04"
+              when ${TABLE}.CATEGORY2 = "SUB Europa (EUR)" then "EZ1"
+              when ${TABLE}.CATEGORY2 = "TOTAL EUR" then "Z01"
+              when ${TABLE}.CATEGORY2 = "TOTAL USD" then "Z02"
+              when ${TABLE}.CATEGORY2 = "TOTAL MXN" then "Z03"
+              else "ZZZ" end ;;
   }
 
   dimension: summary_flag {
@@ -1127,15 +1168,15 @@ view: rpt_alg_category {
               ELSE (${TOTAL_QTY_MTD}/NULLIF(${TOTAL_QTY_MTD_LY},0))-1   END *100;;
 
     html:
-    {% if value > 0 %}
-    <span style="color: green;">{{ rendered_value }}</span></p>
-    {% elsif  value < 0 %}
-    <span style="color: red;">{{ rendered_value }}</span></p>
-    {% elsif  value == 0 %}
-    {{rendered_value}}
-    {% else %}
-    {{rendered_value}}
-    {% endif %} ;;
+              {% if value > 0 %}
+              <span style="color: green;">{{ rendered_value }}</span></p>
+              {% elsif  value < 0 %}
+              <span style="color: red;">{{ rendered_value }}</span></p>
+              {% elsif  value == 0 %}
+              {{rendered_value}}
+              {% else %}
+              {{rendered_value}}
+              {% endif %} ;;
 
     value_format: "0.00\%"
 
@@ -1201,15 +1242,15 @@ view: rpt_alg_category {
              END *100 ;;
 
     html:
-    {% if value > 0 %}
-    <span style="color: green;">{{ rendered_value }}</span></p>
-    {% elsif  value < 0 %}
-    <span style="color: red;">{{ rendered_value }}</span></p>
-    {% elsif  value == 0 %}
-    {{rendered_value}}
-    {% else %}
-    {{rendered_value}}
-    {% endif %} ;;
+                  {% if value > 0 %}
+                  <span style="color: green;">{{ rendered_value }}</span></p>
+                  {% elsif  value < 0 %}
+                  <span style="color: red;">{{ rendered_value }}</span></p>
+                  {% elsif  value == 0 %}
+                  {{rendered_value}}
+                  {% else %}
+                  {{rendered_value}}
+                  {% endif %} ;;
 
     value_format: "0.00\%"
 
@@ -1320,21 +1361,21 @@ view: rpt_alg_category {
     label: "% VS T AMOUNT MTD LY"
     type: number
     sql: CASE WHEN ${TOTAL_AMOUNT_MTD} > 0 AND ${TOTAL_AMOUNT_MTD_LY} = 0 THEN 1
-              WHEN ${TOTAL_AMOUNT_MTD} = 0 AND ${TOTAL_AMOUNT_MTD_LY} > 0 THEN -1
-              WHEN (${TOTAL_AMOUNT_MTD} /  NULLIF (${TOTAL_AMOUNT_MTD_LY},0))-1 = 0 THEN 0
-              ELSE (${TOTAL_AMOUNT_MTD} /  NULLIF (${TOTAL_AMOUNT_MTD_LY},0))-1
-             END *100;;
+                                WHEN ${TOTAL_AMOUNT_MTD} = 0 AND ${TOTAL_AMOUNT_MTD_LY} > 0 THEN -1
+                                WHEN (${TOTAL_AMOUNT_MTD} /  NULLIF (${TOTAL_AMOUNT_MTD_LY},0))-1 = 0 THEN 0
+                                ELSE (${TOTAL_AMOUNT_MTD} /  NULLIF (${TOTAL_AMOUNT_MTD_LY},0))-1
+                               END *100;;
 
     html:
-    {% if value > 0 %}
-    <span style="color: green;">{{ rendered_value }}</span></p>
-    {% elsif  value < 0 %}
-    <span style="color: red;">{{ rendered_value }}</span></p>
-    {% elsif  value == 0 %}
-    {{rendered_value}}
-    {% else %}
-    {{rendered_value}}
-    {% endif %} ;;
+                      {% if value > 0 %}
+                      <span style="color: green;">{{ rendered_value }}</span></p>
+                      {% elsif  value < 0 %}
+                      <span style="color: red;">{{ rendered_value }}</span></p>
+                      {% elsif  value == 0 %}
+                      {{rendered_value}}
+                      {% else %}
+                      {{rendered_value}}
+                      {% endif %} ;;
 
     value_format: "0.00\%"
 
@@ -1401,21 +1442,21 @@ view: rpt_alg_category {
     label: "% VS TOTAL BUD MTD"
     type: number
     sql: CASE WHEN ${TOTAL_AMOUNT_MTD} > 0 AND ${TOTAL_AMOUNT_BUD_MTD} = 0 THEN 1
-              WHEN ${TOTAL_AMOUNT_MTD} = 0 AND ${TOTAL_AMOUNT_BUD_MTD} > 0 THEN -1
-              WHEN (${TOTAL_AMOUNT_MTD} /  NULLIF (${TOTAL_AMOUNT_BUD_MTD},0))-1=-1 THEN 0
-              ELSE (${TOTAL_AMOUNT_MTD} /  NULLIF (${TOTAL_AMOUNT_BUD_MTD},0))-1
-             END * 100;;
+                                    WHEN ${TOTAL_AMOUNT_MTD} = 0 AND ${TOTAL_AMOUNT_BUD_MTD} > 0 THEN -1
+                                    WHEN (${TOTAL_AMOUNT_MTD} /  NULLIF (${TOTAL_AMOUNT_BUD_MTD},0))-1=-1 THEN 0
+                                    ELSE (${TOTAL_AMOUNT_MTD} /  NULLIF (${TOTAL_AMOUNT_BUD_MTD},0))-1
+                                   END * 100;;
 
     html:
-    {% if value > 0 %}
-    <span style="color: green;">{{ rendered_value }}</span></p>
-    {% elsif  value < 0 %}
-    <span style="color: red;">{{ rendered_value }}</span></p>
-    {% elsif  value == 0 %}
-    {{rendered_value}}
-    {% else %}
-    {{rendered_value}}
-    {% endif %} ;;
+                          {% if value > 0 %}
+                          <span style="color: green;">{{ rendered_value }}</span></p>
+                          {% elsif  value < 0 %}
+                          <span style="color: red;">{{ rendered_value }}</span></p>
+                          {% elsif  value == 0 %}
+                          {{rendered_value}}
+                          {% else %}
+                          {{rendered_value}}
+                          {% endif %} ;;
 
     value_format: "0.00\%"
 
@@ -1543,20 +1584,20 @@ view: rpt_alg_category {
     label: "% VS T QTY YTD LY"
     type: number
     sql: CASE WHEN ${TOTAL_QTY_YTD} > 0 AND ${TOTAL_QTY_YTD_LY} = 0 THEN 1
-              WHEN ${TOTAL_QTY_YTD} = 0 AND ${TOTAL_QTY_YTD_LY} > 0 THEN -1
-              WHEN (${TOTAL_QTY_YTD}/NULLIF(${TOTAL_QTY_YTD_LY},0))-1  = 0 THEN 0
-              ELSE (${TOTAL_QTY_YTD}/NULLIF(${TOTAL_QTY_YTD_LY},0))-1   END *100;;
+                                        WHEN ${TOTAL_QTY_YTD} = 0 AND ${TOTAL_QTY_YTD_LY} > 0 THEN -1
+                                        WHEN (${TOTAL_QTY_YTD}/NULLIF(${TOTAL_QTY_YTD_LY},0))-1  = 0 THEN 0
+                                        ELSE (${TOTAL_QTY_YTD}/NULLIF(${TOTAL_QTY_YTD_LY},0))-1   END *100;;
 
     html:
-    {% if value > 0 %}
-    <span style="color: green;">{{ rendered_value }}</span></p>
-    {% elsif  value < 0 %}
-    <span style="color: red;">{{ rendered_value }}</span></p>
-    {% elsif  value == 0 %}
-    {{rendered_value}}
-    {% else %}
-    {{rendered_value}}
-    {% endif %} ;;
+                              {% if value > 0 %}
+                              <span style="color: green;">{{ rendered_value }}</span></p>
+                              {% elsif  value < 0 %}
+                              <span style="color: red;">{{ rendered_value }}</span></p>
+                              {% elsif  value == 0 %}
+                              {{rendered_value}}
+                              {% else %}
+                              {{rendered_value}}
+                              {% endif %} ;;
 
     value_format: "0.00\%"
 
@@ -1617,21 +1658,21 @@ view: rpt_alg_category {
     label: "% VS T QTY BUD YTD"
     type: number
     sql: CASE WHEN ${TOTAL_QTY_YTD} > 0 AND ${T_QTY_BUD_YTD} = 0 THEN 1
-              WHEN ${TOTAL_QTY_YTD} = 0 AND ${T_QTY_BUD_YTD} > 0 THEN -1
-              WHEN (${TOTAL_QTY_YTD} /  NULLIF (${T_QTY_BUD_YTD},0))-1= 0 THEN 0
-              ELSE (${TOTAL_QTY_YTD} /  NULLIF (${T_QTY_BUD_YTD},0))-1
-             END *100 ;;
+                                            WHEN ${TOTAL_QTY_YTD} = 0 AND ${T_QTY_BUD_YTD} > 0 THEN -1
+                                            WHEN (${TOTAL_QTY_YTD} /  NULLIF (${T_QTY_BUD_YTD},0))-1= 0 THEN 0
+                                            ELSE (${TOTAL_QTY_YTD} /  NULLIF (${T_QTY_BUD_YTD},0))-1
+                                           END *100 ;;
 
     html:
-    {% if value > 0 %}
-    <span style="color: green;">{{ rendered_value }}</span></p>
-    {% elsif  value < 0 %}
-    <span style="color: red;">{{ rendered_value }}</span></p>
-    {% elsif  value == 0 %}
-    {{rendered_value}}
-    {% else %}
-    {{rendered_value}}
-    {% endif %} ;;
+                                  {% if value > 0 %}
+                                  <span style="color: green;">{{ rendered_value }}</span></p>
+                                  {% elsif  value < 0 %}
+                                  <span style="color: red;">{{ rendered_value }}</span></p>
+                                  {% elsif  value == 0 %}
+                                  {{rendered_value}}
+                                  {% else %}
+                                  {{rendered_value}}
+                                  {% endif %} ;;
 
     value_format: "0.00\%"
 
@@ -1742,21 +1783,21 @@ view: rpt_alg_category {
     label: "% VS T AMOUNT YTD LY"
     type: number
     sql: CASE WHEN ${TOTAL_AMOUNT_YTD} > 0 AND ${TOTAL_AMOUNT_YTD_LY} = 0 THEN 1
-              WHEN ${TOTAL_AMOUNT_YTD} = 0 AND ${TOTAL_AMOUNT_YTD_LY} > 0 THEN -1
-              WHEN (${TOTAL_AMOUNT_YTD} /  NULLIF (${TOTAL_AMOUNT_YTD_LY},0))-1 = 0 THEN 0
-              ELSE (${TOTAL_AMOUNT_YTD} /  NULLIF (${TOTAL_AMOUNT_YTD_LY},0))-1
-             END *100;;
+                                                WHEN ${TOTAL_AMOUNT_YTD} = 0 AND ${TOTAL_AMOUNT_YTD_LY} > 0 THEN -1
+                                                WHEN (${TOTAL_AMOUNT_YTD} /  NULLIF (${TOTAL_AMOUNT_YTD_LY},0))-1 = 0 THEN 0
+                                                ELSE (${TOTAL_AMOUNT_YTD} /  NULLIF (${TOTAL_AMOUNT_YTD_LY},0))-1
+                                               END *100;;
 
     html:
-    {% if value > 0 %}
-    <span style="color: green;">{{ rendered_value }}</span></p>
-    {% elsif  value < 0 %}
-    <span style="color: red;">{{ rendered_value }}</span></p>
-    {% elsif  value == 0 %}
-    {{rendered_value}}
-    {% else %}
-    {{rendered_value}}
-    {% endif %} ;;
+                                      {% if value > 0 %}
+                                      <span style="color: green;">{{ rendered_value }}</span></p>
+                                      {% elsif  value < 0 %}
+                                      <span style="color: red;">{{ rendered_value }}</span></p>
+                                      {% elsif  value == 0 %}
+                                      {{rendered_value}}
+                                      {% else %}
+                                      {{rendered_value}}
+                                      {% endif %} ;;
 
     value_format: "0.00\%"
 
@@ -1823,21 +1864,21 @@ view: rpt_alg_category {
     label: "% VS TOTAL BUD YTD"
     type: number
     sql: CASE WHEN ${TOTAL_AMOUNT_YTD} > 0 AND ${TOTAL_AMOUNT_BUD_YTD} = 0 THEN 1
-              WHEN ${TOTAL_AMOUNT_YTD} = 0 AND ${TOTAL_AMOUNT_BUD_YTD} > 0 THEN -1
-              WHEN (${TOTAL_AMOUNT_YTD} /  NULLIF (${TOTAL_AMOUNT_BUD_YTD},0))-1=-1 THEN 0
-              ELSE (${TOTAL_AMOUNT_YTD} /  NULLIF (${TOTAL_AMOUNT_BUD_YTD},0))-1
-             END * 100;;
+                                                    WHEN ${TOTAL_AMOUNT_YTD} = 0 AND ${TOTAL_AMOUNT_BUD_YTD} > 0 THEN -1
+                                                    WHEN (${TOTAL_AMOUNT_YTD} /  NULLIF (${TOTAL_AMOUNT_BUD_YTD},0))-1=-1 THEN 0
+                                                    ELSE (${TOTAL_AMOUNT_YTD} /  NULLIF (${TOTAL_AMOUNT_BUD_YTD},0))-1
+                                                   END * 100;;
 
     html:
-    {% if value > 0 %}
-    <span style="color: green;">{{ rendered_value }}</span></p>
-    {% elsif  value < 0 %}
-    <span style="color: red;">{{ rendered_value }}</span></p>
-    {% elsif  value == 0 %}
-    {{rendered_value}}
-    {% else %}
-    {{rendered_value}}
-    {% endif %} ;;
+                                          {% if value > 0 %}
+                                          <span style="color: green;">{{ rendered_value }}</span></p>
+                                          {% elsif  value < 0 %}
+                                          <span style="color: red;">{{ rendered_value }}</span></p>
+                                          {% elsif  value == 0 %}
+                                          {{rendered_value}}
+                                          {% else %}
+                                          {{rendered_value}}
+                                          {% endif %} ;;
 
     value_format: "0.00\%"
 
@@ -1850,4 +1891,5 @@ view: rpt_alg_category {
 
 
 #################################################################### FIN CALCULOS ANUALES ##################################################################
+
 }
