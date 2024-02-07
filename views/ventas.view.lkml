@@ -12,7 +12,7 @@ view: ventas {
         1001 AS CLIENTE,
         80 AS VENTA,
         2 AS CANTIDAD
-    FROM envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR
+    FROM envases-analytics-qa.ENVASES_REPORTING.CALENDAR
     GROUP BY 1,
         2,
         3,

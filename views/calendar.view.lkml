@@ -1,6 +1,6 @@
 view: calendar {
   derived_table: {
-    sql: SELECT * FROM `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR`
+    sql: SELECT * FROM `envases-analytics-qa.ENVASES_REPORTING.CALENDAR`
       ;;
   }
 

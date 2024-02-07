@@ -1,7 +1,7 @@
 
 view: stg_mexico {
   derived_table: {
-    sql: SELECT * FROM `envases-analytics-eon-poc.ENVASES_STAGING.stg_mexico_budget` LIMIT 10 ;;
+    sql: SELECT * FROM `envases-analytics-qa.ENVASES_STAGING.stg_mexico_budget` LIMIT 10 ;;
   }
 
   measure: count {
@@ -122,27 +122,27 @@ view: stg_mexico {
   set: detail {
     fields: [
         bill_qty,
-	base_uom,
-	znetval,
-	curr,
-	sold_to,
-	material,
-	distr_chan,
-	division,
-	matl_group,
-	salesorg,
-	matl_type,
-	prodh1,
-	stat_curr,
-	ziosd00_a,
-	version,
-	plant,
-	size_dim,
-	country,
-	sales_off,
-	sales_grp,
-	prod_hier,
-	calday
+  base_uom,
+  znetval,
+  curr,
+  sold_to,
+  material,
+  distr_chan,
+  division,
+  matl_group,
+  salesorg,
+  matl_type,
+  prodh1,
+  stat_curr,
+  ziosd00_a,
+  version,
+  plant,
+  size_dim,
+  country,
+  sales_off,
+  sales_grp,
+  prod_hier,
+  calday
     ]
   }
 }

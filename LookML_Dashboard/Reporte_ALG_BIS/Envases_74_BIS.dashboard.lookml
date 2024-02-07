@@ -4,7 +4,7 @@
   layout: newspaper
   preferred_viewer: dashboards-next
   description: ''
-  preferred_slug: 4LmEomUFBDlvRrJf017FkQ
+  preferred_slug: sBNR7vxL3DBAqkwXC9p53T
   elements:
   - name: ''
     type: text

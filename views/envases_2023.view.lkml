@@ -10,7 +10,7 @@ view: envases_2023 {
             ,SOLD_TO
 
       ,sum(BILL_QTY) BILL_QTY
-      ,sum(znetval) znetval from `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas`
+      ,sum(znetval) znetval from `envases-analytics-qa.ENVASES_REPORTING.rpt_ventas`
       GROUP BY 1,2,3,4,5,6,7) sl
       left join (
       select CATEGORY,calday ,distr_chan,SALESORG,SOLD_TO,sum(BILL_QTY) BILL_QTY,sum(znetval) znetval from `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas`GROUP BY 1,2,3,4,5

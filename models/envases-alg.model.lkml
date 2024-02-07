@@ -1,5 +1,5 @@
 # Define the database connection to be used for this model.
-connection: "envases-eon-alg"
+connection: "envases_analytics_qa"
 
 # include all the views
 include: "/views/**/*.view"

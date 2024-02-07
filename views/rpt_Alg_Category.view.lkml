@@ -42,13 +42,13 @@ view: rpt_alg_category {
           V.PLANT_COUNTRY,
           V.CLUSTER
 
-      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
-          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
-          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
+      FROM `envases-analytics-qa.ENVASES_REPORTING.rpt_ventas_test` v
+          LEFT JOIN `envases-analytics-qa.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+          LEFT JOIN `envases-analytics-qa.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
 
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
+      FROM envases-analytics-qa.ENVASES_REPORTING.rpt_ventas v
+          LEFT JOIN envases-analytics-qa.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+          LEFT JOIN envases-analytics-qa.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
 
       WHERE CATEGORY NOT IN ('TOTAL MXN')
       UNION ALL
@@ -83,11 +83,11 @@ view: rpt_alg_category {
           V.PLANT_COUNTRY,
           V.CLUSTER
 
-      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
-          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+      FROM `envases-analytics-qa.ENVASES_REPORTING.rpt_ventas_test` v
+          LEFT JOIN `envases-analytics-qa.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
 
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+      FROM envases-analytics-qa.ENVASES_REPORTING.rpt_ventas v
+          LEFT JOIN envases-analytics-qa.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
 
       WHERE CATEGORY in ('TOTAL MXN')
           and SALESORG in ("MXF1", "MXFC")
@@ -123,11 +123,11 @@ view: rpt_alg_category {
           V.PLANT_COUNTRY,
           V.CLUSTER
 
-      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
-          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+      FROM `envases-analytics-qa.ENVASES_REPORTING.rpt_ventas_test` v
+          LEFT JOIN `envases-analytics-qa.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
 
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+      FROM envases-analytics-qa.ENVASES_REPORTING.rpt_ventas v
+          LEFT JOIN envases-analytics-qa.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
 
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
@@ -138,8 +138,8 @@ view: rpt_alg_category {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
-                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-qa.ENVASES_REPORTING.tcurr`
+                  left join `envases-analytics-qa.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('USD', 'EUR', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'MXN'
                   AND TRIM(KURST) = 'M'
@@ -181,11 +181,11 @@ view: rpt_alg_category {
           V.PLANT_COUNTRY,
           V.CLUSTER
 
-      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
-          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+      FROM `envases-analytics-qa.ENVASES_REPORTING.rpt_ventas_test` v
+          LEFT JOIN `envases-analytics-qa.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
 
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+      FROM envases-analytics-qa.ENVASES_REPORTING.rpt_ventas v
+          LEFT JOIN envases-analytics-qa.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
 
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
@@ -196,8 +196,8 @@ view: rpt_alg_category {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
-                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-qa.ENVASES_REPORTING.tcurr`
+                  left join `envases-analytics-qa.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'USD'
                   AND TRIM(KURST) = 'M'
@@ -243,11 +243,11 @@ view: rpt_alg_category {
           V.PLANT_COUNTRY,
           V.CLUSTER
 
-      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
-          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+      FROM `envases-analytics-qa.ENVASES_REPORTING.rpt_ventas_test` v
+          LEFT JOIN `envases-analytics-qa.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
 
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+      FROM envases-analytics-qa.ENVASES_REPORTING.rpt_ventas v
+          LEFT JOIN envases-analytics-qa.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
 
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
@@ -258,8 +258,8 @@ view: rpt_alg_category {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
-                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-qa.ENVASES_REPORTING.tcurr`
+                  left join `envases-analytics-qa.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'USD', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'EUR'
                   AND TRIM(KURST) = 'M'
@@ -305,13 +305,13 @@ view: rpt_alg_category {
           V.PLANT_COUNTRY,
           V.CLUSTER
 
-      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
-          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
-          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
+      FROM `envases-analytics-qa.ENVASES_REPORTING.rpt_ventas_test` v
+          LEFT JOIN `envases-analytics-qa.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+          LEFT JOIN `envases-analytics-qa.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
 
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
+      FROM envases-analytics-qa.ENVASES_REPORTING.rpt_ventas v
+          LEFT JOIN envases-analytics-qa.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+          LEFT JOIN envases-analytics-qa.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
 
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
@@ -322,8 +322,8 @@ view: rpt_alg_category {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
-                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-qa.ENVASES_REPORTING.tcurr`
+                  left join `envases-analytics-qa.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'EUR', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'USD'
                   AND TRIM(KURST) = 'M'
@@ -372,13 +372,13 @@ view: rpt_alg_category {
           V.PLANT_COUNTRY,
           V.CLUSTER
 
-      FROM `envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas_test` v
-          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
-          LEFT JOIN `envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
+      FROM `envases-analytics-qa.ENVASES_REPORTING.rpt_ventas_test` v
+          LEFT JOIN `envases-analytics-qa.ENVASES_REPORTING.CALENDAR` c on v.CALDAY = c.CALDAY
+          LEFT JOIN `envases-analytics-qa.ENVASES_REPORTING.REGIONES` r ON v.SALESORG = r.SALESORGANIZATION
 
-      FROM envases-analytics-eon-poc.ENVASES_REPORTING.rpt_ventas v
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
-          LEFT JOIN envases-analytics-eon-poc.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
+      FROM envases-analytics-qa.ENVASES_REPORTING.rpt_ventas v
+          LEFT JOIN envases-analytics-qa.ENVASES_REPORTING.CALENDAR c on v.CALDAY = c.CALDAY
+          LEFT JOIN envases-analytics-qa.ENVASES_REPORTING.REGIONES r ON v.SALESORG = r.SALESORGANIZATION
 
           LEFT JOIN (
               SELECT CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING) AS CALDAY,
@@ -389,8 +389,8 @@ view: rpt_alg_category {
                       ELSE UKURS
                   END UKURS,
                   c.date
-              FROM `envases-analytics-eon-poc.ENVASES_REPORTING.tcurr`
-                  left join `envases-analytics-eon-poc.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
+              FROM `envases-analytics-qa.ENVASES_REPORTING.tcurr`
+                  left join `envases-analytics-qa.ENVASES_REPORTING.CALENDAR` c on c.CALDAY = CAST(99999999 - CAST(GDATU AS NUMERIC) AS STRING)
               WHERE TRIM(FCURR) IN ('MXN', 'USD', 'DKK', 'GTQ', 'CAD')
                   AND TRIM(TCURR) = 'EUR'
                   AND TRIM(KURST) = 'M'
