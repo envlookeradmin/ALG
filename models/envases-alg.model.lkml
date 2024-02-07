@@ -4,7 +4,8 @@ connection: "envases_analytics_qa"
 # include all the views
 include: "/views/**/*.view"
 
-#include: "/**/*.dashboard"
+include: "/**/*.dashboard"
+include : "/**/**/*.dashboard"
 
 include: "/LookML_Dashboard/*.dashboard.lookml"
 include: "/LookML_Dashboard/ALG_Sales/01_ALG_Global/*.dashboard.lookml"
