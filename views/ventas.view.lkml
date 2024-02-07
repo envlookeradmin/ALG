@@ -12,7 +12,7 @@ view: ventas {
         1001 AS CLIENTE,
         80 AS VENTA,
         2 AS CANTIDAD
-    FROM envases-analytics-qa.ENVASES_REPORTING.CALENDAR
+    FROM @{GCP_PROJECT}.@{REPORTING_DATASET}.CALENDAR
     GROUP BY 1,
         2,
         3,
