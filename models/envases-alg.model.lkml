@@ -4,12 +4,21 @@ connection: "envases_analytics_qa"
 # include all the views
 include: "/views/**/*.view"
 
-include: "/**/*.dashboard"
-include : "/**/**/*.dashboard"
+#include: "/**/*.dashboard"
+#include : "/**/**/*.dashboard"
 
 include: "/LookML_Dashboard/*.dashboard.lookml"
 include: "/LookML_Dashboard/ALG_Sales/01_ALG_Global/*.dashboard.lookml"
 include: "/LookML_Dashboard/ALG_Sales/05_Mex_y_GT/*.dashboard.lookml"
+include: "/LookML_Dashboard/ALG_Sales/10_Canada/*.dashboard.lookml"
+include: "/LookML_Dashboard/ALG_Sales/15_USA/*.dashboard.lookml"
+include: "/LookML_Dashboard/ALG_Sales/20_Guatemala/*.dashboard.lookml"
+include: "/LookML_Dashboard/ALG_Sales/25_Europe_Global/*.dashboard.lookml"
+include: "/LookML_Dashboard/ALG_Sales/30_ECN/*.dashboard.lookml"
+include: "/LookML_Dashboard/ALG_Sales/35_ECN_Media/*.dashboard.lookml"
+include: "/LookML_Dashboard/ALG_Sales/40_ECC/*.dashboard.lookml"
+include: "/LookML_Dashboard/ALG_Sales/50_ECW/*.dashboard.lookml"
+include: "/LookML_Dashboard/ALG_Sales/55_ECS/*.dashboard.lookml"
 include: "/LookML_Dashboard/Reporte_ALG_BIS/*.dashboard.lookml"
 include: "/LookML_Dashboard/ALG_Sales/15_USA/*.dashboard.lookml"
 
