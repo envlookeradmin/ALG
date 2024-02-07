@@ -1,6 +1,6 @@
 ---
 - dashboard: envases_74_bis_
-  title: Envases_74_BIS
+  title: Envases_74_BIS_jr
   layout: newspaper
   preferred_viewer: dashboards-next
   description: ''
