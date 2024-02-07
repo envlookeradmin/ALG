@@ -1,4 +1,4 @@
-- dashboard: envases_ytd
+- dashboard: envases_ytd-
   title: ENVASES YTD
   layout: newspaper
   preferred_viewer: dashboards-next

@@ -21,6 +21,8 @@ include: "/LookML_Dashboard/ALG_Sales/50_ECW/*.dashboard.lookml"
 include: "/LookML_Dashboard/ALG_Sales/55_ECS/*.dashboard.lookml"
 include: "/LookML_Dashboard/Reporte_ALG_BIS/*.dashboard.lookml"
 include: "/LookML_Dashboard/ALG_Sales/15_USA/*.dashboard.lookml"
+include: "/LookML_Dashboard/Reporte_ALG/*.dashboard.lookml"
+include: "/LookML_Dashboard/Reporte_ALG/PDF/*.dashboard.lookml"
 
 # Datagroups define a caching policy for an Explore. To learn more,
 # use the Quick Help panel on the right to see documentation.
