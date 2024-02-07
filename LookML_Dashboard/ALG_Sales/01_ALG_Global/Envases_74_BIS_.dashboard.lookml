@@ -1,5 +1,5 @@
 ---
-- dashboard: envases_74_bis
+- dashboard: envases_74_bis_
   title: Envases_74_BIS
   layout: newspaper
   preferred_viewer: dashboards-next
