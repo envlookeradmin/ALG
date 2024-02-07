@@ -6,6 +6,9 @@ include: "/views/**/*.view"
 
 #include: "/**/*.dashboard"
 
+include: "/LookML_Dashboard/*.dashboard.lookml"
+include: "/LookML_Dashboard/ALG_Sales/01_ALG_Global/*.dashboard.lookml"
+include: "/LookML_Dashboard/ALG_Sales/05_Mex_y_GT/*.dashboard.lookml"
 
 # Datagroups define a caching policy for an Explore. To learn more,
 # use the Quick Help panel on the right to see documentation.
