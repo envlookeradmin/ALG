@@ -458,95 +458,95 @@ view: rpt_alg_category {
     # sql: case when ${TABLE}.CATEGORY is null then 'Otros' else ${TABLE}.CATEGORY  end ;;
     sql:  ${TABLE}.CATEGORY ;;
 
-    html: {% if rpt_alg_category.sub_category._value == '2' %}
-      <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
+    #html: {% if rpt_alg_category.sub_category._value == '2' %}
+    #<p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
 
-          {% elsif rpt_alg_category.sub_category._value != '1' %}
+    #{% elsif rpt_alg_category.sub_category._value != '1' %}
+    #<p style="color: black; font-weight: bold; font-size:100%; text-align:left">{{ rendered_value }}</p>
+
+    #{% else %}
+    #<p style="">{{ rendered_value }}</p>
+    #{% endif %} ;;
+
+
+    html: {% if value == 'TOTAL LOCAL CURRENCY USD' or
+          value == 'TOTAL LOCAL CURRENCY DKK' or
+          value == 'TOTAL LOCAL CURRENCY EUR' or
+          value == 'TOTAL LOCAL CURRENCY GTQ' or
+          value == 'TOTAL LOCAL CURRENCY CAD' or
+          value == 'TOTAL MXN' or
+          value == 'TOTAL USD' or
+          value == 'TOTAL EUR'
+          %}
+        <p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
+
+      {% elsif
+      value != 'CP 19L' and
+      value != 'CP 15L' and
+      value != 'CP 10L' and
+      value != 'CP 08L' and
+      value != 'CP 04L' and
+
+      value != 'Club (Alu)' and
+      value != 'Club (Steel)' and
+      value != 'Hansa' and
+      value != 'Dingley' and
+      value != 'Round Fish' and
+      value != 'Fish - Other' and
+      value != 'Draught Kegs' and
+      value != 'Gravity Kegs' and
+      value != 'Beverage Miscellaneous' and
+      value != 'Tin Cans' and
+      value != 'Vacuum Ink' and
+      value != 'Pails' and
+      value != 'Hobbocks' and
+      value != 'Square' and
+      value != 'Miscellaneous' and
+      value != 'Plastic' and
+      value != 'Industrial - Others' and
+
+      value != 'Fish - 1/2 Oval' and
+      value != 'Fish - 1/4 Oval' and
+      value != 'Fish - 127' and
+      value != 'Fish - 150' and
+      value != 'Fish - 153' and
+      value != 'Fish - 65' and
+      value != 'Fish - 73' and
+      value != 'Fish - 83' and
+      value != 'Fish - 99' and
+      value != 'Fish - Anchoas' and
+      value != 'Fish - Club' and
+      value != 'Fish - Goods for Resale' and
+      value != 'Fish - Others' and
+      value != 'Fish - Pails' and
+      value != 'Fish - RR90' and
+
+      value != 'Vegetables - 153' and
+      value != 'Vegetables - 65' and
+      value != 'Vegetables - 73' and
+      value != 'Vegetables - 83' and
+      value != 'Vegetables - 99' and
+      value != 'Vegetables - Club' and
+      value != 'Vegetables - Goods for Resale' and
+      value != 'Vegetables - Others' and
+
+      value != 'Industrial - 73' and
+      value != 'Industrial - 99' and
+      value != 'Industrial - General Line' and
+      value != 'Industrial - Goods for Resale' and
+      value != 'Industrial - Others' and
+      value != 'Industrial - Pails' and
+
+      value != 'Print and Coating Services - Goods for Resale' and
+      value != 'Print and Coating Services - Others' and
+      value != 'Print and Coating Services - Pails'
+
+      %}
       <p style="color: black; font-weight: bold; font-size:100%; text-align:left">{{ rendered_value }}</p>
 
       {% else %}
       <p style="">{{ rendered_value }}</p>
       {% endif %} ;;
-
-      #html: {% if value == 'TOTAL LOCAL CURRENCY USD' or
-      #          value == 'TOTAL LOCAL CURRENCY DKK' or
-      #          value == 'TOTAL LOCAL CURRENCY EUR' or
-      #          value == 'TOTAL LOCAL CURRENCY GTQ' or
-      #          value == 'TOTAL LOCAL CURRENCY CAD' or
-      #          value == 'TOTAL MXN' or
-      #          value == 'TOTAL USD' or
-      #          value == 'TOTAL EUR'
-      #%}
-      #<p style="color: white; background-color: #5e2129; font-size:100%; text-align:left">{{ rendered_value }}</p>
-    #
-      #{% elsif
-      #value != 'CP 19L' and
-      #value != 'CP 15L' and
-      #value != 'CP 10L' and
-      #value != 'CP 08L' and
-      #value != 'CP 04L' and
-    #
-      #value != 'Club (Alu)' and
-      #value != 'Club (Steel)' and
-      #value != 'Hansa' and
-      #value != 'Dingley' and
-      #value != 'Round Fish' and
-      #value != 'Fish - Other' and
-    #
-      #value != 'Draught Kegs' and
-      #value != 'Gravity Kegs' and
-      #value != 'Beverage Miscellaneous' and
-      #value != 'Tin Cans' and
-      #value != 'Vacuum Ink' and
-      #value != 'Pails' and
-      #value != 'Hobbocks' and
-      #value != 'Square' and
-      #value != 'Miscellaneous' and
-      #value != 'Plastic' and
-      #value != 'Industrial - Others' and
-    #
-      #value != 'Fish - 1/2 Oval' and
-      #value != 'Fish - 1/4 Oval' and
-      #value != 'Fish - 127' and
-      #value != 'Fish - 150' and
-      #value != 'Fish - 153' and
-      #value != 'Fish - 65' and
-      #value != 'Fish - 73' and
-      #value != 'Fish - 83' and
-      #value != 'Fish - 99' and
-      #value != 'Fish - Anchoas' and
-      #value != 'Fish - Club' and
-      #value != 'Fish - Goods for Resale' and
-      #value != 'Fish - Others' and
-      #value != 'Fish - Pails' and
-      #value != 'Fish - RR90' and
-    #
-      #value != 'Vegetables - 153' and
-      #value != 'Vegetables - 65' and
-      #value != 'Vegetables - 73' and
-      #value != 'Vegetables - 83' and
-      #value != 'Vegetables - 99' and
-      #value != 'Vegetables - Club' and
-      #value != 'Vegetables - Goods for Resale' and
-      #value != 'Vegetables - Others' and
-    #
-      #value != 'Industrial - 73' and
-      #value != 'Industrial - 99' and
-      #value != 'Industrial - General Line' and
-      #value != 'Industrial - Goods for Resale' and
-      #value != 'Industrial - Others' and
-      #value != 'Industrial - Pails' and
-    #
-      #value != 'Print and Coating Services - Goods for Resale' and
-      #value != 'Print and Coating Services - Others' and
-      #value != 'Print and Coating Services - Pails'
-    #
-      #%}
-      #<p style="color: black; font-weight: bold; font-size:100%; text-align:left">{{ rendered_value }}</p>
-    #
-      #{% else %}
-      #<p style="">{{ rendered_value }}</p>
-      #{% endif %} ;;
 
   }
 
@@ -709,7 +709,7 @@ view: rpt_alg_category {
       else "Z03"
       end
 
-      when ${TABLE}.CLUSTER = "USA" then
+      when ${TABLE}.CLUSTER = 'USA' then
       case
       when ${TABLE}.CATEGORY="Bote Pint. Envases Ohio" then "A01"
       when ${TABLE}.CATEGORY="Cub.Lam. Envases Ohio" then "A02"
@@ -721,7 +721,7 @@ view: rpt_alg_category {
       else "Z03"
       end
 
-      when ${TABLE}.CLUSTER = "ECN - NORTH" then
+      when ${TABLE}.CLUSTER = 'ECN - NORTH' then
 
       case
       when ${TABLE}.CATEGORY="Mediapack" then "a01"
@@ -754,9 +754,10 @@ view: rpt_alg_category {
       else "Z03"
       end
 
-      when ${TABLE}.CLUSTER = "ECC - CENTRAL" then
+      when ${TABLE}.CLUSTER = 'ECC - CENTRAL' then
 
       case
+
       when ${TABLE}.CATEGORY="Draught Kegs" then "a01"
       when ${TABLE}.CATEGORY="Gravity Kegs" then "a02"
       when ${TABLE}.CATEGORY="Beverage Miscellaneous" then "a03"
@@ -772,6 +773,25 @@ view: rpt_alg_category {
       when ${TABLE}.CATEGORY="Industrial - Others" then "a12"
       when ${TABLE}.CATEGORY="Industrial" then "a13"
       when ${TABLE}.CATEGORY="SC Print" then "a14"
+
+      when ${TABLE}.CATEGORY="Draught - Cans" then "a01"
+      when ${TABLE}.CATEGORY="Draught - Miscellaneous" then "a02"
+      when ${TABLE}.CATEGORY="Beverage Draught" then "a03"
+      when ${TABLE}.CATEGORY="Gravity - Cans" then "a04"
+      when ${TABLE}.CATEGORY="Gravity - Miscellaneous" then "a05"
+      when ${TABLE}.CATEGORY="Beverage Gravity" then "a06"
+      when ${TABLE}.CATEGORY="Tin Cans" then "a07"
+      when ${TABLE}.CATEGORY="Cans" then "a08"
+      when ${TABLE}.CATEGORY="Vacuum Ink" then "a09"
+      when ${TABLE}.CATEGORY="Pails" then "a10"
+      when ${TABLE}.CATEGORY="Hobbocks" then "a11"
+      when ${TABLE}.CATEGORY="Square" then "a12"
+      when ${TABLE}.CATEGORY="Miscellaneous" then "a13"
+      when ${TABLE}.CATEGORY="Plastic" then "a14"
+      when ${TABLE}.CATEGORY="Industrial - Others" then "a15"
+      when ${TABLE}.CATEGORY="Industrial" then "a16"
+      when ${TABLE}.CATEGORY="SC Print" then "a17"
+
 
       when ${TABLE}.CATEGORY LIKE "TOTAL LOCAL%" then "Z01"
       when ${TABLE}.CATEGORY="TOTAL EUR" then "Z02"
