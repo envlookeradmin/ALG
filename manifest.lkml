@@ -9,7 +9,7 @@ constant: GCP_PROJECT {
 }
 
 constant: REPORTING_DATASET {
-  value: "ENVASES_REPORTING"
+  value: "ENVASES_REPORTING_UPG"
   export: override_required
 }
 
