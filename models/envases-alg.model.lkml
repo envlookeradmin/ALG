@@ -1,5 +1,6 @@
 # Define the database connection to be used for this model.
-connection: "envases_analytics_qa"
+#connection: "envases_analytics_qa"
+connection: "@{CONNECTION_NAME}"
 
 # include all the views
 include: "/views/**/*.view"
