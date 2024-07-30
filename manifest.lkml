@@ -1,6 +1,6 @@
 constant: CONNECTION_NAME {
-  value: "envases_analytics_qa"
-  #value: "envases-alg-analytics-non-prod"
+  #value: "envases_analytics_qa"
+  value: "envases-alg-analytics-non-prod"
   export: override_required
 }
 
@@ -10,7 +10,8 @@ constant: GCP_PROJECT {
 }
 
 constant: REPORTING_DATASET {
-  value: "ENVASES_REPORTING_UPG"
+  #value: "ENVASES_REPORTING_UPG"
+  value: "ENVASES_REPORTING"
   export: override_required
 }
 
